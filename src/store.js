@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { combineReducers } from 'redux'
 import { thunk } from 'redux-thunk'
-import { userRegisterReducer } from './reducers/userReducers'
+import { userRegisterReducer, userLoginReducer, userForgotPasswordReducer } from './reducers/userReducers'
 
 // Create the Redux reducer
 const reducer = combineReducers({
   userRegister: userRegisterReducer,
+  userLogin: userLoginReducer,
+  userForgotPassword: userForgotPasswordReducer
 })
 
 // Fetch user info from localStorage if available
