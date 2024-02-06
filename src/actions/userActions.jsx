@@ -13,6 +13,9 @@ import {
 	ACTIVATE_USER_REQUEST,
 	ACTIVATE_USER_SUCCESS,
 	ACTIVATE_USER_FAIL,
+	USER_CHANGE_PASSWORD_REQUEST,
+	USER_CHANGE_PASSWORD_SUCCESS,
+	USER_CHANGE_PASSWORD_FAIL,
 } from '../constants/userConstants';
 
 export const registerAction = (userData) => async (dispatch) => {
@@ -119,7 +122,7 @@ export const activateUserAction = (userid) => async (dispatch) => {
 		});
 		console.log(`${process.env.REACT_APP_BASE_URL}/user/activeUser?userid=${userid}`);
 		// Make an API call to activate the user and get the token
-		const { data } = await axios.get(
+		const { data } = await axios.post(
 			`${process.env.REACT_APP_BASE_URL}/user/activeUser?userid=${userid}`
 		);
 		console.log(data);
@@ -133,6 +136,37 @@ export const activateUserAction = (userid) => async (dispatch) => {
 		dispatch({
 			type: ACTIVATE_USER_FAIL,
 			payload: err.response.data.msg,
+		});
+	}
+};
+
+export const changePasswordAction = (currentPassword, newPassword, token) => async (dispatch) => {
+	try {
+		dispatch({
+			type: USER_CHANGE_PASSWORD_REQUEST,
+		});
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: token
+			},
+		};
+
+		const { data } = await axios.patch(
+			`${process.env.REACT_APP_BASE_URL}/user/changePassword`,
+			{ currentPassword, newPassword },
+			config
+		);
+
+		dispatch({
+			type: USER_CHANGE_PASSWORD_SUCCESS,
+			payload: data,
+		});
+	} catch (err) {
+		dispatch({
+			type: USER_CHANGE_PASSWORD_FAIL,
+			payload: err.response && err.response.data.message ? err.response.data.message : err.message,
 		});
 	}
 };

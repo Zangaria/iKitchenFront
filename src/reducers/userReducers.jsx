@@ -9,6 +9,9 @@ import {
 	USER_FORGOT_PASSWORD_REQUEST,
 	USER_FORGOT_PASSWORD_SUCCESS,
 	USER_FORGOT_PASSWORD_FAIL,
+	USER_CHANGE_PASSWORD_REQUEST,
+	USER_CHANGE_PASSWORD_SUCCESS,
+	USER_CHANGE_PASSWORD_FAIL
 } from '../constants/userConstants';
 
 export const userRegisterReducer = (state = {}, action) => {
@@ -56,6 +59,25 @@ export const userForgotPasswordReducer = (state = {}, action) => {
 			console.log(action.payload);
 			return { loading: false };
 		case USER_FORGOT_PASSWORD_FAIL:
+			console.log(payload);
+			return { loading: false };
+		case USER_LOGOUT:
+			return {};
+		default:
+			return state;
+	}
+};
+
+export const userChangePasswordReducer = (state = {}, action) => {
+	const { type, payload } = action;
+
+	switch (type) {
+		case USER_CHANGE_PASSWORD_REQUEST:
+			return { loading: true };
+		case USER_CHANGE_PASSWORD_SUCCESS:
+			console.log(payload);
+			return { loading: false };
+		case USER_CHANGE_PASSWORD_FAIL:
 			console.log(payload);
 			return { loading: false };
 		case USER_LOGOUT:

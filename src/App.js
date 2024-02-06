@@ -6,6 +6,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import ActivateUser from './components/ActivateUser';
+import ChangePassword from './pages/ChangePassword';
 
 const App = () => {
 	return (
@@ -18,6 +19,7 @@ const App = () => {
 					<Route path="activeUser" element={<ActivateUser />} />
 					<Route path="login" element={<Login />} />
 					<Route path="forgotPassword" element={<ForgotPassword />} />
+					<Route path="changePassword" element={<ChangePassword />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>

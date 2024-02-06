@@ -5,6 +5,7 @@ import {
 	userRegisterReducer,
 	userLoginReducer,
 	userForgotPasswordReducer,
+	userChangePasswordReducer
 } from './reducers/userReducers';
 
 // Create the Redux reducer
@@ -12,6 +13,7 @@ const reducer = combineReducers({
 	userRegister: userRegisterReducer,
 	userLogin: userLoginReducer,
 	userForgotPassword: userForgotPasswordReducer,
+	userChangePassword: userChangePasswordReducer,
 });
 
 // Fetch user info from localStorage if available
