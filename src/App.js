@@ -15,7 +15,7 @@ const App = () => {
 					<Route path="ForgotPassword" element={<ForgotPassword />} />
 					<Route path="Register" element={<Register />} />
 					<Route path="Login" element={<Login />} />
-					<Route path="/activeUser" exact element={<ActivateUser />} />
+					<Route path="activeUser" element={<ActivateUser />} />
 					<Route path="login" element={<Login />} />
 					<Route path="forgotPassword" element={<ForgotPassword />} />
 				</Route>

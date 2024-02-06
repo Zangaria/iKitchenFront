@@ -39,7 +39,7 @@ export const registerAction = (userData) => async (dispatch) => {
 			payload: data,
 		});
 
-		localStorage.setItem('userInfo', JSON.stringify(data));
+		localStorage.setItem(data);
 	} catch (err) {
 		dispatch({
 			type: USER_REGISTER_FAIL,
@@ -71,7 +71,8 @@ export const loginAction = (userData) => async (dispatch) => {
 			payload: data,
 		});
 
-		localStorage.setItem('userInfo', JSON.stringify(data.token));
+		localStorage.setItem('token', data.token);
+		localStorage.setItem('userName', data.userName);
 	} catch (err) {
 		dispatch({
 			type: USER_LOGIN_FAIL,
@@ -118,13 +119,14 @@ export const activateUserAction = (userid) => async (dispatch) => {
 		});
 		console.log(`${process.env.REACT_APP_BASE_URL}/user/activeUser?userid=${userid}`);
 		// Make an API call to activate the user and get the token
-		const { data } = await axios.post(
+		const { data } = await axios.get(
 			`${process.env.REACT_APP_BASE_URL}/user/activeUser?userid=${userid}`
 		);
 		console.log(data);
+		localStorage.setItem('token', data.token);
 		dispatch({
 			type: ACTIVATE_USER_SUCCESS,
-			payload: data.token, // Assuming the token is returned in the response
+			payload: data.token,
 		});
 	} catch (err) {
 		console.log(err.response.data.msg);

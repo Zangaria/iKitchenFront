@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { forgotPasswordAction } from '../actions/userActions';
 
 export default function ForgotPassword() {
 	const [email, setEmail] = useState('');
+
+	useEffect(() => {
+		const user = localStorage.getItem('userInfo');
+		console.log(user);
+	}, []);
 
 	const dispatch = useDispatch();
 
@@ -21,7 +27,7 @@ export default function ForgotPassword() {
 	};
 
 	const handleGoButtonClick = async (e) => {
-        e.preventDefault();
+		e.preventDefault();
 		dispatch(forgotPasswordAction(email));
 	};
 
