@@ -5,8 +5,9 @@ import {
 	userRegisterReducer,
 	userLoginReducer,
 	userForgotPasswordReducer,
-	userChangePasswordReducer
+	userChangePasswordReducer,
 } from './reducers/userReducers';
+import { newIngredientReducer } from './reducers/ingredientReducers';
 
 // Create the Redux reducer
 const reducer = combineReducers({
