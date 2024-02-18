@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+// App.js
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import ForgotPassword from './pages/ForgotPassword';
+import Register from './pages/Register';
+import Login from './pages/Login';
+import ActivateUser from './components/ActivateUser';
+import ChangePassword from './pages/ChangePassword';
+import Navbar from './components/Navbar';
+
+const App = () => {
+	return (
+		<>
+			<Navbar></Navbar>
+			<BrowserRouter>
+				<Routes>
+					<Route>
+						<Route path="ForgotPassword" element={<ForgotPassword />} />
+						<Route path="Register" element={<Register />} />
+						<Route path="Login" element={<Login />} />
+						<Route path="activeUser" element={<ActivateUser />} />
+						<Route path="login" element={<Login />} />
+						<Route path="forgotPassword" element={<ForgotPassword />} />
+						<Route path="changePassword" element={<ChangePassword />} />
+					</Route>
+				</Routes>
+			</BrowserRouter>
+		</>
+	);
+};
 
 export default App;
