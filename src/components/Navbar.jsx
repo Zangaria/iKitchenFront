@@ -22,19 +22,25 @@ const Navbar = () => {
 							Home
 						</a>
 						<a href="register" className="text-gray-800 hover:text-teal-500">
-						Register
+							Register
 						</a>
 						<a href="activeUser" className="text-gray-800 hover:text-teal-500">
-						activeUser
+							activeUser
 						</a>
 						<a href="login" className="text-gray-800 hover:text-teal-500">
 							Login
 						</a>
 						<a href="ForgotPassword" className="text-gray-800 hover:text-teal-500">
-						ForgotPassword
+							ForgotPassword
 						</a>
 						<a href="changePassword" className="text-gray-800 hover:text-teal-500">
-						changePassword
+							changePassword
+						</a>
+						<a href="addRecipe" className="text-gray-800 hover:text-teal-500">
+							AddRecipe
+						</a>
+						<a href="addIngredient" className="text-gray-800 hover:text-teal-500">
+							AddIngredient
 						</a>
 					</div>
 					<div className="md:hidden">
@@ -44,9 +50,8 @@ const Navbar = () => {
 							className="text-gray-800 focus:outline-none"
 						>
 							<svg
-								className={`w-6 h-6 transition-transform transform ${
-									isMobileMenuOpen ? 'rotate-180' : ''
-								}`}
+								className={`w-6 h-6 transition-transform transform ${isMobileMenuOpen ? 'rotate-180' : ''
+									}`}
 								fill="none"
 								stroke="currentColor"
 								viewBox="0 0 24 24"
