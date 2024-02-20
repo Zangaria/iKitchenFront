@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import ActivateUser from './components/ActivateUser';
 import ChangePassword from './pages/ChangePassword';
 import Navbar from './components/Navbar';
+import AddRecipePage from './pages/AddRecipePage';
 
 const App = () => {
 	return (
@@ -23,6 +24,7 @@ const App = () => {
 						<Route path="login" element={<Login />} />
 						<Route path="forgotPassword" element={<ForgotPassword />} />
 						<Route path="changePassword" element={<ChangePassword />} />
+						<Route path="addRecipe" element={<AddRecipePage />} />
 					</Route>
 				</Routes>
 			</BrowserRouter>
