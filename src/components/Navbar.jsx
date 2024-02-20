@@ -18,20 +18,23 @@ const Navbar = () => {
 						</a>
 					</div>
 					<div className="hidden md:flex space-x-4">
-						<a href="#" className="text-gray-800 hover:text-teal-500">
+						<a href="/" className="text-gray-800 hover:text-teal-500">
 							Home
 						</a>
-						<a href="#" className="text-gray-800 hover:text-teal-500">
-							About
+						<a href="register" className="text-gray-800 hover:text-teal-500">
+						Register
 						</a>
-						<a href="#" className="text-gray-800 hover:text-teal-500">
-							Services
+						<a href="activeUser" className="text-gray-800 hover:text-teal-500">
+						activeUser
 						</a>
-						<a href="#" className="text-gray-800 hover:text-teal-500">
-							Pricing
+						<a href="login" className="text-gray-800 hover:text-teal-500">
+							Login
 						</a>
-						<a href="#" className="text-gray-800 hover:text-teal-500">
-							Contact
+						<a href="ForgotPassword" className="text-gray-800 hover:text-teal-500">
+						ForgotPassword
+						</a>
+						<a href="changePassword" className="text-gray-800 hover:text-teal-500">
+						changePassword
 						</a>
 					</div>
 					<div className="md:hidden">
@@ -63,7 +66,7 @@ const Navbar = () => {
 			{isMobileMenuOpen && (
 				<div className="md:hidden bg-gray-100 absolute w-full">
 					<div className="px-4 py-2 space-y-4">
-						<a href="#" className="block text-gray-800 hover:text-teal-500">
+						<a href="home" className="block text-gray-800 hover:text-teal-500">
 							Home
 						</a>
 						<a href="#" className="block text-gray-800 hover:text-teal-500">

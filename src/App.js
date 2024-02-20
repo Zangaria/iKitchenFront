@@ -8,6 +8,8 @@ import Login from './pages/Login';
 import ActivateUser from './components/ActivateUser';
 import ChangePassword from './pages/ChangePassword';
 import Navbar from './components/Navbar';
+import Home from './pages/home';
+import Page404 from './pages/page404';
 
 const App = () => {
 	return (
@@ -16,13 +18,13 @@ const App = () => {
 			<BrowserRouter>
 				<Routes>
 					<Route>
-						<Route path="ForgotPassword" element={<ForgotPassword />} />
-						<Route path="Register" element={<Register />} />
-						<Route path="Login" element={<Login />} />
+						<Route path="/" element={<Home />} />
+						<Route path="register" element={<Register />} />
 						<Route path="activeUser" element={<ActivateUser />} />
 						<Route path="login" element={<Login />} />
-						<Route path="forgotPassword" element={<ForgotPassword />} />
+						<Route path="ForgotPassword" element={<ForgotPassword />} />
 						<Route path="changePassword" element={<ChangePassword />} />
+						<Route path="/*" element={<Page404 />} />
 					</Route>
 				</Routes>
 			</BrowserRouter>
