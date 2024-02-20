@@ -13,7 +13,10 @@ const Navbar = () => {
 			<div className="max-w-7xl mx-auto px-4">
 				<div className="flex justify-between items-center py-1">
 					<div className="flex items-center">
-						<a href="https://flowbite.com/" className="flex items-center space-x-3">
+						<a
+						//  href="https://flowbite.com/"
+						 href="/"
+						  className="flex items-center space-x-3">
 							<img src={websiteLogo} className="h-16" alt="Flowbite Logo" />
 						</a>
 					</div>
