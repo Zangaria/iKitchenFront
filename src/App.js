@@ -8,8 +8,8 @@ import Login from './pages/Login';
 import ActivateUser from './components/ActivateUser';
 import ChangePassword from './pages/ChangePassword';
 import Navbar from './components/Navbar';
-import Home from './pages/home';
-import Page404 from './pages/page404';
+import Home from './pages/Home';
+import Page404 from './pages/Page404';
 
 const App = () => {
 	return (
