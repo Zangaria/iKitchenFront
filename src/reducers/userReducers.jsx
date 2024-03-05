@@ -14,16 +14,16 @@ import {
 	USER_CHANGE_PASSWORD_FAIL
 } from '../constants/userConstants';
 
-export const userRegisterReducer = (state = {}, action) => {
+export const userRegisterReducer = (state = { }, action) => {
 	const { type, payload } = action;
 
 	switch (type) {
 		case USER_REGISTER_REQUEST:
 			return { loading: true };
 		case USER_REGISTER_SUCCESS:
-			return { loading: false, userInfo: action.payload };
-		case USER_REGISTER_FAIL:
 			console.log(action.payload);
+			return { loading: false, data: action.payload };
+		case USER_REGISTER_FAIL:
 			return { loading: false, error: action.payload };
 		default:
 			return state;

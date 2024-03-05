@@ -15,7 +15,7 @@ export default function Register() {
 	const dispatch = useDispatch();
 
 	const userRegisterState = useSelector((state) => state.userRegister);
-	const { loading, error } = userRegisterState;
+	const { loading, error, data } = userRegisterState;
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -40,6 +40,7 @@ export default function Register() {
 			password: user.password,
 			userName: user.name,
 		};
+		console.log(data);
 
 		dispatch(registerAction(userData));
 	};
@@ -115,7 +116,7 @@ export default function Register() {
 
 					{/* Link to login page */}
 					<div className="w-full mt-4 flex flex-col items-center justify-center">
-						{/* Other form elements */}
+
 
 						{/* Text and link in the middle */}
 						<p className="text-sm mt-2">
@@ -132,6 +133,7 @@ export default function Register() {
 					</div>
 
 					{error && <div className="text-red-500 text-center mt-4">{error}</div>}
+					 <div className="text-red-500 text-center mt-4">{data}</div>
 				</form>
 			</div>
 		</section>

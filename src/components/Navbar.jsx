@@ -14,9 +14,10 @@ const Navbar = () => {
 				<div className="flex justify-between items-center py-1">
 					<div className="flex items-center">
 						<a
-						//  href="https://flowbite.com/"
-						 href="/"
-						  className="flex items-center space-x-3">
+							//  href="https://flowbite.com/"
+							href="/"
+							className="flex items-center space-x-3"
+						>
 							<img src={websiteLogo} className="h-16" alt="Flowbite Logo" />
 						</a>
 					</div>
@@ -39,12 +40,6 @@ const Navbar = () => {
 						<a href="changePassword" className="text-gray-800 hover:text-teal-500">
 							changePassword
 						</a>
-						<a href="addRecipe" className="text-gray-800 hover:text-teal-500">
-							AddRecipe
-						</a>
-						<a href="addIngredient" className="text-gray-800 hover:text-teal-500">
-							AddIngredient
-						</a>
 					</div>
 					<div className="md:hidden">
 						<button
@@ -53,8 +48,9 @@ const Navbar = () => {
 							className="text-gray-800 focus:outline-none"
 						>
 							<svg
-								className={`w-6 h-6 transition-transform transform ${isMobileMenuOpen ? 'rotate-180' : ''
-									}`}
+								className={`w-6 h-6 transition-transform transform ${
+									isMobileMenuOpen ? 'rotate-180' : ''
+								}`}
 								fill="none"
 								stroke="currentColor"
 								viewBox="0 0 24 24"

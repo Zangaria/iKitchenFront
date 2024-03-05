@@ -29,17 +29,16 @@ export const registerAction = (userData) => async (dispatch) => {
 				'Content-Type': 'application/json',
 			},
 		};
-
+		console.log(`${process.env.REACT_APP_BASE_URL}/user/register`);
 		const { data } = await axios.post(
 			`${process.env.REACT_APP_BASE_URL}/user/register`,
 			userData,
 			config
 		);
-		console.log(data);
 
 		dispatch({
 			type: USER_REGISTER_SUCCESS,
-			payload: data,
+			payload: data.msg,
 		});
 
 		localStorage.setItem(data);
@@ -149,7 +148,7 @@ export const changePasswordAction = (currentPassword, newPassword, token) => asy
 		const config = {
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: token
+				Authorization: token,
 			},
 		};
 

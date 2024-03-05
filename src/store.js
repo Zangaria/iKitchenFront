@@ -7,8 +7,6 @@ import {
 	userForgotPasswordReducer,
 	userChangePasswordReducer,
 } from './reducers/userReducers';
-import { newIngredientReducer } from './reducers/ingredientReducers';
-import {createRecipeReducer } from './reducers/recipeReducers';
 
 // Create the Redux reducer
 const reducer = combineReducers({
@@ -16,8 +14,6 @@ const reducer = combineReducers({
 	userLogin: userLoginReducer,
 	userForgotPassword: userForgotPasswordReducer,
 	userChangePassword: userChangePasswordReducer,
-	newIngredient: newIngredientReducer,
-	createRecipe: createRecipeReducer,
 });
 
 // Fetch user info from localStorage if available
