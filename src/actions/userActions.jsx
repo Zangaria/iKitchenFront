@@ -40,7 +40,7 @@ export const registerAction = (userData) => async (dispatch) => {
 			type: USER_REGISTER_SUCCESS,
 			payload: data.msg,
 		});
-
+		console.log(data);
 		localStorage.setItem(data);
 	} catch (err) {
 		dispatch({

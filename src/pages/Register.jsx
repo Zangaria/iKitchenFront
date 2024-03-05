@@ -10,6 +10,7 @@ export default function Register() {
 		email: '',
 		password: '',
 		confirmPassword: '',
+		role: 'jobSeeker',
 	});
 	const [passwordsMatchError, setPasswordsMatchError] = useState('');
 	const dispatch = useDispatch();
@@ -39,8 +40,8 @@ export default function Register() {
 			email: user.email,
 			password: user.password,
 			userName: user.name,
+			role: user.role,
 		};
-		console.log(data);
 
 		dispatch(registerAction(userData));
 	};
@@ -97,6 +98,30 @@ export default function Register() {
 						required
 					/>
 
+					{/* Radio buttons for choosing role */}
+					<div className="flex items-center mb-6">
+						<label className="mr-2">
+							<input
+								type="radio"
+								name="role"
+								value="jobSeeker"
+								checked={user.role === 'jobSeeker'}
+								onChange={handleChange}
+							/>
+							Job Seeker
+						</label>
+						<label>
+							<input
+								type="radio"
+								name="role"
+								value="jobFinder"
+								checked={user.role === 'jobFinder'}
+								onChange={handleChange}
+							/>
+							Job Finder
+						</label>
+					</div>
+
 					{/* Error message for password mismatch */}
 					{passwordsMatchError && (
 						<p className="text-red-500 text-sm mb-4">{passwordsMatchError}</p>
@@ -107,17 +132,11 @@ export default function Register() {
 						className="w-full mt-4 text-white bg-teal-500 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-500 dark:focus:ring-teal-300 hover:bg-teal-600 hover:ring-teal-400"
 						disabled={loading} // Disable the button when loading
 					>
-						{loading ? (
-							<ClipLoader color="#ffffff" loading={loading} size={20} />
-						) : (
-							'Go'
-						)}
+						{loading ? <ClipLoader color="#ffffff" loading={loading} size={20} /> : 'Go'}
 					</button>
 
 					{/* Link to login page */}
 					<div className="w-full mt-4 flex flex-col items-center justify-center">
-
-
 						{/* Text and link in the middle */}
 						<p className="text-sm mt-2">
 							Have already an account?{' '}
@@ -133,7 +152,7 @@ export default function Register() {
 					</div>
 
 					{error && <div className="text-red-500 text-center mt-4">{error}</div>}
-					 <div className="text-red-500 text-center mt-4">{data}</div>
+					<div className="text-red-500 text-center mt-4">{data}</div>
 				</form>
 			</div>
 		</section>
