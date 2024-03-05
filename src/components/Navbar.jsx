@@ -70,16 +70,16 @@ const Navbar = () => {
 			{isMobileMenuOpen && (
 				<div className="md:hidden bg-gray-100 absolute w-full">
 					<div className="px-4 py-2 space-y-4">
-						<a href="home" className="block text-gray-800 hover:text-teal-500">
+						<a href="/" className="block text-gray-800 hover:text-teal-500">
 							Home
 						</a>
-						<a href="#" className="block text-gray-800 hover:text-teal-500">
+						<a href="/" className="block text-gray-800 hover:text-teal-500">
 							About
 						</a>
-						<a href="#" className="block text-gray-800 hover:text-teal-500">
+						<a href="/" className="block text-gray-800 hover:text-teal-500">
 							Services
 						</a>
-						<a href="#" className="block text-gray-800 hover:text-teal-500">
+						<a href="/" className="block text-gray-800 hover:text-teal-500">
 							Pricing
 						</a>
 						<a href="#" className="block text-gray-800 hover:text-teal-500">
