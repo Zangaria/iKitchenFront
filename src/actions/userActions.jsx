@@ -41,8 +41,9 @@ export const registerAction = (userData) => async (dispatch) => {
 			payload: data.msg,
 		});
 		console.log(data);
-		localStorage.setItem(data);
+		// localStorage.setItem(data);
 	} catch (err) {
+		console.log(err.response.data);
 		dispatch({
 			type: USER_REGISTER_FAIL,
 			payload: err.response && err.response.data.msg ? err.response.data.msg : err.msg,

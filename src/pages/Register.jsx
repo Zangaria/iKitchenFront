@@ -11,6 +11,8 @@ export default function Register() {
 		password: '',
 		confirmPassword: '',
 		role: 'jobSeeker',
+		jobType: '', // New field for job type
+		location: '', // New field for location
 	});
 	const [passwordsMatchError, setPasswordsMatchError] = useState('');
 	const dispatch = useDispatch();
@@ -41,6 +43,8 @@ export default function Register() {
 			password: user.password,
 			userName: user.name,
 			role: user.role,
+			jobType: user.jobType, // Include jobType in userData
+			location: user.location, // Include location in userData
 		};
 
 		dispatch(registerAction(userData));
@@ -121,6 +125,35 @@ export default function Register() {
 							Job Finder
 						</label>
 					</div>
+
+					{/* Additional inputs for jobFinder */}
+					{user.role === 'jobFinder' && (
+						<>
+							<div className="mb-6">
+								<label htmlFor="jobType">Select Job Type:</label>
+								<select
+									id="jobType"
+									name="jobType"
+									value={user.jobType}
+									onChange={handleChange}
+									className="w-full py-2 px-4 border-b border-gray-300 focus:outline-none focus:border-teal-500 dark:border-neutral-600 dark:focus:border-teal-300"
+								>
+									<option value="">Select Job Type</option>
+									<option value="computers">Computers</option>
+									<option value="teacher">Teacher</option>
+								</select>
+							</div>
+							<input
+								type="text"
+								placeholder="Location"
+								name="location"
+								value={user.location}
+								onChange={handleChange}
+								className="w-full py-2 px-4 mb-6 border-b border-gray-300 focus:outline-none focus:border-teal-500 dark:border-neutral-600 dark:focus:border-teal-300"
+								required
+							/>
+						</>
+					)}
 
 					{/* Error message for password mismatch */}
 					{passwordsMatchError && (
