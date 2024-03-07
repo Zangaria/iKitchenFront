@@ -11,10 +11,10 @@ import {
 	USER_FORGOT_PASSWORD_FAIL,
 	USER_CHANGE_PASSWORD_REQUEST,
 	USER_CHANGE_PASSWORD_SUCCESS,
-	USER_CHANGE_PASSWORD_FAIL
+	USER_CHANGE_PASSWORD_FAIL,
 } from '../constants/userConstants';
 
-export const userRegisterReducer = (state = { }, action) => {
+export const userRegisterReducer = (state = {}, action) => {
 	const { type, payload } = action;
 
 	switch (type) {
@@ -37,8 +37,8 @@ export const userLoginReducer = (state = {}, action) => {
 		case USER_LOGIN_REQUEST:
 			return { loading: true };
 		case USER_LOGIN_SUCCESS:
-			console.log(action.payload);
-			return { loading: false, userInfo: action.payload };
+			console.log(action.payload, 'ojnjonij');
+			return { loading: false, userInfo: action.payload, isAuthenticated: true };
 		case USER_LOGIN_FAIL:
 			console.log(payload);
 			return { loading: false, error: action.payload };
@@ -57,10 +57,10 @@ export const userForgotPasswordReducer = (state = {}, action) => {
 			return { loading: true };
 		case USER_FORGOT_PASSWORD_SUCCESS:
 			console.log(action.payload);
-			return { loading: false };
+			return { loading: false, error: action.payload.msg };
 		case USER_FORGOT_PASSWORD_FAIL:
 			console.log(payload);
-			return { loading: false };
+			return { loading: false, error: payload };
 		case USER_LOGOUT:
 			return {};
 		default:

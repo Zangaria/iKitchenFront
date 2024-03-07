@@ -69,13 +69,20 @@ export const loginAction = (userData) => async (dispatch) => {
 			config
 		);
 
-		dispatch({
-			type: USER_LOGIN_SUCCESS,
-			payload: data,
-		});
+		if (data.err) {
+			dispatch({
+				type: USER_LOGIN_FAIL,
+				payload: data.msg,
+			});
+		} else {
+			dispatch({
+				type: USER_LOGIN_SUCCESS,
+				payload: data,
+			});
 
-		localStorage.setItem('token', data.token);
-		localStorage.setItem('userName', data.userName);
+			localStorage.setItem('token', data.token);
+			localStorage.setItem('userName', data.userName);
+		}
 	} catch (err) {
 		dispatch({
 			type: USER_LOGIN_FAIL,
@@ -102,12 +109,18 @@ export const forgotPasswordAction = (email) => async (dispatch) => {
 			{ email },
 			config
 		);
-
+		if (data.err) {
+			dispatch({
+				type: USER_FORGOT_PASSWORD_FAIL,
+				payload: data.err,
+			});
+		}
 		dispatch({
 			type: USER_FORGOT_PASSWORD_SUCCESS,
 			payload: data,
 		});
 	} catch (err) {
+		console.log(err.response.data);
 		dispatch({
 			type: USER_FORGOT_PASSWORD_FAIL,
 			payload: err.response && err.response.data.message ? err.response.data.message : err.message,
@@ -170,3 +183,34 @@ export const changePasswordAction = (currentPassword, newPassword, token) => asy
 		});
 	}
 };
+
+// export const loginUser = async (data) => {
+// 	try {
+// 	  const { email, password } = data;
+
+// 	  // Find the user with the provided email
+// 	  const user = await User.findOne({ email });
+
+// 	  if (!user) {
+// 		return { status: 404, err: true, msg: "User not found" };
+// 	  }
+
+// 	  // Check the password (replace this with your actual password validation logic)
+// 	  const comparPassword = compareUserPassword(password, user.password);
+// 	  if (!comparPassword) {
+// 		return { status: 400, err: true, msg: "Invalid password" };
+// 	  }
+
+// 	  // Check if the user is active
+// 	  if (!user.active) {
+// 		return { status: 400, err: true, msg: "User is not active. Please activate your account." };
+// 	  }
+
+// 	  // Generate a token for the authenticated user
+// 	  const token = generateToken(user);
+
+// 	  return { status: 200, err: false, msg: "Login successful", token, username: user.userName };
+// 	} catch (error) {
+// 	  return { status: 500, err: true, msg: error.message };
+// 	}
+//   };

@@ -11,8 +11,8 @@ export default function Register() {
 		password: '',
 		confirmPassword: '',
 		role: 'jobSeeker',
-		jobType: '', // New field for job type
-		location: '', // New field for location
+		jobType: '',
+		location: '',
 	});
 	const [passwordsMatchError, setPasswordsMatchError] = useState('');
 	const dispatch = useDispatch();
@@ -42,9 +42,9 @@ export default function Register() {
 			email: user.email,
 			password: user.password,
 			userName: user.name,
-			role: user.role,
-			jobType: user.jobType, // Include jobType in userData
-			location: user.location, // Include location in userData
+			// role: user.role,
+			// jobType: user.jobType,
+			// location: user.location,
 		};
 
 		dispatch(registerAction(userData));
@@ -112,7 +112,7 @@ export default function Register() {
 								checked={user.role === 'jobSeeker'}
 								onChange={handleChange}
 							/>
-							Job Seeker
+							I am employee
 						</label>
 						<label>
 							<input
@@ -122,7 +122,7 @@ export default function Register() {
 								checked={user.role === 'jobFinder'}
 								onChange={handleChange}
 							/>
-							Job Finder
+							I am a job finder
 						</label>
 					</div>
 
@@ -184,8 +184,8 @@ export default function Register() {
 						{/* Other form elements */}
 					</div>
 
-					{error && <div className="text-red-500 text-center mt-4">{error}</div>}
-					<div className="text-red-500 text-center mt-4">{data}</div>
+					{error && <div className="text-red-500 bg-red-700 text-center mt-4">{error}</div>}
+					{data && <div className="text-green-500 text-center mt-4">{data}</div>}
 				</form>
 			</div>
 		</section>
