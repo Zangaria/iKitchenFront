@@ -40,6 +40,12 @@ const Navbar = () => {
 						<a href="changePassword" className="text-gray-800 hover:text-teal-500">
 							changePassword
 						</a>
+						<a href="createEnterprise" className="text-gray-800 hover:text-teal-500">
+							createEnterprise
+						</a>
+						<a href="createJob" className="text-gray-800 hover:text-teal-500">
+							createJob
+						</a>
 					</div>
 					<div className="md:hidden">
 						<button

@@ -1,18 +1,18 @@
 import axios from 'axios';
-import { createSlice } from '@reduxjs/toolkit';
 import {
 	enterpriseCreateRequest,
 	enterpriseCreateSuccess,
 	enterpriseCreateFail,
 } from '../reducers/enterpriseReducers';
 
-export const createEnterprise = (formData) => async (dispatch) => {
+export const createEnterprise = (formData, token) => async (dispatch) => {
 	try {
 		dispatch(enterpriseCreateRequest());
 
 		const config = {
 			headers: {
 				'Content-Type': 'application/json',
+				Authorization: token,
 			},
 		};
 

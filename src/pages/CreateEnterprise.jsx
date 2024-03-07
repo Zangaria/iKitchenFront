@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { loginAction } from '../actions/userActions';
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { createEnterprise } from '../actions/enterpriseActions';
 
 const CreateEnterprise = () => {
 	const [formData, setFormData] = useState({
@@ -16,9 +15,6 @@ const CreateEnterprise = () => {
 	});
 
 	const dispatch = useDispatch();
-
-	const userLoginState = useSelector((state) => state.userLogin);
-	const { loading, error, isAuthenticated } = userLoginState;
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -37,16 +33,22 @@ const CreateEnterprise = () => {
 		<div>
 			<h2>Create Enterprise</h2>
 			<form onSubmit={handleSubmit}>
+				{/* Name Input */}
 				<label>
 					Name:
-					<input type="text" name="name" value={formData.name} onChange={handleChange} required />
+					<input type="text" name="name" value={formData.name} onChange={handleChange} />
 				</label>
+				<br />
+				{/* BN Number Input */}
 				<label>
 					BN Number:
 					<input type="text" name="bnNumber" value={formData.bnNumber} onChange={handleChange} />
 				</label>
-				{/* Add other form fields for enterprise information */}
-				<button type="submit">Create Enterprise</button>
+				<br />
+				{/* Other inputs go here... */}
+				<button type="submit" className=" bg-green-500">
+					Create Enterprise
+				</button>
 			</form>
 		</div>
 	);

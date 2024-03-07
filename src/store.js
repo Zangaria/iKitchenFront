@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from './reducers/userReducers';
 import enterpriseReducer from './reducers/enterpriseReducers';
-
+import jobReducer from './reducers/jobReducers';
 // Fetch user info from localStorage if available
 const userInfoFromStorage = localStorage.getItem('userInfo')
 	? JSON.parse(localStorage.getItem('userInfo'))
@@ -11,6 +11,7 @@ const store = configureStore({
 	reducer: {
 		user: userReducer,
 		enterprise: enterpriseReducer,
+		job: jobReducer,
 	},
 	preloadedState: {
 		user: {
