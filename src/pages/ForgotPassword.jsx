@@ -13,7 +13,7 @@ export default function ForgotPassword() {
 
 	const dispatch = useDispatch();
 
-	const userForgotPasswordState = useSelector((state) => state.userForgotPassword);
+	const userForgotPasswordState = useSelector((state) => state.user);
 	const { loading, data, error } = userForgotPasswordState;
 
 	const handleEmailChange = (e) => {

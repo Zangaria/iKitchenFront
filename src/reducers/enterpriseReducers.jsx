@@ -1,9 +1,4 @@
-// enterpriseReducers.jsx
-import {
-	ENTERPRISE_CREATE_REQUEST,
-	ENTERPRISE_CREATE_SUCCESS,
-	ENTERPRISE_CREATE_FAIL,
-} from '../constants/enterpriseConstants';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
 	loading: false,
@@ -11,18 +6,26 @@ const initialState = {
 	enterprise: null,
 };
 
-export const enterpriseReducer = (state = initialState, action) => {
-	switch (action.type) {
-		case ENTERPRISE_CREATE_REQUEST:
-			return { ...state, loading: true };
+export const enterpriseSlice = createSlice({
+	name: 'enterprise',
+	initialState,
+	reducers: {
+		enterpriseCreateRequest: (state) => {
+			state.loading = true;
+		},
+		enterpriseCreateSuccess: (state, action) => {
+			state.loading = false;
+			state.enterprise = action.payload;
+			state.error = null;
+		},
+		enterpriseCreateFail: (state, action) => {
+			state.loading = false;
+			state.error = action.payload;
+		},
+	},
+});
 
-		case ENTERPRISE_CREATE_SUCCESS:
-			return { ...state, loading: false, enterprise: action.payload, error: null };
+export const { enterpriseCreateRequest, enterpriseCreateSuccess, enterpriseCreateFail } =
+	enterpriseSlice.actions;
 
-		case ENTERPRISE_CREATE_FAIL:
-			return { ...state, loading: false, error: action.payload };
-
-		default:
-			return state;
-	}
-};
+export default enterpriseSlice.reducer;

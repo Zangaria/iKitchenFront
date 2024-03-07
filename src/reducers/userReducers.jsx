@@ -1,88 +1,81 @@
-import {
-	USER_LOGIN_REQUEST,
-	USER_LOGIN_SUCCESS,
-	USER_LOGOUT,
-	USER_LOGIN_FAIL,
-	USER_REGISTER_REQUEST,
-	USER_REGISTER_SUCCESS,
-	USER_REGISTER_FAIL,
-	USER_FORGOT_PASSWORD_REQUEST,
-	USER_FORGOT_PASSWORD_SUCCESS,
-	USER_FORGOT_PASSWORD_FAIL,
-	USER_CHANGE_PASSWORD_REQUEST,
-	USER_CHANGE_PASSWORD_SUCCESS,
-	USER_CHANGE_PASSWORD_FAIL,
-} from '../constants/userConstants';
+import { createSlice } from '@reduxjs/toolkit';
 
-export const userRegisterReducer = (state = {}, action) => {
-	const { type, payload } = action;
-
-	switch (type) {
-		case USER_REGISTER_REQUEST:
-			return { loading: true };
-		case USER_REGISTER_SUCCESS:
-			console.log(action.payload);
-			return { loading: false, data: action.payload };
-		case USER_REGISTER_FAIL:
-			return { loading: false, error: action.payload };
-		default:
-			return state;
-	}
+const initialState = {
+	loading: false,
+	userInfo: null,
+	isAuthenticated: false,
+	error: null,
 };
 
-export const userLoginReducer = (state = {}, action) => {
-	const { type, payload } = action;
+export const userSlice = createSlice({
+	name: 'user',
+	initialState,
+	reducers: {
+		userRegisterRequest: (state) => {
+			state.loading = true;
+		},
+		userRegisterSuccess: (state, action) => {
+			state.loading = false;
+			state.data = action.payload;
+		},
+		userRegisterFail: (state, action) => {
+			state.loading = false;
+			state.error = action.payload;
+		},
+		userLoginRequest: (state) => {
+			state.loading = true;
+		},
+		userLoginSuccess: (state, action) => {
+			console.log('kmm');
+			state.loading = false;
+			state.userInfo = action.payload;
+			state.isAuthenticated = true;
+		},
+		userLoginFail: (state, action) => {
+			console.log('done ');
+			state.loading = false;
+			state.error = action.payload;
+		},
+		userLogout: (state) => {
+			state = {};
+		},
+		userForgotPasswordRequest: (state) => {
+			state.loading = true;
+		},
+		userForgotPasswordSuccess: (state, action) => {
+			state.loading = false;
+			state.error = action.payload.msg;
+		},
+		userForgotPasswordFail: (state, action) => {
+			state.loading = false;
+			state.error = action.payload;
+		},
+		userChangePasswordRequest: (state) => {
+			state.loading = true;
+		},
+		userChangePasswordSuccess: (state) => {
+			state.loading = false;
+		},
+		userChangePasswordFail: (state) => {
+			state.loading = false;
+		},
+	},
+});
 
-	switch (type) {
-		case USER_LOGIN_REQUEST:
-			return { loading: true };
-		case USER_LOGIN_SUCCESS:
-			console.log(action.payload, 'ojnjonij');
-			return { loading: false, userInfo: action.payload, isAuthenticated: true };
-		case USER_LOGIN_FAIL:
-			console.log(payload);
-			return { loading: false, error: action.payload };
-		case USER_LOGOUT:
-			return {};
-		default:
-			return state;
-	}
-};
+export const {
+	userRegisterRequest,
+	userRegisterSuccess,
+	userRegisterFail,
+	userLoginRequest,
+	userLoginSuccess,
+	userLoginFail,
+	userLogout,
+	userForgotPasswordRequest,
+	userForgotPasswordSuccess,
+	userForgotPasswordFail,
+	userChangePasswordRequest,
+	userChangePasswordSuccess,
+	userChangePasswordFail,
+} = userSlice.actions;
 
-export const userForgotPasswordReducer = (state = {}, action) => {
-	const { type, payload } = action;
-
-	switch (type) {
-		case USER_FORGOT_PASSWORD_REQUEST:
-			return { loading: true };
-		case USER_FORGOT_PASSWORD_SUCCESS:
-			console.log(action.payload);
-			return { loading: false, error: action.payload.msg };
-		case USER_FORGOT_PASSWORD_FAIL:
-			console.log(payload);
-			return { loading: false, error: payload };
-		case USER_LOGOUT:
-			return {};
-		default:
-			return state;
-	}
-};
-
-export const userChangePasswordReducer = (state = {}, action) => {
-	const { type, payload } = action;
-
-	switch (type) {
-		case USER_CHANGE_PASSWORD_REQUEST:
-			return { loading: true };
-		case USER_CHANGE_PASSWORD_SUCCESS:
-			console.log(payload);
-			return { loading: false };
-		case USER_CHANGE_PASSWORD_FAIL:
-			console.log(payload);
-			return { loading: false };
-		case USER_LOGOUT:
-			return {};
-		default:
-			return state;
-	}
-};
+export default userSlice.reducer;

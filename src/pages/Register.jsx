@@ -17,7 +17,7 @@ export default function Register() {
 	const [passwordsMatchError, setPasswordsMatchError] = useState('');
 	const dispatch = useDispatch();
 
-	const userRegisterState = useSelector((state) => state.userRegister);
+	const userRegisterState = useSelector((state) => state.user);
 	const { loading, error, data } = userRegisterState;
 
 	const handleChange = (e) => {

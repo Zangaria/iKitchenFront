@@ -9,18 +9,18 @@ export default function Login() {
 		password: '',
 	});
 
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
+	const userLoginState = useSelector((state) => state.user);
+	const { loading, error, isAuthenticated } = userLoginState;
+
 	useEffect(() => {
 		// Redirect to home page if user is authenticated
 		if (isAuthenticated) {
 			navigate('/');
 		}
-	}, [isAuthenticated]);
-
-	const dispatch = useDispatch();
-	const navigate = useNavigate();
-
-	const userLoginState = useSelector((state) => state.userLogin);
-	const { loading, error, isAuthenticated } = userLoginState;
+	}, [isAuthenticated, navigate]);
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;

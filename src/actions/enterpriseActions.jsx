@@ -1,14 +1,14 @@
-// enterpriseActions.jsx
 import axios from 'axios';
+import { createSlice } from '@reduxjs/toolkit';
 import {
-	ENTERPRISE_CREATE_REQUEST,
-	ENTERPRISE_CREATE_SUCCESS,
-	ENTERPRISE_CREATE_FAIL,
-} from '../constants/enterpriseConstants';
+	enterpriseCreateRequest,
+	enterpriseCreateSuccess,
+	enterpriseCreateFail,
+} from '../reducers/enterpriseReducers';
 
 export const createEnterprise = (formData) => async (dispatch) => {
 	try {
-		dispatch({ type: ENTERPRISE_CREATE_REQUEST });
+		dispatch(enterpriseCreateRequest());
 
 		const config = {
 			headers: {
@@ -22,12 +22,12 @@ export const createEnterprise = (formData) => async (dispatch) => {
 			config
 		);
 
-		dispatch({ type: ENTERPRISE_CREATE_SUCCESS, payload: data });
+		dispatch(enterpriseCreateSuccess(data));
 	} catch (error) {
-		dispatch({
-			type: ENTERPRISE_CREATE_FAIL,
-			payload:
-				error.response && error.response.data.message ? error.response.data.message : error.message,
-		});
+		dispatch(
+			enterpriseCreateFail(
+				error.response && error.response.data.message ? error.response.data.message : error.message
+			)
+		);
 	}
 };

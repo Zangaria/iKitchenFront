@@ -17,7 +17,7 @@ export default function ChangePassword() {
 	const dispatch = useDispatch();
 	const navigate = useNavigate(); // Initialize useNavigate
 
-	const userChangePasswordState = useSelector((state) => state.userChangePassword);
+	const userChangePasswordState = useSelector((state) => state.user);
 	const { loading, error } = userChangePasswordState;
 
 	const isPasswordValid = (password) => {
