@@ -1,37 +1,23 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { combineReducers } from 'redux';
-import { thunk } from 'redux-thunk';
-import {
-	userRegisterReducer,
-	userLoginReducer,
-	userForgotPasswordReducer,
-	userChangePasswordReducer,
-} from './reducers/userReducers';
-
-// Create the Redux reducer
-const reducer = combineReducers({
-	userRegister: userRegisterReducer,
-	userLogin: userLoginReducer,
-	userForgotPassword: userForgotPasswordReducer,
-	userChangePassword: userChangePasswordReducer,
-});
-
+import userReducer from './reducers/userReducers';
+import enterpriseReducer from './reducers/enterpriseReducers';
+import jobReducer from './reducers/jobReducers';
 // Fetch user info from localStorage if available
-let userInfoFromStorage = localStorage.getItem('userInfo');
-if (userInfoFromStorage) {
-	userInfoFromStorage = userInfoFromStorage;
-} else {
-	userInfoFromStorage = null;
-}
-
-const initialState = {
-	userLogin: { userInfoFromStorage },
-};
+const userInfoFromStorage = localStorage.getItem('userInfo')
+	? JSON.parse(localStorage.getItem('userInfo'))
+	: {};
 
 const store = configureStore({
-	reducer,
-	preloadedState: initialState,
-	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
+	reducer: {
+		user: userReducer,
+		enterprise: enterpriseReducer,
+		job: jobReducer,
+	},
+	preloadedState: {
+		user: {
+			userInfo: userInfoFromStorage,
+		},
+	},
 });
 
 export default store;

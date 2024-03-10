@@ -10,11 +10,14 @@ export default function Register() {
 		email: '',
 		password: '',
 		confirmPassword: '',
+		role: 'jobSeeker',
+		jobType: '',
+		location: '',
 	});
 	const [passwordsMatchError, setPasswordsMatchError] = useState('');
 	const dispatch = useDispatch();
 
-	const userRegisterState = useSelector((state) => state.userRegister);
+	const userRegisterState = useSelector((state) => state.user);
 	const { loading, error, data } = userRegisterState;
 
 	const handleChange = (e) => {
@@ -39,8 +42,10 @@ export default function Register() {
 			email: user.email,
 			password: user.password,
 			userName: user.name,
+			// role: user.role,
+			// jobType: user.jobType,
+			// location: user.location,
 		};
-		console.log(data);
 
 		dispatch(registerAction(userData));
 	};
@@ -97,6 +102,59 @@ export default function Register() {
 						required
 					/>
 
+					{/* Radio buttons for choosing role */}
+					<div className="flex items-center mb-6">
+						<label className="mr-2">
+							<input
+								type="radio"
+								name="role"
+								value="jobSeeker"
+								checked={user.role === 'jobSeeker'}
+								onChange={handleChange}
+							/>
+							I am employee
+						</label>
+						<label>
+							<input
+								type="radio"
+								name="role"
+								value="jobFinder"
+								checked={user.role === 'jobFinder'}
+								onChange={handleChange}
+							/>
+							I am a job finder
+						</label>
+					</div>
+
+					{/* Additional inputs for jobFinder */}
+					{user.role === 'jobFinder' && (
+						<>
+							<div className="mb-6">
+								<label htmlFor="jobType">Select Job Type:</label>
+								<select
+									id="jobType"
+									name="jobType"
+									value={user.jobType}
+									onChange={handleChange}
+									className="w-full py-2 px-4 border-b border-gray-300 focus:outline-none focus:border-teal-500 dark:border-neutral-600 dark:focus:border-teal-300"
+								>
+									<option value="">Select Job Type</option>
+									<option value="computers">Computers</option>
+									<option value="teacher">Teacher</option>
+								</select>
+							</div>
+							<input
+								type="text"
+								placeholder="Location"
+								name="location"
+								value={user.location}
+								onChange={handleChange}
+								className="w-full py-2 px-4 mb-6 border-b border-gray-300 focus:outline-none focus:border-teal-500 dark:border-neutral-600 dark:focus:border-teal-300"
+								required
+							/>
+						</>
+					)}
+
 					{/* Error message for password mismatch */}
 					{passwordsMatchError && (
 						<p className="text-red-500 text-sm mb-4">{passwordsMatchError}</p>
@@ -107,17 +165,11 @@ export default function Register() {
 						className="w-full mt-4 text-white bg-teal-500 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-500 dark:focus:ring-teal-300 hover:bg-teal-600 hover:ring-teal-400"
 						disabled={loading} // Disable the button when loading
 					>
-						{loading ? (
-							<ClipLoader color="#ffffff" loading={loading} size={20} />
-						) : (
-							'Go'
-						)}
+						{loading ? <ClipLoader color="#ffffff" loading={loading} size={20} /> : 'Go'}
 					</button>
 
 					{/* Link to login page */}
 					<div className="w-full mt-4 flex flex-col items-center justify-center">
-
-
 						{/* Text and link in the middle */}
 						<p className="text-sm mt-2">
 							Have already an account?{' '}
@@ -132,8 +184,8 @@ export default function Register() {
 						{/* Other form elements */}
 					</div>
 
-					{error && <div className="text-red-500 text-center mt-4">{error}</div>}
-					 <div className="text-red-500 text-center mt-4">{data}</div>
+					{error && <div className="text-red-500 bg-red-700 text-center mt-4">{error}</div>}
+					{data && <div className="text-green-500 text-center mt-4">{data}</div>}
 				</form>
 			</div>
 		</section>

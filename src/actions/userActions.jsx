@@ -1,60 +1,35 @@
+import { createSlice, createAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import {
-	USER_LOGIN_REQUEST,
-	USER_LOGIN_SUCCESS,
-	USER_LOGIN_FAIL,
-	USER_LOGOUT,
-	USER_REGISTER_REQUEST,
-	USER_REGISTER_SUCCESS,
-	USER_REGISTER_FAIL,
-	USER_FORGOT_PASSWORD_REQUEST,
-	USER_FORGOT_PASSWORD_SUCCESS,
-	USER_FORGOT_PASSWORD_FAIL,
-	ACTIVATE_USER_REQUEST,
-	ACTIVATE_USER_SUCCESS,
-	ACTIVATE_USER_FAIL,
-	USER_CHANGE_PASSWORD_REQUEST,
-	USER_CHANGE_PASSWORD_SUCCESS,
-	USER_CHANGE_PASSWORD_FAIL,
-} from '../constants/userConstants';
 
+// Action creator for user registration
 export const registerAction = (userData) => async (dispatch) => {
 	try {
-		dispatch({
-			type: USER_REGISTER_REQUEST,
-		});
+		dispatch(userRegisterRequest());
 
 		const config = {
 			headers: {
 				'Content-Type': 'application/json',
 			},
 		};
-		console.log(`${process.env.REACT_APP_BASE_URL}/user/register`);
+
 		const { data } = await axios.post(
 			`${process.env.REACT_APP_BASE_URL}/user/register`,
 			userData,
 			config
 		);
 
-		dispatch({
-			type: USER_REGISTER_SUCCESS,
-			payload: data.msg,
-		});
-
-		localStorage.setItem(data);
+		dispatch(userRegisterSuccess(data.msg));
 	} catch (err) {
-		dispatch({
-			type: USER_REGISTER_FAIL,
-			payload: err.response && err.response.data.msg ? err.response.data.msg : err.msg,
-		});
+		dispatch(
+			userRegisterFail(err.response && err.response.data.msg ? err.response.data.msg : err.message)
+		);
 	}
 };
 
+// Action creator for user login
 export const loginAction = (userData) => async (dispatch) => {
 	try {
-		dispatch({
-			type: USER_LOGIN_REQUEST,
-		});
+		dispatch(userLoginRequest());
 
 		const config = {
 			headers: {
@@ -68,27 +43,25 @@ export const loginAction = (userData) => async (dispatch) => {
 			config
 		);
 
-		dispatch({
-			type: USER_LOGIN_SUCCESS,
-			payload: data,
-		});
+		if (data.err) {
+			dispatch(userLoginFail(data.msg));
+		} else {
+			dispatch(userLoginSuccess(data));
 
-		localStorage.setItem('token', data.token);
-		localStorage.setItem('userName', data.userName);
+			localStorage.setItem('token', data.token);
+			localStorage.setItem('userName', data.userName);
+		}
 	} catch (err) {
-		dispatch({
-			type: USER_LOGIN_FAIL,
-			payload: err.response && err.response.data.msg ? err.response.data.msg : err.msg,
-		});
+		dispatch(
+			userLoginFail(err.response && err.response.data.msg ? err.response.data.msg : err.message)
+		);
 	}
 };
 
 // Action creator for user forgot password
 export const forgotPasswordAction = (email) => async (dispatch) => {
 	try {
-		dispatch({
-			type: USER_FORGOT_PASSWORD_REQUEST,
-		});
+		dispatch(userForgotPasswordRequest());
 
 		const config = {
 			headers: {
@@ -102,48 +75,40 @@ export const forgotPasswordAction = (email) => async (dispatch) => {
 			config
 		);
 
-		dispatch({
-			type: USER_FORGOT_PASSWORD_SUCCESS,
-			payload: data,
-		});
+		if (data.err) {
+			dispatch(userForgotPasswordFail(data.err));
+		} else {
+			dispatch(userForgotPasswordSuccess(data));
+		}
 	} catch (err) {
-		dispatch({
-			type: USER_FORGOT_PASSWORD_FAIL,
-			payload: err.response && err.response.data.message ? err.response.data.message : err.message,
-		});
+		dispatch(
+			userForgotPasswordFail(
+				err.response && err.response.data.message ? err.response.data.message : err.message
+			)
+		);
 	}
 };
 
+// Action creator for activating user account
 export const activateUserAction = (userid) => async (dispatch) => {
 	try {
-		dispatch({
-			type: ACTIVATE_USER_REQUEST,
-		});
-		console.log(`${process.env.REACT_APP_BASE_URL}/user/activeUser?userid=${userid}`);
-		// Make an API call to activate the user and get the token
+		dispatch(activateUserRequest());
+
 		const { data } = await axios.post(
 			`${process.env.REACT_APP_BASE_URL}/user/activeUser?userid=${userid}`
 		);
-		console.log(data);
+
 		localStorage.setItem('token', data.token);
-		dispatch({
-			type: ACTIVATE_USER_SUCCESS,
-			payload: data.token,
-		});
+		dispatch(activateUserSuccess(data.token));
 	} catch (err) {
-		console.log(err.response.data.msg);
-		dispatch({
-			type: ACTIVATE_USER_FAIL,
-			payload: err.response.data.msg,
-		});
+		dispatch(activateUserFail(err.response.data.msg));
 	}
 };
 
+// Action creator for changing user password
 export const changePasswordAction = (currentPassword, newPassword, token) => async (dispatch) => {
 	try {
-		dispatch({
-			type: USER_CHANGE_PASSWORD_REQUEST,
-		});
+		dispatch(userChangePasswordRequest());
 
 		const config = {
 			headers: {
@@ -158,14 +123,33 @@ export const changePasswordAction = (currentPassword, newPassword, token) => asy
 			config
 		);
 
-		dispatch({
-			type: USER_CHANGE_PASSWORD_SUCCESS,
-			payload: data,
-		});
+		dispatch(userChangePasswordSuccess(data));
 	} catch (err) {
-		dispatch({
-			type: USER_CHANGE_PASSWORD_FAIL,
-			payload: err.response && err.response.data.message ? err.response.data.message : err.message,
-		});
+		dispatch(
+			userChangePasswordFail(
+				err.response && err.response.data.message ? err.response.data.message : err.message
+			)
+		);
 	}
 };
+
+// Create action creators using createAction
+const userRegisterRequest = createAction('user/userRegisterRequest');
+const userRegisterSuccess = createAction('user/userRegisterSuccess');
+const userRegisterFail = createAction('user/userRegisterFail');
+
+const userLoginRequest = createAction('user/userLoginRequest');
+const userLoginSuccess = createAction('user/userLoginSuccess');
+const userLoginFail = createAction('user/userLoginFail');
+
+const userForgotPasswordRequest = createAction('user/userForgotPasswordRequest');
+const userForgotPasswordSuccess = createAction('user/userForgotPasswordSuccess');
+const userForgotPasswordFail = createAction('user/userForgotPasswordFail');
+
+const activateUserRequest = createAction('user/activateUserRequest');
+const activateUserSuccess = createAction('user/activateUserSuccess');
+const activateUserFail = createAction('user/activateUserFail');
+
+const userChangePasswordRequest = createAction('user/userChangePasswordRequest');
+const userChangePasswordSuccess = createAction('user/userChangePasswordSuccess');
+const userChangePasswordFail = createAction('user/userChangePasswordFail');

@@ -13,8 +13,8 @@ export default function ForgotPassword() {
 
 	const dispatch = useDispatch();
 
-	const userForgotPasswordState = useSelector((state) => state.userForgotPassword);
-	const { loading, error } = userForgotPasswordState;
+	const userForgotPasswordState = useSelector((state) => state.user);
+	const { loading, data, error } = userForgotPasswordState;
 
 	const handleEmailChange = (e) => {
 		setEmail(e.target.value);
@@ -64,6 +64,8 @@ export default function ForgotPassword() {
 					>
 						Go
 					</button>
+					{data && <div className="text-green text-center mt-4">{data}</div>}
+					{error && <div className="text-green text-center mt-4">{error}</div>}
 				</form>
 			</div>
 		</div>

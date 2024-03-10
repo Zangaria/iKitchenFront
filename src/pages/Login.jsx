@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginAction } from '../actions/userActions';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
 	const [user, setUser] = useState({
@@ -9,9 +10,17 @@ export default function Login() {
 	});
 
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
-	const userLoginState = useSelector((state) => state.userLogin);
-	const { loading, error } = userLoginState;
+	const userLoginState = useSelector((state) => state.user);
+	const { loading, error, isAuthenticated } = userLoginState;
+
+	useEffect(() => {
+		// Redirect to home page if user is authenticated
+		if (isAuthenticated) {
+			navigate('/');
+		}
+	}, [isAuthenticated, navigate]);
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -61,7 +70,7 @@ export default function Login() {
 						type="submit"
 						className="w-full mt-4 text-white bg-teal-500 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-500 dark:focus:ring-teal-300 hover:bg-teal-600 hover:ring-teal-400"
 					>
-						Go
+						{loading ? 'Logging in...' : 'Go'}
 					</button>
 					{error && <div className="text-red-500 text-center mt-4">{error}</div>}
 				</form>
