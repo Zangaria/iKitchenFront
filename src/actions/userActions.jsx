@@ -3,6 +3,7 @@ import axios from 'axios';
 
 // Action creator for user registration
 export const registerAction = (userData) => async (dispatch) => {
+	console.log(userData);
 	try {
 		dispatch(userRegisterRequest());
 
@@ -49,7 +50,7 @@ export const loginAction = (userData) => async (dispatch) => {
 			dispatch(userLoginSuccess(data));
 
 			localStorage.setItem('token', data.token);
-			localStorage.setItem('userName', data.userName);
+			// localStorage.setItem('userName', data.userName);
 		}
 	} catch (err) {
 		dispatch(
@@ -94,12 +95,19 @@ export const activateUserAction = (userid) => async (dispatch) => {
 	try {
 		dispatch(activateUserRequest());
 
-		const { data } = await axios.post(
+		const { data } = await axios.get(
 			`${process.env.REACT_APP_BASE_URL}/user/activeUser?userid=${userid}`
 		);
+		console.log(`${process.env.REACT_APP_BASE_URL}/user/activeUser?userid=${userid}`);
+		console.log(data);
 
-		localStorage.setItem('token', data.token);
-		dispatch(activateUserSuccess(data.token));
+		if (data.err) {
+			dispatch(activateUserFail(data.msg));
+		} else {
+			console.log(data.token);
+			localStorage.setItem('token', data.token);
+			dispatch(activateUserSuccess(data.token));
+		}
 	} catch (err) {
 		dispatch(activateUserFail(err.response.data.msg));
 	}

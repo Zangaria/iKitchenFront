@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createEnterprise } from '../actions/enterpriseActions';
+import { useSelector } from 'react-redux';
 
 const CreateEnterprise = () => {
 	const [formData, setFormData] = useState({
@@ -15,7 +16,8 @@ const CreateEnterprise = () => {
 	});
 
 	const dispatch = useDispatch();
-
+	const userEnterpriseState = useSelector((state) => state.enterprise);
+	const { error } = userEnterpriseState;
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		setFormData((prevState) => ({
@@ -128,6 +130,7 @@ const CreateEnterprise = () => {
 					>
 						Create Enterprise
 					</button>
+					{error && <div className="text-red-500 text-center mt-4">{error}</div>}
 				</form>
 			</div>
 		</section>

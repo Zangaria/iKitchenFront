@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createJobAction } from '../actions/jobsActions';
+import { useSelector } from 'react-redux';
 
 const CreateJob = () => {
 	const [formData, setFormData] = useState({
@@ -16,6 +17,8 @@ const CreateJob = () => {
 	});
 
 	const dispatch = useDispatch();
+	const userJobState = useSelector((state) => state.job);
+	const { loading, error, isAuthenticated } = userJobState;
 
 	const handleChange = (e) => {
 		const { name, value, type, checked } = e.target;
@@ -32,7 +35,6 @@ const CreateJob = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		dispatch(createJobAction(formData));
-		// Additional logic can be added here, such as resetting the form or displaying a success message
 	};
 
 	return (
@@ -50,7 +52,7 @@ const CreateJob = () => {
 							name="title"
 							value={formData.title}
 							onChange={handleChange}
-							className="w-full py-2 px-4 mb-6 border-b border-gray-300 focus:outline-none focus:border-teal-500 dark:border-neutral-600 dark:focus:border-teal-300"
+							className={`w-full py-2 px-4 mb-6 border-b border-gray-300 focus:outline-none focus:border-teal-500 dark:border-neutral-600 dark:focus:border-teal-300 `}
 							required
 						/>
 					</label>
@@ -75,7 +77,6 @@ const CreateJob = () => {
 							value={formData.tags}
 							onChange={handleChange}
 							className="w-full py-2 px-4 mb-6 border-b border-gray-300 focus:outline-none focus:border-teal-500 dark:border-neutral-600 dark:focus:border-teal-300"
-							required
 						/>
 					</label>
 
@@ -87,7 +88,6 @@ const CreateJob = () => {
 							value={formData.location}
 							onChange={handleChange}
 							className="w-full py-2 px-4 mb-6 border-b border-gray-300 focus:outline-none focus:border-teal-500 dark:border-neutral-600 dark:focus:border-teal-300"
-							required
 						/>
 					</label>
 

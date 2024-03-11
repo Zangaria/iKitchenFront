@@ -5,8 +5,11 @@ import {
 	enterpriseCreateFail,
 } from '../reducers/enterpriseReducers';
 
-export const createEnterprise = (formData, token) => async (dispatch) => {
+export const createEnterprise = (formData) => async (dispatch) => {
 	try {
+		const token = localStorage.getItem('token');
+		// console.log(token);
+		console.log(formData);
 		dispatch(enterpriseCreateRequest());
 
 		const config = {
@@ -21,8 +24,14 @@ export const createEnterprise = (formData, token) => async (dispatch) => {
 			formData,
 			config
 		);
-
-		dispatch(enterpriseCreateSuccess(data));
+		console.log(data);
+		if (data.err) {
+			console.log('failed');
+			dispatch(enterpriseCreateFail(data.msg));
+		} else {
+			console.log('succses');
+			dispatch(enterpriseCreateSuccess(data));
+		}
 	} catch (error) {
 		dispatch(
 			enterpriseCreateFail(

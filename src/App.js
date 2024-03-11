@@ -10,8 +10,8 @@ import ChangePassword from './pages/ChangePassword';
 import CreateEnterprise from './pages/CreateEnterprise';
 import CreateJob from './pages/CreateJob';
 import Navbar from './components/Navbar';
-import Home from './pages/Home';
-import Page404 from './pages/Page404';
+import Home from './pages/home';
+import Page404 from './pages/page404';
 
 const App = () => {
 	return (

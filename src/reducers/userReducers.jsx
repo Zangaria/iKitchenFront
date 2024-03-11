@@ -59,6 +59,20 @@ export const userSlice = createSlice({
 		userChangePasswordFail: (state) => {
 			state.loading = false;
 		},
+
+		activateUserRequest: (state) => {
+			state.loading = true;
+		},
+
+		activateUserSuccess: (state) => {
+			state.loading = false;
+			state.isActive = true;
+		},
+
+		activateUserFail: (state, action) => {
+			state.loading = false;
+			state.error = action.payload;
+		},
 	},
 });
 

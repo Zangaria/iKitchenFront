@@ -6,11 +6,12 @@ import { ClipLoader } from 'react-spinners';
 
 export default function Register() {
 	const [user, setUser] = useState({
-		name: '',
+		firstName: '',
+		lastName: '',
 		email: '',
 		password: '',
 		confirmPassword: '',
-		role: 'jobSeeker',
+		role: 0,
 		jobType: '',
 		location: '',
 	});
@@ -26,6 +27,7 @@ export default function Register() {
 	};
 
 	const handleSubmit = async (e) => {
+		console.log('submit');
 		e.preventDefault();
 
 		// Validate the form
@@ -41,10 +43,11 @@ export default function Register() {
 		const userData = {
 			email: user.email,
 			password: user.password,
-			userName: user.name,
-			// role: user.role,
-			// jobType: user.jobType,
-			// location: user.location,
+			userName: user.firstName,
+			lastName: user.lastName,
+			type: user.role,
+			jobType: user.jobType,
+			location: user.location,
 		};
 
 		dispatch(registerAction(userData));
@@ -58,15 +61,25 @@ export default function Register() {
 						Register
 					</div>
 
-					{/* Name input */}
+					{/* firstName input */}
 					<input
 						type="text"
-						placeholder="Name"
-						name="name"
-						value={user.name}
+						placeholder="firstName"
+						name="firstName"
+						value={user.firstName}
 						onChange={handleChange}
 						className="w-full py-2 px-4 mb-6 border-b border-gray-300 focus:outline-none focus:border-teal-500 dark:border-neutral-600 dark:focus:border-teal-300"
 						required
+					/>
+
+					{/* Name input */}
+					<input
+						type="text"
+						placeholder="lastName"
+						name="lastName"
+						value={user.lastName}
+						onChange={handleChange}
+						className="w-full py-2 px-4 mb-6 border-b border-gray-300 focus:outline-none focus:border-teal-500 dark:border-neutral-600 dark:focus:border-teal-300"
 					/>
 
 					{/* Email input */}
@@ -104,30 +117,28 @@ export default function Register() {
 
 					{/* Radio buttons for choosing role */}
 					<div className="flex items-center mb-6">
-						<label className="mr-2">
-							<input
-								type="radio"
-								name="role"
-								value="jobSeeker"
-								checked={user.role === 'jobSeeker'}
-								onChange={handleChange}
-							/>
-							I am employee
-						</label>
-						<label>
-							<input
-								type="radio"
-								name="role"
-								value="jobFinder"
-								checked={user.role === 'jobFinder'}
-								onChange={handleChange}
-							/>
+						<button
+							type="button"
+							className={`mr-2 py-1 px-3 rounded-lg focus:outline-none ${
+								user.role === 1 ? 'bg-teal-500 text-white' : 'bg-gray-200 text-gray-800'
+							}`}
+							onClick={() => setUser((prevState) => ({ ...prevState, role: 1 }))}
+						>
 							I am a job finder
-						</label>
+						</button>
+						<button
+							type="button"
+							className={`py-1 px-3 rounded-lg focus:outline-none ${
+								user.role === 2 ? 'bg-teal-500 text-white' : 'bg-gray-200 text-gray-800'
+							}`}
+							onClick={() => setUser((prevState) => ({ ...prevState, role: 2 }))}
+						>
+							I am an employee
+						</button>
 					</div>
 
 					{/* Additional inputs for jobFinder */}
-					{user.role === 'jobFinder' && (
+					{user.role === 1 && (
 						<>
 							<div className="mb-6">
 								<label htmlFor="jobType">Select Job Type:</label>
@@ -184,8 +195,17 @@ export default function Register() {
 						{/* Other form elements */}
 					</div>
 
-					{error && <div className="text-red-500 bg-red-700 text-center mt-4">{error}</div>}
-					{data && <div className="text-green-500 text-center mt-4">{data}</div>}
+					{error && (
+						<div className="text-white bg-red-700 text-center mt-4 rounded-md">{error}</div>
+					)}
+					{data && (
+						<div
+							className="bg-green-500 text-white
+						 rounded-md text-center mt-4"
+						>
+							{data}
+						</div>
+					)}
 				</form>
 			</div>
 		</section>
