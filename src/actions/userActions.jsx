@@ -77,14 +77,15 @@ export const forgotPasswordAction = (email) => async (dispatch) => {
 		);
 
 		if (data.err) {
-			dispatch(userForgotPasswordFail(data.err));
+			console.log(data.err);
+			dispatch(userForgotPasswordFail(data.msg));
 		} else {
 			dispatch(userForgotPasswordSuccess(data));
 		}
 	} catch (err) {
 		dispatch(
 			userForgotPasswordFail(
-				err.response && err.response.data.message ? err.response.data.message : err.message
+				err.response && err.response.data.error ? err.response.data.error : err.message
 			)
 		);
 	}

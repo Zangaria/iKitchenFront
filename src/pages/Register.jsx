@@ -178,7 +178,19 @@ export default function Register() {
 					>
 						{loading ? <ClipLoader color="#ffffff" loading={loading} size={20} /> : 'Go'}
 					</button>
-
+					{error && (
+						<div className="bg-red-500 text-white text-center rounded-md p-2 mb-4 mt-4">
+							{error}
+						</div>
+					)}
+					{data && (
+						<div
+							className="bg-green-500 text-white
+						 rounded-md text-center mt-4"
+						>
+							{data}
+						</div>
+					)}
 					{/* Link to login page */}
 					<div className="w-full mt-4 flex flex-col items-center justify-center">
 						{/* Text and link in the middle */}
@@ -194,18 +206,6 @@ export default function Register() {
 
 						{/* Other form elements */}
 					</div>
-
-					{error && (
-						<div className="text-white bg-red-700 text-center mt-4 rounded-md">{error}</div>
-					)}
-					{data && (
-						<div
-							className="bg-green-500 text-white
-						 rounded-md text-center mt-4"
-						>
-							{data}
-						</div>
-					)}
 				</form>
 			</div>
 		</section>

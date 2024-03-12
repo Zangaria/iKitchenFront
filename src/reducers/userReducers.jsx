@@ -5,6 +5,7 @@ const initialState = {
 	userInfo: null,
 	isAuthenticated: false,
 	error: null,
+	msg: null,
 };
 
 export const userSlice = createSlice({
@@ -17,6 +18,7 @@ export const userSlice = createSlice({
 		userRegisterSuccess: (state, action) => {
 			state.loading = false;
 			state.data = action.payload;
+			state.error = null;
 		},
 		userRegisterFail: (state, action) => {
 			state.loading = false;
@@ -30,6 +32,7 @@ export const userSlice = createSlice({
 			state.loading = false;
 			state.userInfo = action.payload;
 			state.isAuthenticated = true;
+			state.error = null;
 		},
 		userLoginFail: (state, action) => {
 			console.log('done ');
@@ -44,7 +47,8 @@ export const userSlice = createSlice({
 		},
 		userForgotPasswordSuccess: (state, action) => {
 			state.loading = false;
-			state.error = action.payload.msg;
+			state.msg = action.payload.msg;
+			state.error = null;
 		},
 		userForgotPasswordFail: (state, action) => {
 			state.loading = false;

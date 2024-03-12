@@ -72,7 +72,11 @@ export default function Login() {
 					>
 						{loading ? 'Logging in...' : 'Go'}
 					</button>
-					{error && <div className="text-red-500 text-center mt-4">{error}</div>}
+					{error && (
+						<div className="bg-red-500 text-white text-center rounded-md p-2 mb-4 mt-4">
+							{error}
+						</div>
+					)}
 				</form>
 			</div>
 		</section>
