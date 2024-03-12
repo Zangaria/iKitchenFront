@@ -10,8 +10,9 @@ import ChangePassword from './pages/ChangePassword';
 import CreateEnterprise from './pages/CreateEnterprise';
 import CreateJob from './pages/CreateJob';
 import Navbar from './components/Navbar';
-import Home from './pages/home';
-import Page404 from './pages/page404';
+import Home from './pages/Home';
+import Page404 from './pages/Page404';
+import EnterprisesTable from './pages/EnterprisesTable';
 
 const App = () => {
 	return (
@@ -28,6 +29,7 @@ const App = () => {
 						<Route path="changePassword" element={<ChangePassword />} />
 						<Route path="createEnterprise" element={<CreateEnterprise />} />
 						<Route path="createJob" element={<CreateJob />} />
+						<Route path="EnterprisesTable" element={<EnterprisesTable />} />
 						<Route path="/*" element={<Page404 />} />
 					</Route>
 				</Routes>

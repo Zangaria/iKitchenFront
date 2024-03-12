@@ -142,6 +142,30 @@ export const changePasswordAction = (currentPassword, newPassword, token) => asy
 	}
 };
 
+// Action creator for activating user account
+export const getEnterprises = () => async (dispatch) => {
+	try {
+		dispatch(getAllEnterprises());
+
+		const { data } = await axios.get(
+			`${process.env.REACT_APP_BASE_URL}/getAllEnterprise`
+		);
+
+		if (data) {
+			return data;
+		}
+
+		if (data.err) {
+			console.log(data.msg);
+			return(data.msg);
+		} else {
+			dispatch(activateUserSuccess(data.token));
+		}
+	} catch (err) {
+		dispatch(getAllEnterprisesFail(err.response.data.msg));
+	}
+};
+
 // Create action creators using createAction
 const userRegisterRequest = createAction('user/userRegisterRequest');
 const userRegisterSuccess = createAction('user/userRegisterSuccess');
@@ -162,3 +186,6 @@ const activateUserFail = createAction('user/activateUserFail');
 const userChangePasswordRequest = createAction('user/userChangePasswordRequest');
 const userChangePasswordSuccess = createAction('user/userChangePasswordSuccess');
 const userChangePasswordFail = createAction('user/userChangePasswordFail');
+
+const getAllEnterprises = createAction('admin/getAllEnterprises');
+const getAllEnterprisesFail = createAction('admin/getAllEnterprisesFail');
