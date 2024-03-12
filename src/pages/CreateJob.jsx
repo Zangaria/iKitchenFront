@@ -18,7 +18,7 @@ const CreateJob = () => {
 
 	const dispatch = useDispatch();
 	const userJobState = useSelector((state) => state.job);
-	const { loading, error, isAuthenticated } = userJobState;
+	const { loading, error, job } = userJobState;
 
 	const handleChange = (e) => {
 		const { name, value, type, checked } = e.target;
@@ -98,6 +98,7 @@ const CreateJob = () => {
 							value={formData.info}
 							onChange={handleChange}
 							className="w-full py-3 px-4 mb-6 border-b border-gray-300 focus:outline-none focus:border-teal-500 dark:border-neutral-600 dark:focus:border-teal-300 resize-y"
+							required
 						/>
 					</label>
 
@@ -150,6 +151,12 @@ const CreateJob = () => {
 					>
 						Create Job
 					</button>
+					{error && <div className="text-red-500 text-center mt-4">{error}</div>}
+					{job && (
+						<div className="bg-green-500 text-white text-center rounded-md p-2 mb-4 mt-4">
+							{`Job created`}
+						</div>
+					)}
 				</form>
 			</div>
 		</section>

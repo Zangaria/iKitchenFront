@@ -9,13 +9,13 @@ export const createEnterprise = (formData) => async (dispatch) => {
 	try {
 		const token = localStorage.getItem('token');
 		// console.log(token);
-		console.log(formData);
+		// console.log(formData);
 		dispatch(enterpriseCreateRequest());
 
 		const config = {
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: token,
+				Authorization: `${token}`,
 			},
 		};
 
@@ -33,9 +33,10 @@ export const createEnterprise = (formData) => async (dispatch) => {
 			dispatch(enterpriseCreateSuccess(data));
 		}
 	} catch (error) {
+		console.log(error.response.data.error);
 		dispatch(
 			enterpriseCreateFail(
-				error.response && error.response.data.message ? error.response.data.message : error.message
+				error.response && error.response.data.error ? error.response.data.error : error.message
 			)
 		);
 	}

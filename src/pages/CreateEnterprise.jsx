@@ -17,7 +17,7 @@ const CreateEnterprise = () => {
 
 	const dispatch = useDispatch();
 	const userEnterpriseState = useSelector((state) => state.enterprise);
-	const { error } = userEnterpriseState;
+	const { error, enterprise } = userEnterpriseState;
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		setFormData((prevState) => ({
@@ -59,7 +59,6 @@ const CreateEnterprise = () => {
 							value={formData.bnNumber}
 							onChange={handleChange}
 							className="w-full py-2 px-4 mb-6 border-b border-gray-300 focus:outline-none focus:border-teal-500 dark:border-neutral-600 dark:focus:border-teal-300"
-							required
 						/>
 					</label>
 
@@ -70,6 +69,7 @@ const CreateEnterprise = () => {
 							value={formData.info}
 							onChange={handleChange}
 							className="w-full py-3 px-4 mb-6 border-b border-gray-300 focus:outline-none focus:border-teal-500 dark:border-neutral-600 dark:focus:border-teal-300 resize-y"
+							required
 						/>
 					</label>
 
@@ -101,6 +101,7 @@ const CreateEnterprise = () => {
 							value={formData.logo}
 							onChange={handleChange}
 							className="w-full py-2 px-4 mb-6 border-b border-gray-300 focus:outline-none focus:border-teal-500 dark:border-neutral-600 dark:focus:border-teal-300"
+							required
 						/>
 					</label>
 
@@ -131,6 +132,9 @@ const CreateEnterprise = () => {
 						Create Enterprise
 					</button>
 					{error && <div className="text-red-500 text-center mt-4">{error}</div>}
+					{enterprise && (
+						<div className="bg-green-500 text-white text-center rounded-md p-2 mb-4 mt-4">{`Enterprise ${formData.name} created`}</div>
+					)}
 				</form>
 			</div>
 		</section>

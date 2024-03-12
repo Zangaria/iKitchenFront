@@ -22,6 +22,7 @@ export const jobSlice = createSlice({
 		jobCreateFail: (state, action) => {
 			state.loading = false;
 			state.error = action.payload;
+			state.job = null;
 		},
 	},
 });

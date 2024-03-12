@@ -1,11 +1,10 @@
 import axios from 'axios';
 import { jobCreateRequest, jobCreateSuccess, jobCreateFail } from '../reducers/jobReducers';
 
-export const createJobAction = (jobData, token) => async (dispatch) => {
+export const createJobAction = (jobData) => async (dispatch) => {
 	try {
-		console.log('mm');
 		dispatch(jobCreateRequest());
-
+		const token = localStorage.getItem('token');
 		const config = {
 			headers: {
 				'Content-Type': 'application/json',
@@ -13,17 +12,18 @@ export const createJobAction = (jobData, token) => async (dispatch) => {
 			},
 		};
 
-		const { data } = await axios.post(
-			`${process.env.REACT_APP_BASE_URL}/job/create`,
-			jobData,
-			config
-		);
-		console.log(data);
-		dispatch(jobCreateSuccess(data));
+		const { data } = await axios.post(`${process.env.REACT_APP_BASE_URL}/job/add`, jobData, config);
+		if (data.err) {
+			console.log('failed');
+			jobCreateFail(data.msg);
+		} else {
+			console.log('succses');
+			dispatch(jobCreateSuccess(data));
+		}
 	} catch (error) {
 		dispatch(
 			jobCreateFail(
-				error.response && error.response.data.message ? error.response.data.message : error.message
+				error.response && error.response.data.error ? error.response.data.error : error.message
 			)
 		);
 	}
