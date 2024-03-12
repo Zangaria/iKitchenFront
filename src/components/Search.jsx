@@ -1,10 +1,21 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchJobsByText } from '../actions/searchActions';
 
 const Search = () => {
 	const [isFreeSearch, setIsFreeSearch] = useState(true);
+	const [searchText, setSearchText] = useState('');
 	const [selectedCategory, setSelectedCategory] = useState('All Categories');
 	const [selectedRole, setSelectedRole] = useState('All Roles');
 	const [selectedLocation, setSelectedLocation] = useState('All Locations');
+
+	const dispatch = useDispatch();
+
+	const searchData = {
+		selectedCategory,
+		selectedRole,
+		selectedLocation,
+	};
 
 	const toggleSearchType = (value) => {
 		setIsFreeSearch(value);
@@ -21,6 +32,15 @@ const Search = () => {
 	const handleLocationChange = (event) => {
 		setSelectedLocation(event.target.value);
 	};
+
+	const handleSearch = () => {
+		if (isFreeSearch) {
+			dispatch(fetchJobsByText(searchText));
+		} else {
+			// dispatch(fetchJobsByText(searchData));
+		}
+	};
+
 	return (
 		<div className="text-black py-20 bg-white flex flex-col items-center justify-center">
 			<div className="w-4/5 max-w-xl mb-8 flex space-x-4">
@@ -44,7 +64,15 @@ const Search = () => {
 
 			<div className="w-4/5 max-w-xl border rounded overflow-hidden flex items-stretch h-[3rem]">
 				{isFreeSearch ? (
-					<input type="text" className="flex-1 px-4 py-3 rounded-l" placeholder="Free Search..." />
+					<input
+						type="text"
+						className="flex-1 px-4 py-3 rounded-l"
+						placeholder="Free Search..."
+						value={searchText}
+						onChange={(e) => {
+							setSearchText(e.target.value);
+						}}
+					/>
 				) : (
 					<>
 						<select
@@ -81,8 +109,9 @@ const Search = () => {
 					</>
 				)}
 				<button
-					type="submit"
-					className="flex items-center justify-center px-4 border-l rounded-r rounded-l-none text-white bg-teal-500 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-500 dark:focus:ring-teal-300 hover:bg-teal-600 hover:ring-teal-400"
+					type="button" // Change type to button
+					onClick={handleSearch} // Call handleSearch function on click
+					className="flex items-center justify-center border-l rounded-r rounded-l-none text-white bg-teal-500 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-500 dark:focus:ring-teal-300 hover:bg-teal-600 hover:ring-teal-400"
 				>
 					Go
 				</button>

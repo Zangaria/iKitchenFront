@@ -1,4 +1,4 @@
-import { createSlice, createAction } from '@reduxjs/toolkit';
+import { createAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 // Action creator for user registration
