@@ -4,6 +4,7 @@ import { searchRequest, searchSuccess, searchFail } from '../reducers/searchRedu
 export const fetchJobsByText =
 	({ title, from, to }) =>
 	async (dispatch) => {
+		console.log('done');
 		try {
 			dispatch(searchRequest());
 

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchJobsByText } from '../actions/searchActions';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,6 +10,9 @@ const SearchJob = () => {
 	const [selectedRole, setSelectedRole] = useState('All Roles');
 	const [selectedLocation, setSelectedLocation] = useState('All Locations');
 
+	const searchState = useSelector((state) => state.search);
+	const { suggestions } = searchState;
+
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const searchData = {
@@ -17,6 +20,12 @@ const SearchJob = () => {
 		selectedRole,
 		selectedLocation,
 	};
+
+	useEffect(() => {
+		if (searchText.length >= 3) {
+			dispatch(fetchJobsByText({ title: searchText, from: 1, to: 20 }));
+		}
+	}, [searchText]);
 
 	const toggleSearchType = (value) => {
 		setIsFreeSearch(value);
@@ -66,15 +75,30 @@ const SearchJob = () => {
 
 			<div className="w-4/5 max-w-xl border rounded overflow-hidden flex items-stretch h-[3rem]">
 				{isFreeSearch ? (
-					<input
-						type="text"
-						className="flex-1 px-4 py-3 rounded-l"
-						placeholder="Free Search..."
-						value={searchText}
-						onChange={(e) => {
-							setSearchText(e.target.value);
-						}}
-					/>
+					<div>
+						<div>
+							<input
+								type="text"
+								className="flex-1 px-4 py-3 rounded-l"
+								placeholder="Free Search..."
+								value={searchText}
+								onChange={(e) => {
+									setSearchText(e.target.value);
+								}}
+							/>
+						</div>
+						<div className="absolute bg-gray-200 w-full max-w-xl rounded mt-1 z-10">
+							{suggestions.map((suggestion, index) => (
+								<div
+									key={index}
+									className="px-4 py-2 cursor-pointer"
+									onClick={() => setSearchText(suggestion)} // Set search text when suggestion is clicked
+								>
+									{suggestion}
+								</div>
+							))}
+						</div>
+					</div>
 				) : (
 					<>
 						<select

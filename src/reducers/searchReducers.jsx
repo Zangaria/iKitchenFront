@@ -4,6 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
 	searchTerm: '',
 	searchResults: [],
+	suggestions: [],
 	isLoading: false,
 	error: null,
 };
@@ -21,10 +22,12 @@ const searchSlice = createSlice({
 		},
 		searchSuccess(state, action) {
 			state.searchResults = action.payload;
+			state.suggestions = action.payload.map((job) => job.title);
 			state.isLoading = false;
 		},
 		searchFail(state, action) {
 			state.error = action.payload;
+			state.suggestions = [];
 			state.isLoading = false;
 		},
 	},
