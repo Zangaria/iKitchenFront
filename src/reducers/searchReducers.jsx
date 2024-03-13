@@ -30,9 +30,13 @@ const searchSlice = createSlice({
 			state.suggestions = [];
 			state.isLoading = false;
 		},
+		setSuggestions(state, action) {
+			state.suggestions = action.payload;
+		},
 	},
 });
 
-export const { setSearchTerm, searchRequest, searchSuccess, searchFail } = searchSlice.actions;
+export const { setSearchTerm, searchRequest, searchSuccess, searchFail, setSuggestions } =
+	searchSlice.actions;
 
 export default searchSlice.reducer;

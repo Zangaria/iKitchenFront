@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchJobsByText } from '../actions/searchActions';
 import { useNavigate } from 'react-router-dom';
+import { setSuggestions } from '../reducers/searchReducers';
 
 const SearchJob = () => {
 	const [isFreeSearch, setIsFreeSearch] = useState(true);
+	const [showSuggestion, setShowSuggestion] = useState(true);
 	const [searchText, setSearchText] = useState('');
 	const [selectedCategory, setSelectedCategory] = useState('All Categories');
 	const [selectedRole, setSelectedRole] = useState('All Roles');
@@ -24,6 +26,9 @@ const SearchJob = () => {
 	useEffect(() => {
 		if (searchText.length >= 3) {
 			dispatch(fetchJobsByText({ title: searchText, from: 1, to: 20 }));
+		} else {
+			setShowSuggestion(true);
+			dispatch(setSuggestions([]));
 		}
 	}, [searchText]);
 
@@ -88,15 +93,19 @@ const SearchJob = () => {
 							/>
 						</div>
 						<div className="absolute bg-gray-200 w-full max-w-xl rounded mt-1 z-10">
-							{suggestions.map((suggestion, index) => (
-								<div
-									key={index}
-									className="px-4 py-2 cursor-pointer"
-									onClick={() => setSearchText(suggestion)} // Set search text when suggestion is clicked
-								>
-									{suggestion}
-								</div>
-							))}
+							{showSuggestion &&
+								suggestions.map((suggestion, index) => (
+									<div
+										key={index}
+										className="px-4 py-2 cursor-pointer"
+										onClick={() => {
+											setSearchText(suggestion);
+											setShowSuggestion(false);
+										}}
+									>
+										{suggestion}
+									</div>
+								))}
 						</div>
 					</div>
 				) : (
