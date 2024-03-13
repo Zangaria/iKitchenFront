@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { fetchJobsByText } from '../actions/searchActions';
+import { useNavigate } from 'react-router-dom';
 
-const Search = () => {
+const SearchJob = () => {
 	const [isFreeSearch, setIsFreeSearch] = useState(true);
 	const [searchText, setSearchText] = useState('');
 	const [selectedCategory, setSelectedCategory] = useState('All Categories');
@@ -10,7 +11,7 @@ const Search = () => {
 	const [selectedLocation, setSelectedLocation] = useState('All Locations');
 
 	const dispatch = useDispatch();
-
+	const navigate = useNavigate();
 	const searchData = {
 		selectedCategory,
 		selectedRole,
@@ -35,10 +36,11 @@ const Search = () => {
 
 	const handleSearch = () => {
 		if (isFreeSearch) {
-			dispatch(fetchJobsByText(searchText));
+			dispatch(fetchJobsByText({ title: searchText, from: 1, to: 20 }));
 		} else {
 			// dispatch(fetchJobsByText(searchData));
 		}
+		navigate('/search-results');
 	};
 
 	return (
@@ -120,4 +122,4 @@ const Search = () => {
 	);
 };
 
-export default Search;
+export default SearchJob;
