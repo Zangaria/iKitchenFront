@@ -1,16 +1,22 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateUserDetails } from '../../actions/userActions';
 
 const JobCard = ({ jobId, enterprise, title, location, info, tags, requirements, mContact }) => {
 	const dispatch = useDispatch();
+	const savedJobs = useSelector((state) => state.user.savedJobs);
+	const isJobSaved = savedJobs?.includes(jobId);
 
-	//Func to add the job to user fav
+	// Func to toggle save/unsave job
 	const handleSaveJob = () => {
-		dispatch(updateUserDetails(jobId));
+		if (isJobSaved) {
+			dispatch(updateUserDetails());
+		} else {
+			// If job is not saved, save it
+		}
 	};
 
-	//Func to send cv to this job
+	// Func to send cv to this job
 	const handleSubmitSv = () => {
 		console.log('cv submitted!');
 	};
@@ -32,12 +38,12 @@ const JobCard = ({ jobId, enterprise, title, location, info, tags, requirements,
 					<p className="mb-2">
 						<strong>Requirements:</strong> {requirements}
 					</p>
-					{/*  buttons */}
+					{/* Buttons */}
 					<button
 						onClick={handleSaveJob}
 						className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md"
 					>
-						Save Job
+						{isJobSaved ? 'Unsave Job' : 'Save Job'}
 					</button>
 					<button
 						onClick={handleSubmitSv}

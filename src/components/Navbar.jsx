@@ -1,11 +1,26 @@
 import React, { useState } from 'react';
 import websiteLogo from '../images/website-logo.png';
+import { useSelector } from 'react-redux';
 
 const Navbar = () => {
 	const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+	const [showUserDetailsDropdown, setShowUserDetailsDropdown] = useState(false);
+	const [showCreateDropdown, setShowCreateDropdown] = useState(false);
+	// const currentUser = useSelector((state) => state.user);
+	const currentUser = {
+		name: 'John Doe',
+		userType: 1,
+	};
 	const toggleMobileMenu = () => {
 		setMobileMenuOpen(!isMobileMenuOpen);
+	};
+
+	const toggleUserDetailsDropdown = () => {
+		setShowUserDetailsDropdown(!showUserDetailsDropdown);
+	};
+
+	const toggleCreateDropdown = () => {
+		setShowCreateDropdown(!showCreateDropdown);
 	};
 
 	return (
@@ -46,7 +61,76 @@ const Navbar = () => {
 						<a href="createJob" className="text-gray-800 hover:text-teal-500">
 							createJob
 						</a>
+
+						<a href="user-details" className="text-gray-800 hover:text-teal-500">
+							user-details
+						</a>
 					</div>
+
+					{currentUser?.userType === 1 && (
+						<div className="relative">
+							<a
+								href="#"
+								className="text-gray-800 hover:text-teal-500"
+								onMouseEnter={toggleUserDetailsDropdown}
+								onMouseLeave={toggleUserDetailsDropdown}
+							>
+								User Details
+							</a>
+							{showUserDetailsDropdown && (
+								<div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg">
+									<a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+										User Details
+									</a>
+									<a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+										Saved Jobs
+									</a>
+								</div>
+							)}
+						</div>
+					)}
+
+					{currentUser?.userType === 1 ? (
+						<div className="relative">
+							<a href="#" className="text-gray-800 hover:text-teal-500">
+								User Details
+							</a>
+							<div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg">
+								<a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+									User Details
+								</a>
+								<a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+									Saved Jobs
+								</a>
+							</div>
+						</div>
+					) : currentUser?.userType === 2 ? (
+						<div className="relative">
+							<a href="#" className="text-gray-800 hover:text-teal-500">
+								Create
+							</a>
+							<div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg">
+								<a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+									Create Job
+								</a>
+								<a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+									Create Enterprise
+								</a>
+							</div>
+						</div>
+					) : null}
+
+					{showCreateDropdown && (
+						<div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg">
+							<a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+								Create Job
+							</a>
+							<a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+								Create Enterprise
+							</a>
+						</div>
+					)}
+
 					<div className="md:hidden">
 						<button
 							onClick={toggleMobileMenu}
