@@ -1,135 +1,95 @@
 import React, { useState } from 'react';
 import websiteLogo from '../images/website-logo.png';
 import { useSelector } from 'react-redux';
-
+import { MdPerson } from 'react-icons/md';
+import { Link } from 'react-router-dom';
 const Navbar = () => {
 	const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
-	const [showUserDetailsDropdown, setShowUserDetailsDropdown] = useState(false);
-	const [showCreateDropdown, setShowCreateDropdown] = useState(false);
+	const [isOpen, setIsOpen] = useState(false);
+	const isAuthenticated = true;
+	const toggleDropdown = () => {
+		setIsOpen(!isOpen);
+	};
 	// const currentUser = useSelector((state) => state.user);
 	const currentUser = {
 		name: 'John Doe',
-		userType: 1,
+		userType: 2,
 	};
 	const toggleMobileMenu = () => {
 		setMobileMenuOpen(!isMobileMenuOpen);
-	};
-
-	const toggleUserDetailsDropdown = () => {
-		setShowUserDetailsDropdown(!showUserDetailsDropdown);
-	};
-
-	const toggleCreateDropdown = () => {
-		setShowCreateDropdown(!showCreateDropdown);
 	};
 
 	return (
 		<nav className="bg-white sticky top-0">
 			<div className="max-w-7xl mx-auto px-4">
 				<div className="flex justify-between items-center py-1">
-					<div className="flex items-center">
+					<div className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white">
 						<a
-							//  href="https://flowbite.com/"
 							href="/"
-							className="flex items-center space-x-3"
+							className="px-2 py-1 bg-gradient-to-r from-teal-500 via-white to-pink-700 rounded-lg text-black"
 						>
-							<img src={websiteLogo} className="h-16" alt="Flowbite Logo" />
+							i - work
 						</a>
+						Company
 					</div>
 					<div className="hidden md:flex space-x-4">
-						<a href="/" className="text-gray-800 hover:text-teal-500">
-							Home
-						</a>
-						<a href="register" className="text-gray-800 hover:text-teal-500">
-							Register
-						</a>
-						<a href="activeUser" className="text-gray-800 hover:text-teal-500">
-							activeUser
-						</a>
-						<a href="login" className="text-gray-800 hover:text-teal-500">
-							Login
-						</a>
-						<a href="ForgotPassword" className="text-gray-800 hover:text-teal-500">
-							ForgotPassword
-						</a>
-						<a href="changePassword" className="text-gray-800 hover:text-teal-500">
-							changePassword
-						</a>
-						<a href="createEnterprise" className="text-gray-800 hover:text-teal-500">
-							createEnterprise
-						</a>
-						<a href="createJob" className="text-gray-800 hover:text-teal-500">
-							createJob
-						</a>
-
-						<a href="user-details" className="text-gray-800 hover:text-teal-500">
-							user-details
-						</a>
-					</div>
-
-					{currentUser?.userType === 1 && (
-						<div className="relative">
-							<a
-								href="#"
-								className="text-gray-800 hover:text-teal-500"
-								onMouseEnter={toggleUserDetailsDropdown}
-								onMouseLeave={toggleUserDetailsDropdown}
-							>
-								User Details
-							</a>
-							{showUserDetailsDropdown && (
-								<div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg">
-									<a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-										User Details
-									</a>
-									<a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-										Saved Jobs
-									</a>
+						{!isAuthenticated ? (
+							<>
+								<a href="register" className="text-gray-800 hover:text-teal-500">
+									Register
+								</a>
+								<a href="login" className="text-gray-800 hover:text-teal-500">
+									Login
+								</a>
+							</>
+						) : currentUser?.userType === 1 ? (
+							<div className="relative bg-green-500 flex justify-center  rounded-lg w-8 h-8">
+								<button
+									onClick={toggleDropdown}
+									className="text-gray-800 hover:text-teal-500 focus:outline-none"
+								>
+									<MdPerson />
+								</button>
+								{isOpen && (
+									<div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg">
+										<a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+											User Details
+										</a>
+										<a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+											Saved Jobs
+										</a>
+									</div>
+								)}
+							</div>
+						) : (
+							currentUser?.userType === 2 && (
+								<div className="relative bg-green-500 flex justify-center  rounded-lg w-8 h-8">
+									<button
+										onClick={toggleDropdown}
+										className="text-gray-800 hover:text-teal-500 focus:outline-none"
+									>
+										<MdPerson className=" text-white" />
+									</button>
+									{isOpen && (
+										<div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg">
+											<a
+												href="createEnterprise"
+												className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+											>
+												Create enterprise
+											</a>
+											<a
+												href="createJob"
+												className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+											>
+												Create job
+											</a>
+										</div>
+									)}
 								</div>
-							)}
-						</div>
-					)}
-
-					{currentUser?.userType === 1 ? (
-						<div className="relative">
-							<a href="#" className="text-gray-800 hover:text-teal-500">
-								User Details
-							</a>
-							<div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg">
-								<a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-									User Details
-								</a>
-								<a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-									Saved Jobs
-								</a>
-							</div>
-						</div>
-					) : currentUser?.userType === 2 ? (
-						<div className="relative">
-							<a href="#" className="text-gray-800 hover:text-teal-500">
-								Create
-							</a>
-							<div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg">
-								<a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-									Create Job
-								</a>
-								<a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-									Create Enterprise
-								</a>
-							</div>
-						</div>
-					) : null}
-
-					{showCreateDropdown && (
-						<div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg">
-							<a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-								Create Job
-							</a>
-							<a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-								Create Enterprise
-							</a>
-						</div>
-					)}
+							)
+						)}
+					</div>
 
 					<div className="md:hidden">
 						<button

@@ -48,6 +48,7 @@ export const loginAction = (userData) => async (dispatch) => {
 			dispatch(userLoginFail(data.msg));
 		} else {
 			dispatch(userLoginSuccess(data));
+			console.log(data);
 
 			localStorage.setItem('token', data.token);
 			// localStorage.setItem('userName', data.userName);
