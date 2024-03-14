@@ -13,6 +13,7 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Page404 from './pages/Page404';
 import EnterprisesTable from './pages/EnterprisesTable';
+import JobsTable from './pages/JobsTable';
 
 const App = () => {
 	return (
@@ -30,6 +31,7 @@ const App = () => {
 						<Route path="createEnterprise" element={<CreateEnterprise />} />
 						<Route path="createJob" element={<CreateJob />} />
 						<Route path="EnterprisesTable" element={<EnterprisesTable />} />
+						<Route path="JobsTable" element={<JobsTable />} />
 						<Route path="/*" element={<Page404 />} />
 					</Route>
 				</Routes>
