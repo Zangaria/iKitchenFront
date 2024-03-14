@@ -142,6 +142,57 @@ export const changePasswordAction = (currentPassword, newPassword, token) => asy
 	}
 };
 
+export const updateUserDetails = (jobId) => async (dispatch) => {
+	try {
+		dispatch(userUpdateRequest());
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: localStorage.getItem('token'),
+			},
+		};
+
+		// Make a request to the server to update user details
+		const { data } = await axios.put(
+			`${process.env.REACT_APP_BASE_URL}/user/update`,
+			{ jobId: jobId },
+			config
+		);
+
+		dispatch(userUpdateSuccess(data.msg));
+	} catch (err) {
+		dispatch(
+			userUpdateFail(err.response && err.response.data.msg ? err.response.data.msg : err.message)
+		);
+	}
+};
+
+export const addJobToUser = (jobId) => async (dispatch) => {
+	dispatch(addJobToUserRequest());
+	try {
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: localStorage.getItem('token'),
+			},
+		};
+		// Make a request to add the job to the user's favorite jobs array
+		const { data } = await axios.post(
+			`${process.env.REACT_APP_BASE_URL}/user/favorites/add`,
+			{ jobId },
+			config
+		);
+		dispatch(addJobToUserSuccess(data.msg));
+	} catch (error) {
+		dispatch(
+			addJobToUserFail(
+				error.response && error.response.data.msg ? error.response.data.msg : error.message
+			)
+		);
+	}
+};
+
 // Create action creators using createAction
 const userRegisterRequest = createAction('user/userRegisterRequest');
 const userRegisterSuccess = createAction('user/userRegisterSuccess');
@@ -162,3 +213,11 @@ const activateUserFail = createAction('user/activateUserFail');
 const userChangePasswordRequest = createAction('user/userChangePasswordRequest');
 const userChangePasswordSuccess = createAction('user/userChangePasswordSuccess');
 const userChangePasswordFail = createAction('user/userChangePasswordFail');
+
+const userUpdateRequest = createAction('user/userUpdateRequest');
+const userUpdateSuccess = createAction('user/userUpdateSuccess');
+const userUpdateFail = createAction('user/userUpdateFail');
+
+const addJobToUserRequest = createAction('user/addJobToUserRequest');
+const addJobToUserSuccess = createAction('user/addJobToUserSuccess');
+const addJobToUserFail = createAction('user/addJobToUserFail');

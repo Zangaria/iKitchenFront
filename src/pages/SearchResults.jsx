@@ -10,15 +10,18 @@ const SearchResults = () => {
 	return (
 		<>
 			<div className="text-black py-20 bg-white flex flex-col items-center justify-center">
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+				<div className=" w-5/6">
 					{/* Map over the search results and render JobCard for each result */}
 					{searchResults.map((result, index) => (
-						<JobCard
-							key={index}
-							jobId={result._id}
-							title={result.title}
-							enterprise={result.enterprise}
-						/>
+						<div key={index} className="">
+							<JobCard
+								key={index}
+								jobid={result._id}
+								title={result.title}
+								enterprise={result.enterprise}
+								location={result.location}
+							/>
+						</div>
 					))}
 				</div>
 			</div>
