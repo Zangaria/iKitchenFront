@@ -1,4 +1,4 @@
-import { createSlice, createAction } from '@reduxjs/toolkit';
+import { createAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 // Action creator for user registration
@@ -48,6 +48,7 @@ export const loginAction = (userData) => async (dispatch) => {
 			dispatch(userLoginFail(data.msg));
 		} else {
 			dispatch(userLoginSuccess(data));
+			console.log(data);
 
 			localStorage.setItem('token', data.token);
 			// localStorage.setItem('userName', data.userName);
@@ -142,6 +143,34 @@ export const changePasswordAction = (currentPassword, newPassword, token) => asy
 	}
 };
 
+// Frontend action creator
+export const updateUserDetails = (detailsToUpdate) => async (dispatch) => {
+	console.log('at func', detailsToUpdate);
+	try {
+		dispatch(userUpdateRequest());
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: localStorage.getItem('token'),
+			},
+		};
+
+		// Make a request to the server to update user details
+		const { data } = await axios.put(
+			`${process.env.REACT_APP_BASE_URL}/user/update`,
+			detailsToUpdate,
+			config
+		);
+
+		dispatch(userUpdateSuccess(data.msg));
+	} catch (err) {
+		dispatch(
+			userUpdateFail(err.response && err.response.data.msg ? err.response.data.msg : err.message)
+		);
+	}
+};
+
 // Create action creators using createAction
 const userRegisterRequest = createAction('user/userRegisterRequest');
 const userRegisterSuccess = createAction('user/userRegisterSuccess');
@@ -162,3 +191,7 @@ const activateUserFail = createAction('user/activateUserFail');
 const userChangePasswordRequest = createAction('user/userChangePasswordRequest');
 const userChangePasswordSuccess = createAction('user/userChangePasswordSuccess');
 const userChangePasswordFail = createAction('user/userChangePasswordFail');
+
+const userUpdateRequest = createAction('user/userUpdateRequest');
+const userUpdateSuccess = createAction('user/userUpdateSuccess');
+const userUpdateFail = createAction('user/userUpdateFail');

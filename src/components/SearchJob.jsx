@@ -1,10 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchJobsByText } from '../actions/searchActions';
+import { useNavigate } from 'react-router-dom';
+import { setSuggestions } from '../reducers/searchReducers';
 
-const Search = () => {
+const SearchJob = () => {
 	const [isFreeSearch, setIsFreeSearch] = useState(true);
+	const [showSuggestion, setShowSuggestion] = useState(true);
+	const [searchText, setSearchText] = useState('');
 	const [selectedCategory, setSelectedCategory] = useState('All Categories');
 	const [selectedRole, setSelectedRole] = useState('All Roles');
 	const [selectedLocation, setSelectedLocation] = useState('All Locations');
+
+	const searchState = useSelector((state) => state.search);
+	const { suggestions } = searchState;
+
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+	const searchData = {
+		selectedCategory,
+		selectedRole,
+		selectedLocation,
+	};
+
+	useEffect(() => {
+		if (searchText.length >= 3) {
+			dispatch(fetchJobsByText({ title: searchText, from: 1, to: 20 }));
+		} else {
+			setShowSuggestion(true);
+			dispatch(setSuggestions([]));
+		}
+	}, [searchText]);
 
 	const toggleSearchType = (value) => {
 		setIsFreeSearch(value);
@@ -21,6 +47,16 @@ const Search = () => {
 	const handleLocationChange = (event) => {
 		setSelectedLocation(event.target.value);
 	};
+
+	const handleSearch = () => {
+		if (isFreeSearch) {
+			dispatch(fetchJobsByText({ title: searchText, from: 1, to: 20 }));
+		} else {
+			// dispatch(fetchJobsByText(searchData));
+		}
+		navigate('/search-results');
+	};
+
 	return (
 		<div className="text-black py-20 bg-white flex flex-col items-center justify-center">
 			<div className="w-4/5 max-w-xl mb-8 flex space-x-4">
@@ -44,7 +80,34 @@ const Search = () => {
 
 			<div className="w-4/5 max-w-xl border rounded overflow-hidden flex items-stretch h-[3rem]">
 				{isFreeSearch ? (
-					<input type="text" className="flex-1 px-4 py-3 rounded-l" placeholder="Free Search..." />
+					<div>
+						<div>
+							<input
+								type="text"
+								className="flex-1 px-4 py-3 rounded-l"
+								placeholder="Free Search..."
+								value={searchText}
+								onChange={(e) => {
+									setSearchText(e.target.value);
+								}}
+							/>
+						</div>
+						<div className="absolute bg-gray-200 w-full max-w-xl rounded mt-1 z-10">
+							{showSuggestion &&
+								suggestions.map((suggestion, index) => (
+									<div
+										key={index}
+										className="px-4 py-2 cursor-pointer"
+										onClick={() => {
+											setSearchText(suggestion);
+											setShowSuggestion(false);
+										}}
+									>
+										{suggestion}
+									</div>
+								))}
+						</div>
+					</div>
 				) : (
 					<>
 						<select
@@ -81,8 +144,9 @@ const Search = () => {
 					</>
 				)}
 				<button
-					type="submit"
-					className="flex items-center justify-center px-4 border-l rounded-r rounded-l-none text-white bg-teal-500 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-500 dark:focus:ring-teal-300 hover:bg-teal-600 hover:ring-teal-400"
+					type="button" // Change type to button
+					onClick={handleSearch} // Call handleSearch function on click
+					className="flex items-center justify-center border-l rounded-r rounded-l-none text-white bg-teal-500 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-500 dark:focus:ring-teal-300 hover:bg-teal-600 hover:ring-teal-400"
 				>
 					Go
 				</button>
@@ -91,4 +155,4 @@ const Search = () => {
 	);
 };
 
-export default Search;
+export default SearchJob;
