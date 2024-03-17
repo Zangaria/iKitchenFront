@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-// Assuming you have an action to fetch jobs
 import { getJobs } from '../actions/userActions';
 
 const JobsTable = () => {
 	const dispatch = useDispatch();
 	const [jobs, setJobs] = useState([]);
 	const [searchTerm, setSearchTerm] = useState('');
-	const [searchBy, setSearchBy] = useState('title');
+	const [searchBy, setSearchBy] = useState('Job title');
 
 	useEffect(() => {
 		const getAllJobs = async () => {
@@ -57,7 +56,7 @@ const JobsTable = () => {
 						onChange={handleSearchByChange}
 						className="text-xs md:text-base border border-gray-300 px-4 py-2 my-2 rounded-md"
 					>
-						<option value="title">Title</option>
+						<option value="title">Job title</option>
 						<option value="enterprise">Enterprise</option>
 					</select>
 				</div>
