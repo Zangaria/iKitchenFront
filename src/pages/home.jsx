@@ -1,12 +1,12 @@
 import React from 'react';
 import CardsContainer from '../components/CardsContainer';
-import Search from '../components/Search';
+import SearchJob from '../components/SearchJob';
 
 function Home() {
 	return (
 		<>
 			<div className="text-center container mx-auto">
-				<Search></Search>
+				<SearchJob></SearchJob>
 				<CardsContainer></CardsContainer>
 			</div>
 		</>

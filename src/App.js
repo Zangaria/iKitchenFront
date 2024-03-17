@@ -9,11 +9,15 @@ import ActivateUser from './components/ActivateUser';
 import ChangePassword from './pages/ChangePassword';
 import CreateEnterprise from './pages/CreateEnterprise';
 import CreateJob from './pages/CreateJob';
+import UserDetailsPage from './pages/UserDetailsPage';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Page404 from './pages/Page404';
 import EnterprisesTable from './pages/EnterprisesTable';
 import JobsTable from './pages/JobsTable';
+import Home from './pages/home';
+import SearchResults from './pages/SearchResults';
+import SavedJobsPage from './pages/SavedJobsPage';
 
 const App = () => {
 	return (
@@ -32,6 +36,8 @@ const App = () => {
 						<Route path="createJob" element={<CreateJob />} />
 						<Route path="EnterprisesTable" element={<EnterprisesTable />} />
 						<Route path="JobsTable" element={<JobsTable />} />
+						<Route path="search-results" element={<SearchResults />} />
+						<Route path="user-details" element={<UserDetailsPage />} />
 						<Route path="/*" element={<Page404 />} />
 					</Route>
 				</Routes>
