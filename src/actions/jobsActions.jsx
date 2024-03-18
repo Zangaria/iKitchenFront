@@ -1,5 +1,12 @@
 import axios from 'axios';
-import { jobCreateRequest, jobCreateSuccess, jobCreateFail } from '../reducers/jobReducers';
+import {
+	jobCreateRequest,
+	jobCreateSuccess,
+	jobCreateFail,
+	cvAddSuccess,
+	cvAddRequest,
+	cvAddFail,
+} from '../reducers/jobReducers';
 
 export const createJobAction = (jobData) => async (dispatch) => {
 	try {
@@ -23,6 +30,34 @@ export const createJobAction = (jobData) => async (dispatch) => {
 	} catch (error) {
 		dispatch(
 			jobCreateFail(
+				error.response && error.response.data.error ? error.response.data.error : error.message
+			)
+		);
+	}
+};
+
+export const addCVAction = (cvData) => async (dispatch) => {
+	try {
+		dispatch(cvAddRequest());
+		const token = localStorage.getItem('token');
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: token,
+			},
+		};
+
+		const { data } = await axios.post(`${process.env.REACT_APP_BASE_URL}/cv/add`, cvData, config);
+		if (data.error) {
+			console.log('Failed to add CV');
+			dispatch(cvAddFail(data.msg));
+		} else {
+			console.log('CV added successfully');
+			dispatch(cvAddSuccess(data));
+		}
+	} catch (error) {
+		dispatch(
+			cvAddFail(
 				error.response && error.response.data.error ? error.response.data.error : error.message
 			)
 		);

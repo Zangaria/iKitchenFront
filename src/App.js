@@ -13,6 +13,7 @@ import UserDetailsPage from './pages/UserDetailsPage';
 import Navbar from './components/Navbar';
 import Home from './pages/home';
 import SearchResults from './pages/SearchResults';
+import SubmitCv from './pages/SubmitCv';
 import SavedJobsPage from './pages/SavedJobsPage';
 import Page404 from './pages/page404';
 
@@ -33,6 +34,7 @@ const App = () => {
 						<Route path="createJob" element={<CreateJob />} />
 						<Route path="search-results" element={<SearchResults />} />
 						<Route path="user-details" element={<UserDetailsPage />} />
+						<Route path="submit-cv/:id" element={<SubmitCv />} />
 						<Route path="/*" element={<Page404 />} />
 					</Route>
 				</Routes>

@@ -2,10 +2,15 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserDetails } from '../../actions/userActions';
 import { toggleFavoriteJob } from '../../reducers/userReducers';
+import { useNavigate } from 'react-router-dom';
+
 const JobCard = ({ jobid, title, location, info, requirements, mContact }) => {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const favoritesJobs = useSelector((state) => state.user.userInfo.favoritesJobs);
 	const isJobSaved = favoritesJobs?.includes(jobid);
+	const ReusmeArray = useSelector((state) => state.user.userInfo.Reusme);
+	const isSubmited = ReusmeArray.some((resume) => resume.jobid === jobid);
 	const userInfo = useSelector((state) => state.user.userInfo);
 
 	// Func to toggle save/unsave job
@@ -18,9 +23,8 @@ const JobCard = ({ jobid, title, location, info, requirements, mContact }) => {
 		console.log('favoritesJobs', favoritesJobs);
 	}, [favoritesJobs, userInfo]);
 
-	// Func to send cv to this job
 	const handleSubmitSv = () => {
-		console.log('cv submitted!');
+		navigate(`/submit-cv/${jobid}`);
 	};
 
 	return (
@@ -49,7 +53,7 @@ const JobCard = ({ jobid, title, location, info, requirements, mContact }) => {
 						onClick={handleSubmitSv}
 						className="mt-4 ml-2 bg-blue-500 text-white px-4 py-2 rounded-md"
 					>
-						Submit cv
+						{isSubmited ? 'You sbmited' : 'Submit '}
 					</button>
 				</div>
 			</div>
