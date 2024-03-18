@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { createJobAction } from '../actions/jobsActions';
-import { useSelector } from 'react-redux';
 
 const CreateJob = () => {
 	const [formData, setFormData] = useState({
 		title: '',
-		enterprise: '',
 		entPublic: true,
-		tags: [],
+		tags: '',
 		location: '',
-		info: [],
-		requirements: [],
-		mContact: [],
-		applicants: [],
+		info: '',
+		requirements: '',
+		contactName: '',
+		contactEmail: '',
+		contactPhone: '',
+		contactCelphone: '',
+		applicants: '',
 	});
 
 	const dispatch = useDispatch();
-	const userJobState = useSelector((state) => state.job);
-	const { loading, error, job } = userJobState;
+	const { loading, error, job } = useSelector((state) => state.job);
 
 	const handleChange = (e) => {
 		const { name, value, type, checked } = e.target;
@@ -51,18 +51,6 @@ const CreateJob = () => {
 							type="text"
 							name="title"
 							value={formData.title}
-							onChange={handleChange}
-							className={`w-full py-2 px-4 mb-6 border-b border-gray-300 focus:outline-none focus:border-teal-500 dark:border-neutral-600 dark:focus:border-teal-300 `}
-							required
-						/>
-					</label>
-
-					<label className="block">
-						<span className="text-gray-700">Enterprise:</span>
-						<input
-							type="text"
-							name="enterprise"
-							value={formData.enterprise}
 							onChange={handleChange}
 							className="w-full py-2 px-4 mb-6 border-b border-gray-300 focus:outline-none focus:border-teal-500 dark:border-neutral-600 dark:focus:border-teal-300"
 							required
@@ -116,8 +104,41 @@ const CreateJob = () => {
 						<span className="text-gray-700">Main Contact:</span>
 						<input
 							type="text"
-							name="mContact"
-							value={formData.mContact}
+							name="contactName"
+							value={formData.contactName}
+							onChange={handleChange}
+							className="w-full py-2 px-4 mb-6 border-b border-gray-300 focus:outline-none focus:border-teal-500 dark:border-neutral-600 dark:focus:border-teal-300"
+						/>
+					</label>
+
+					<label className="block">
+						<span className="text-gray-700">Contact Email:</span>
+						<input
+							type="text"
+							name="contactEmail"
+							value={formData.contactEmail}
+							onChange={handleChange}
+							className="w-full py-2 px-4 mb-6 border-b border-gray-300 focus:outline-none focus:border-teal-500 dark:border-neutral-600 dark:focus:border-teal-300"
+						/>
+					</label>
+
+					<label className="block">
+						<span className="text-gray-700">Contact Phone:</span>
+						<input
+							type="text"
+							name="contactPhone"
+							value={formData.contactPhone}
+							onChange={handleChange}
+							className="w-full py-2 px-4 mb-6 border-b border-gray-300 focus:outline-none focus:border-teal-500 dark:border-neutral-600 dark:focus:border-teal-300"
+						/>
+					</label>
+
+					<label className="block">
+						<span className="text-gray-700">Contact Celphone:</span>
+						<input
+							type="text"
+							name="contactCelphone"
+							value={formData.contactCelphone}
 							onChange={handleChange}
 							className="w-full py-2 px-4 mb-6 border-b border-gray-300 focus:outline-none focus:border-teal-500 dark:border-neutral-600 dark:focus:border-teal-300"
 						/>

@@ -3,43 +3,54 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateUserDetails } from '../actions/userActions';
 
 const UserDetailsPage = () => {
-	const user = useSelector((state) => state.user);
+	const user = useSelector((state) => state.user.userInfo);
 	const dispatch = useDispatch();
 
 	// State for form inputs
-	const [firstName, setFirstName] = useState(user.firstName || '');
-	const [lastName, setLastName] = useState(user.lastName || '');
-	const [homeTown, setHomeTown] = useState(user.homeTown || '');
-	const [contact, setContact] = useState(user.contact || '');
+	const [formData, setFormData] = useState({
+		firstName: user.firstName || '',
+		lastName: user.lastName || '',
+		city: user.city || '',
+		contactName: user.contactName || '',
+		contactEmail: user.contactEmail || '',
+		contactPhone: user.contactPhone || '',
+		contactCelphone: user.contactCelphone || '',
+	});
+	const [error, setError] = useState('');
+
+	const { firstName, lastName, city, contactName, contactEmail, contactPhone, contactCelphone } =
+		formData;
+
+	const handleChange = (e) => {
+		setFormData({ ...formData, [e.target.name]: e.target.value });
+	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		// Construct the updated user data based on the changed fields
-		const updatedUserData = {};
-
-		// Check if each field has changed and add it to the updatedUserData object
-		if (firstName !== user.firstName) {
-			updatedUserData.firstName = firstName;
-		}
-		if (lastName !== user.lastName) {
-			updatedUserData.lastName = lastName;
-		}
-		if (homeTown !== user.homeTown) {
-			updatedUserData.homeTown = homeTown;
-		}
-		if (contact !== user.contact) {
-			updatedUserData.contact = contact;
+		// Simple validation
+		if (
+			!firstName ||
+			!lastName ||
+			!city ||
+			!contactName ||
+			!contactEmail ||
+			!contactPhone ||
+			!contactCelphone
+		) {
+			setError('All fields are required');
+			return;
 		}
 
-		// Dispatch the updateUserDetails action with the updatedUserData
-		dispatch(updateUserDetails(updatedUserData));
+		// Dispatch the updateUserDetails action with the formData
+		dispatch(updateUserDetails());
 	};
 
 	return (
 		<div className="text-black py-20 bg-white flex flex-col items-center justify-center">
 			<div className="w-4/5 max-w-xl">
 				<form onSubmit={handleSubmit}>
+					{error && <div className="text-red-500 mb-4">{error}</div>}
 					<div className="mb-4">
 						<label htmlFor="firstName" className="block mb-2 font-semibold">
 							First Name
@@ -47,8 +58,9 @@ const UserDetailsPage = () => {
 						<input
 							type="text"
 							id="firstName"
+							name="firstName"
 							value={firstName}
-							onChange={(e) => setFirstName(e.target.value)}
+							onChange={handleChange}
 							className="border p-2 rounded w-full"
 						/>
 					</div>
@@ -59,32 +71,74 @@ const UserDetailsPage = () => {
 						<input
 							type="text"
 							id="lastName"
+							name="lastName"
 							value={lastName}
-							onChange={(e) => setLastName(e.target.value)}
+							onChange={handleChange}
 							className="border p-2 rounded w-full"
 						/>
 					</div>
 					<div className="mb-4">
-						<label htmlFor="homeTown" className="block mb-2 font-semibold">
-							Home Town
+						<label htmlFor="city" className="block mb-2 font-semibold">
+							City
 						</label>
 						<input
 							type="text"
-							id="homeTown"
-							value={homeTown}
-							onChange={(e) => setHomeTown(e.target.value)}
+							id="city"
+							name="city"
+							value={city}
+							onChange={handleChange}
 							className="border p-2 rounded w-full"
 						/>
 					</div>
 					<div className="mb-4">
-						<label htmlFor="contact" className="block mb-2 font-semibold">
-							Contact
+						<label htmlFor="contactName" className="block mb-2 font-semibold">
+							Contact Name
 						</label>
 						<input
 							type="text"
-							id="contact"
-							value={contact}
-							onChange={(e) => setContact(e.target.value)}
+							id="contactName"
+							name="contactName"
+							value={contactName}
+							onChange={handleChange}
+							className="border p-2 rounded w-full"
+						/>
+					</div>
+					<div className="mb-4">
+						<label htmlFor="contactEmail" className="block mb-2 font-semibold">
+							Contact Email
+						</label>
+						<input
+							type="email"
+							id="contactEmail"
+							name="contactEmail"
+							value={contactEmail}
+							onChange={handleChange}
+							className="border p-2 rounded w-full"
+						/>
+					</div>
+					<div className="mb-4">
+						<label htmlFor="contactPhone" className="block mb-2 font-semibold">
+							Contact Phone
+						</label>
+						<input
+							type="tel"
+							id="contactPhone"
+							name="contactPhone"
+							value={contactPhone}
+							onChange={handleChange}
+							className="border p-2 rounded w-full"
+						/>
+					</div>
+					<div className="mb-4">
+						<label htmlFor="contactCelphone" className="block mb-2 font-semibold">
+							Contact Celphone
+						</label>
+						<input
+							type="tel"
+							id="contactCelphone"
+							name="contactCelphone"
+							value={contactCelphone}
+							onChange={handleChange}
 							className="border p-2 rounded w-full"
 						/>
 					</div>

@@ -1,20 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserDetails } from '../../actions/userActions';
-
-const JobCard = ({ jobId, enterprise, title, location, info, tags, requirements, mContact }) => {
+import { toggleFavoriteJob } from '../../reducers/userReducers';
+const JobCard = ({ jobid, title, location, info, requirements, mContact }) => {
 	const dispatch = useDispatch();
-	const savedJobs = useSelector((state) => state.user.savedJobs);
-	const isJobSaved = savedJobs?.includes(jobId);
+	const favoritesJobs = useSelector((state) => state.user.userInfo.favoritesJobs);
+	const isJobSaved = favoritesJobs?.includes(jobid);
+	const userInfo = useSelector((state) => state.user.userInfo);
 
 	// Func to toggle save/unsave job
 	const handleSaveJob = () => {
-		if (isJobSaved) {
-			dispatch(updateUserDetails());
-		} else {
-			// If job is not saved, save it
-		}
+		dispatch(toggleFavoriteJob(jobid));
+		dispatch(updateUserDetails());
 	};
+
+	useEffect(() => {
+		console.log('favoritesJobs', favoritesJobs);
+	}, [favoritesJobs, userInfo]);
 
 	// Func to send cv to this job
 	const handleSubmitSv = () => {
@@ -26,9 +28,7 @@ const JobCard = ({ jobId, enterprise, title, location, info, tags, requirements,
 			<div className="w-full flex flex-col items-center justify-center">
 				<div className="border p-4 rounded-md w-full">
 					<h2 className="text-xl font-semibold mb-2">{title}</h2>
-					<p className="mb-2">
-						<strong>Enterprise:</strong> {enterprise}
-					</p>
+
 					<p className="mb-2">
 						<strong>Location:</strong> {location}
 					</p>
