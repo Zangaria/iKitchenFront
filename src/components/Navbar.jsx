@@ -1,22 +1,37 @@
-import React, { useState } from 'react';
-import websiteLogo from '../images/website-logo.png';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { MdPerson } from 'react-icons/md';
-import { Link } from 'react-router-dom';
+import { userLogout } from '../actions/userActions';
+
 const Navbar = () => {
 	const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
-	const isAuthenticated = true;
+	const [isAuthenticated, setIsAuthenticated] = useState(false);
+	const dispatch = useDispatch();
+
 	const toggleDropdown = () => {
 		setIsOpen(!isOpen);
 	};
-	// const currentUser = useSelector((state) => state.user);
-	const currentUser = {
-		name: 'John Doe',
-		userType: 2,
-	};
+
+	const { userInfo } = useSelector((state) => state.user);
+
+	useEffect(() => {
+		// Check if user authentication info exists in local storage
+		if (localStorage.getItem('userInfo')) {
+			setIsAuthenticated(true);
+		} else {
+			setIsAuthenticated(false);
+		}
+
+		// console.log(isAuthenticated);
+	}, [userInfo]);
+
 	const toggleMobileMenu = () => {
 		setMobileMenuOpen(!isMobileMenuOpen);
+	};
+
+	const handleLogout = () => {
+		dispatch(userLogout());
 	};
 
 	return (
@@ -42,7 +57,7 @@ const Navbar = () => {
 									Login
 								</a>
 							</>
-						) : currentUser?.userType === 1 ? (
+						) : userInfo?.type === 1 ? (
 							<div className="relative bg-green-500 flex justify-center  rounded-lg w-8 h-8">
 								<button
 									onClick={toggleDropdown}
@@ -55,14 +70,16 @@ const Navbar = () => {
 										<a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
 											User Details
 										</a>
+
 										<a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
 											Saved Jobs
 										</a>
 									</div>
 								)}
+								<button onClick={handleLogout}>Logout</button>
 							</div>
 						) : (
-							currentUser?.userType === 2 && (
+							userInfo?.type === 2 && (
 								<div className="relative bg-green-500 flex justify-center  rounded-lg w-8 h-8">
 									<button
 										onClick={toggleDropdown}
@@ -84,6 +101,13 @@ const Navbar = () => {
 											>
 												Create job
 											</a>
+											<a
+												href="user-details"
+												className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+											>
+												User Details
+											</a>
+											<button onClick={handleLogout}>Logout</button>
 										</div>
 									)}
 								</div>

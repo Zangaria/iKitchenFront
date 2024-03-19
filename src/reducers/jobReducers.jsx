@@ -24,9 +24,31 @@ export const jobSlice = createSlice({
 			state.error = action.payload;
 			state.job = null;
 		},
+		cvAddRequest: (state, action) => {
+			state.loading = false;
+			state.error = action.payload;
+			state.job = null;
+		},
+		cvAddSuccess: (state, action) => {
+			state.loading = false;
+			state.job = action.payload;
+			state.error = null;
+		},
+		cvAddFail: (state, action) => {
+			state.loading = false;
+			state.error = action.payload;
+			state.job = null;
+		},
 	},
 });
 
-export const { jobCreateRequest, jobCreateSuccess, jobCreateFail } = jobSlice.actions;
+export const {
+	jobCreateRequest,
+	jobCreateSuccess,
+	jobCreateFail,
+	cvAddRequest,
+	cvAddSuccess,
+	cvAddFail,
+} = jobSlice.actions;
 
 export default jobSlice.reducer;

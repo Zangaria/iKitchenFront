@@ -1,24 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserDetails } from '../../actions/userActions';
+import { toggleFavoriteJob } from '../../reducers/userReducers';
+import { useNavigate } from 'react-router-dom';
 
-const JobCard = ({ jobId, enterprise, title, location, info, tags, requirements, mContact }) => {
+const JobCard = ({ jobid, title, location, info, requirements, mContact }) => {
 	const dispatch = useDispatch();
-	const savedJobs = useSelector((state) => state.user.savedJobs);
-	const isJobSaved = savedJobs?.includes(jobId);
+	const navigate = useNavigate();
+	const favoritesJobs = useSelector((state) => state.user.userInfo.favoritesJobs);
+	const isJobSaved = favoritesJobs?.includes(jobid);
+	const ReusmeArray = useSelector((state) => state.user.userInfo.Reusme);
+	const isSubmited = ReusmeArray.some((resume) => resume.jobid === jobid);
+	const userInfo = useSelector((state) => state.user.userInfo);
 
 	// Func to toggle save/unsave job
 	const handleSaveJob = () => {
-		if (isJobSaved) {
-			dispatch(updateUserDetails());
-		} else {
-			// If job is not saved, save it
-		}
+		dispatch(toggleFavoriteJob(jobid));
+		dispatch(updateUserDetails());
 	};
 
-	// Func to send cv to this job
+	useEffect(() => {
+		console.log('favoritesJobs', favoritesJobs);
+	}, [favoritesJobs, userInfo]);
+
 	const handleSubmitSv = () => {
-		console.log('cv submitted!');
+		navigate(`/submit-cv/${jobid}`);
 	};
 
 	return (
@@ -26,9 +32,7 @@ const JobCard = ({ jobId, enterprise, title, location, info, tags, requirements,
 			<div className="w-full flex flex-col items-center justify-center">
 				<div className="border p-4 rounded-md w-full">
 					<h2 className="text-xl font-semibold mb-2">{title}</h2>
-					<p className="mb-2">
-						<strong>Enterprise:</strong> {enterprise}
-					</p>
+
 					<p className="mb-2">
 						<strong>Location:</strong> {location}
 					</p>
@@ -49,7 +53,7 @@ const JobCard = ({ jobId, enterprise, title, location, info, tags, requirements,
 						onClick={handleSubmitSv}
 						className="mt-4 ml-2 bg-blue-500 text-white px-4 py-2 rounded-md"
 					>
-						Submit cv
+						{isSubmited ? 'You sbmited' : 'Submit '}
 					</button>
 				</div>
 			</div>

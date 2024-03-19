@@ -28,9 +28,8 @@ export const userSlice = createSlice({
 			state.loading = true;
 		},
 		userLoginSuccess: (state, action) => {
-			console.log('kmm');
 			state.loading = false;
-			state.userInfo = action.payload;
+			state.userInfo = action.payload.user;
 			state.isAuthenticated = true;
 			state.error = null;
 		},
@@ -77,6 +76,29 @@ export const userSlice = createSlice({
 			state.loading = false;
 			state.error = action.payload;
 		},
+		toggleFavoriteJob: (state, action) => {
+			const jobId = action.payload;
+			// console.log(jobId);
+			const index = state.userInfo.favoritesJobs.indexOf(jobId);
+			if (index !== -1) {
+				// Job is already in favorites, remove it
+				state.userInfo.favoritesJobs.splice(index, 1);
+			} else {
+				// Job is not in favorites, add it
+				state.userInfo.favoritesJobs.push(jobId);
+			}
+		},
+		userLogoutRequest: (state) => {
+			state.loading = true;
+		},
+		userLogoutSuccess: (state) => {
+			state.loading = false;
+			state.userInfo = null;
+		},
+		userLogoutFail: (state) => {
+			state.loading = false;
+			state.error = 'Logout failed';
+		},
 	},
 });
 
@@ -94,6 +116,7 @@ export const {
 	userChangePasswordRequest,
 	userChangePasswordSuccess,
 	userChangePasswordFail,
+	toggleFavoriteJob,
 } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -48,10 +48,10 @@ export const loginAction = (userData) => async (dispatch) => {
 			dispatch(userLoginFail(data.msg));
 		} else {
 			dispatch(userLoginSuccess(data));
-			console.log(data);
+			console.log('data', data);
 
 			localStorage.setItem('token', data.token);
-			// localStorage.setItem('userName', data.userName);
+			localStorage.setItem('userInfo', JSON.stringify(data.user));
 		}
 	} catch (err) {
 		dispatch(
@@ -218,8 +218,8 @@ export const getJobs = () => async (dispatch) => {
 		dispatch(getAllEnterprisesFail(err.response.data.msg));
 
 // Frontend action creator
-export const updateUserDetails = (detailsToUpdate) => async (dispatch) => {
-	console.log('at func', detailsToUpdate);
+export const updateUserDetails = () => async (dispatch, getState) => {
+	const userInfo = getState().user.userInfo; // Access userInfo directly from Redux state
 	try {
 		dispatch(userUpdateRequest());
 
@@ -232,16 +232,29 @@ export const updateUserDetails = (detailsToUpdate) => async (dispatch) => {
 
 		// Make a request to the server to update user details
 		const { data } = await axios.put(
-			`${process.env.REACT_APP_BASE_URL}/user/update`,
-			detailsToUpdate,
+			`${process.env.REACT_APP_BASE_URL}/user/updateUser`,
+			userInfo,
 			config
 		);
-
+		console.log('data', data);
 		dispatch(userUpdateSuccess(data.msg));
 	} catch (err) {
 		dispatch(
 			userUpdateFail(err.response && err.response.data.msg ? err.response.data.msg : err.message)
 		);
+	}
+};
+
+export const userLogout = () => (dispatch, getState) => {
+	try {
+		dispatch(userLogoutRequest());
+
+		localStorage.removeItem('userInfo');
+		localStorage.removeItem('token');
+		dispatch(userLogoutSuccess());
+	} catch (error) {
+		// If there's an error during logout, dispatch the failure action
+		dispatch(userLogoutFail(error.message));
 	}
 };
 
@@ -277,3 +290,6 @@ const userUpdateRequest = createAction('user/userUpdateRequest');
 const userUpdateSuccess = createAction('user/userUpdateSuccess');
 const userUpdateFail = createAction('user/userUpdateFail');
 
+const userLogoutRequest = createAction('user/userLogoutRequest');
+const userLogoutSuccess = createAction('user/userLogoutSuccess');
+const userLogoutFail = createAction('user/userLogoutFail');

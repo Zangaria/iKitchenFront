@@ -4,7 +4,8 @@ import { searchRequest, searchSuccess, searchFail } from '../reducers/searchRedu
 export const fetchJobsByText =
 	({ title, from, to }) =>
 	async (dispatch) => {
-		console.log('done');
+		// console.log(title);
+		// console.log('done');
 		try {
 			dispatch(searchRequest());
 
@@ -16,9 +17,9 @@ export const fetchJobsByText =
 
 			// Make a GET request to the jobs endpoint with searchParams
 			const { data } = await axios.get(
-				`${process.env.REACT_APP_BASE_URL}/search?title=${title}&from=${from}&to=${to}`
+				`${process.env.REACT_APP_BASE_URL}/search?title=${title}&from=${0}&to=${1000}`
 			);
-			console.log('data', data);
+			// console.log('data', data);
 			if (data.total === 0) {
 				dispatch(searchFail('There are no result to this job'));
 			}
