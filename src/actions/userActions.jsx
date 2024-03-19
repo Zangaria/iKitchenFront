@@ -106,8 +106,9 @@ export const activateUserAction = (userid) => async (dispatch) => {
 		if (data.err) {
 			dispatch(activateUserFail(data.msg));
 		} else {
-			console.log(data.token);
+			console.log(data);
 			localStorage.setItem('token', data.token);
+			localStorage.setItem('userInfo', JSON.stringify(data.user));
 			dispatch(activateUserSuccess(data.token));
 		}
 	} catch (err) {
@@ -157,13 +158,21 @@ export const updateUserDetails = () => async (dispatch, getState) => {
 		};
 
 		// Make a request to the server to update user details
-		const { data } = await axios.put(
-			`${process.env.REACT_APP_BASE_URL}/user/updateUser`,
+
+		const { data } = await axios.patch(
+			`https://api-iwork.amio.co.il/user/updateUser`,
 			userInfo,
 			config
 		);
+
+		// Remove existing userInfo from local storage
+		localStorage.removeItem('userInfo');
+
+		// Insert new userInfo into local storage
+		localStorage.setItem('userInfo', JSON.stringify(data.userInfo));
+
 		console.log('data', data);
-		dispatch(userUpdateSuccess(data.msg));
+		dispatch(userUpdateSuccess(data));
 	} catch (err) {
 		dispatch(
 			userUpdateFail(err.response && err.response.data.msg ? err.response.data.msg : err.message)

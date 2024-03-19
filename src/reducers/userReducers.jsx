@@ -99,6 +99,18 @@ export const userSlice = createSlice({
 			state.loading = false;
 			state.error = 'Logout failed';
 		},
+		userUpdateSuccess: (state, action) => {
+			console.log('kara');
+			state.loading = false;
+			state.userInfo = action.payload;
+		},
+		userUpdateFail: (state) => {
+			state.loading = false;
+			state.error = 'Logout failed';
+		},
+		userUpdateRequest: (state) => {
+			state.loading = true;
+		},
 	},
 });
 
@@ -117,6 +129,9 @@ export const {
 	userChangePasswordSuccess,
 	userChangePasswordFail,
 	toggleFavoriteJob,
+	userUpdateSuccess,
+	userUpdateRequest,
+	userUpdateFail,
 } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserDetails } from '../actions/userActions';
 
@@ -8,13 +8,13 @@ const UserDetailsPage = () => {
 
 	// State for form inputs
 	const [formData, setFormData] = useState({
-		firstName: user.firstName || '',
-		lastName: user.lastName || '',
-		city: user.city || '',
-		contactName: user.contactName || '',
-		contactEmail: user.contactEmail || '',
-		contactPhone: user.contactPhone || '',
-		contactCelphone: user.contactCelphone || '',
+		firstName: user ? user.firstName || '' : '',
+		lastName: user ? user.lastName || '' : '',
+		city: user ? user.city || '' : '',
+		contactName: user ? user.contactName || '' : '',
+		contactEmail: user ? user.contactEmail || '' : '',
+		contactPhone: user ? user.contactPhone || '' : '',
+		contactCelphone: user ? user.contactCelphone || '' : '',
 	});
 	const [error, setError] = useState('');
 
@@ -24,6 +24,10 @@ const UserDetailsPage = () => {
 	const handleChange = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
+
+	useEffect(() => {
+		console.log(user);
+	}, []);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();

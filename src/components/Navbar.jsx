@@ -17,7 +17,8 @@ const Navbar = () => {
 
 	useEffect(() => {
 		// Check if user authentication info exists in local storage
-		if (localStorage.getItem('userInfo')) {
+		if (userInfo) {
+			console.log('userInfo', localStorage.getItem('userInfo'));
 			setIsAuthenticated(true);
 		} else {
 			setIsAuthenticated(false);

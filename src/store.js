@@ -5,9 +5,9 @@ import jobReducer from './reducers/jobReducers';
 import searchReducer from './reducers/searchReducers';
 
 // Fetch user info from localStorage if available
-const userInfoFromStorage = localStorage.getItem('userInfo')
-	? JSON.parse(localStorage.getItem('userInfo'))
-	: {};
+const userInfoFromStorage = JSON.parse(localStorage.getItem('key') || 'null');
+
+console.log(userInfoFromStorage);
 
 const store = configureStore({
 	reducer: {
