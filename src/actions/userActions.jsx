@@ -216,6 +216,8 @@ export const getJobs = () => async (dispatch) => {
 		}
 	} catch (err) {
 		dispatch(getAllEnterprisesFail(err.response.data.msg));
+	}
+};
 
 // Frontend action creator
 export const updateUserDetails = () => async (dispatch, getState) => {
