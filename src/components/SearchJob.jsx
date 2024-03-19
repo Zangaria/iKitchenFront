@@ -78,21 +78,20 @@ const SearchJob = () => {
 				</button>
 			</div>
 
-			<div className="w-4/5 max-w-xl border rounded overflow-hidden flex items-stretch h-[3rem]">
+			<div className="w-4/5 max-w-xl border rounded overflow-hidden flex items-stretch justify-between h-[3rem]">
 				{isFreeSearch ? (
-					<div>
-						<div>
-							<input
-								type="text"
-								className="flex-1 px-4 py-3 rounded-l"
-								placeholder="Free Search..."
-								value={searchText}
-								onChange={(e) => {
-									setSearchText(e.target.value);
-								}}
-							/>
-						</div>
-						<div className="absolute bg-gray-200 w-full max-w-xl rounded mt-1 z-10">
+					<div className="w-full">
+						<input
+							type="text"
+							className="flex-1 px-4 py-3 rounded-l w-full"
+							placeholder="Free Search..."
+							value={searchText}
+							style={{ outline: 'none' }}
+							onChange={(e) => {
+								setSearchText(e.target.value);
+							}}
+						/>
+						<div className="absolute w-full max-w-xl text-left bg-white shadow-md rounded mt-1 z-10 border-gray-300">
 							{showSuggestion &&
 								suggestions.map((suggestion, index) => (
 									<div
