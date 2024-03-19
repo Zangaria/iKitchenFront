@@ -83,15 +83,14 @@ const SearchJob = () => {
 					<div className="w-full">
 						<input
 							type="text"
-							className="flex-1 px-4 py-3 rounded-l w-full"
+							className="flex-1 px-4 py-3 rounded-l w-full focus:outline-none"
 							placeholder="Free Search..."
 							value={searchText}
-							style={{ outline: 'none' }}
 							onChange={(e) => {
 								setSearchText(e.target.value);
 							}}
 						/>
-						<div className="absolute w-full max-w-xl text-left bg-white shadow-md rounded mt-1 z-10 border-gray-300">
+						<div className="absolute w-fit md:w-full md:max-w-xl text-left bg-white shadow-md rounded mt-1 z-10 border-gray-300">
 							{showSuggestion &&
 								suggestions.map((suggestion, index) => (
 									<div
@@ -118,7 +117,6 @@ const SearchJob = () => {
 							<option value="Technology">Technology</option>
 							<option value="Finance">Finance</option>
 							<option value="Healthcare">Healthcare</option>
-							{/* Add more categories as needed */}
 						</select>
 
 						<select className="flex-1 px-4 py-3" value={selectedRole} onChange={handleRoleChange}>
@@ -126,7 +124,6 @@ const SearchJob = () => {
 							<option value="Developer">Developer</option>
 							<option value="Designer">Designer</option>
 							<option value="Manager">Manager</option>
-							{/* Add more roles as needed */}
 						</select>
 
 						<select
@@ -138,13 +135,12 @@ const SearchJob = () => {
 							<option value="New York">New York</option>
 							<option value="San Francisco">San Francisco</option>
 							<option value="London">London</option>
-							{/* Add more locations as needed */}
 						</select>
 					</>
 				)}
 				<button
-					type="button" // Change type to button
-					onClick={handleSearch} // Call handleSearch function on click
+					type="button" 
+					onClick={handleSearch}
 					className="flex items-center justify-center border-l rounded-r rounded-l-none text-white bg-teal-500 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-500 dark:focus:ring-teal-300 hover:bg-teal-600 hover:ring-teal-400"
 				>
 					Go
