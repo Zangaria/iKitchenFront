@@ -9,7 +9,7 @@ import alljobsTax from '../images/alljobs-tax.svg';
 
 const Cards = () => {
 	return (
-		<div className="flex flex-wrap w-3/4 justify-center">
+		<div className="flex flex-wrap w-full md:w-3/4 justify-center">
 			<div className="flex w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3 p-2">
 				<Card
 					link="/User/UpgradeCV/"
