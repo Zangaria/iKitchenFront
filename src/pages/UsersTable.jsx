@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-// action required- getUsers
-// import { getJobs } from '../actions/userActions';
+import { getUsers } from '../actions/userActions';
 
 const UsersTable = () => {
 	const dispatch = useDispatch();
