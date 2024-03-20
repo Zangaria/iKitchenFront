@@ -67,9 +67,10 @@ export const userSlice = createSlice({
 			state.loading = true;
 		},
 
-		activateUserSuccess: (state) => {
+		activateUserSuccess: (state, action) => {
 			state.loading = false;
 			state.isActive = true;
+			state.userInfo = action.payload;
 		},
 
 		activateUserFail: (state, action) => {

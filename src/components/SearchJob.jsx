@@ -13,7 +13,7 @@ const SearchJob = () => {
 	const [selectedLocation, setSelectedLocation] = useState('All Locations');
 
 	const searchState = useSelector((state) => state.search);
-	const { suggestions } = searchState;
+	const { suggestions, error } = searchState;
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -54,7 +54,9 @@ const SearchJob = () => {
 		} else {
 			// dispatch(fetchJobsByText(searchData));
 		}
-		navigate('/search-results');
+		if (!error) {
+			navigate('/search-results');
+		}
 	};
 
 	return (
@@ -151,6 +153,7 @@ const SearchJob = () => {
 					Go
 				</button>
 			</div>
+			{error && <p className="text-red-500">{error}</p>}
 		</div>
 	);
 };

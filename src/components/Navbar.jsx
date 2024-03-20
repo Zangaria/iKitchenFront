@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { MdPerson } from 'react-icons/md';
 import { userLogout } from '../actions/userActions';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
 	const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
+
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const toggleDropdown = () => {
 		setIsOpen(!isOpen);
@@ -16,15 +19,13 @@ const Navbar = () => {
 	const { userInfo } = useSelector((state) => state.user);
 
 	useEffect(() => {
-		// Check if user authentication info exists in local storage
-		if (userInfo) {
-			console.log('userInfo', localStorage.getItem('userInfo'));
+		// Check if user authentication info exists in Redux state or local storage
+		if (userInfo || localStorage.getItem('userInfo')) {
+			console.log(userInfo);
 			setIsAuthenticated(true);
 		} else {
 			setIsAuthenticated(false);
 		}
-
-		// console.log(isAuthenticated);
 	}, [userInfo]);
 
 	const toggleMobileMenu = () => {
@@ -33,6 +34,7 @@ const Navbar = () => {
 
 	const handleLogout = () => {
 		dispatch(userLogout());
+		navigate('/');
 	};
 
 	return (

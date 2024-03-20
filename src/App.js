@@ -20,8 +20,8 @@ import Page404 from './pages/page404';
 const App = () => {
 	return (
 		<>
-			<Navbar></Navbar>
 			<BrowserRouter>
+				<Navbar></Navbar>
 				<Routes>
 					<Route>
 						<Route index element={<Home />} />

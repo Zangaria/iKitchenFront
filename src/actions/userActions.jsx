@@ -109,7 +109,7 @@ export const activateUserAction = (userid) => async (dispatch) => {
 			console.log(data);
 			localStorage.setItem('token', data.token);
 			localStorage.setItem('userInfo', JSON.stringify(data.user));
-			dispatch(activateUserSuccess(data.token));
+			dispatch(activateUserSuccess(data.user));
 		}
 	} catch (err) {
 		dispatch(activateUserFail(err.response.data.msg));
@@ -146,7 +146,7 @@ export const changePasswordAction = (currentPassword, newPassword, token) => asy
 
 // Frontend action creator
 export const updateUserDetails = () => async (dispatch, getState) => {
-	const userInfo = getState().user.userInfo; // Access userInfo directly from Redux state
+	const userInfo = getState().user.userInfo;
 	try {
 		dispatch(userUpdateRequest());
 
@@ -169,7 +169,7 @@ export const updateUserDetails = () => async (dispatch, getState) => {
 		localStorage.removeItem('userInfo');
 
 		// Insert new userInfo into local storage
-		localStorage.setItem('userInfo', JSON.stringify(data.userInfo));
+		localStorage.setItem('userInfo', JSON.stringify(data));
 
 		console.log('data', data);
 		dispatch(userUpdateSuccess(data));
