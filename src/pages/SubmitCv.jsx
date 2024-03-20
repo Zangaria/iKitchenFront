@@ -1,64 +1,86 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Document, Page, pdfjs } from 'react-pdf';
 import { useDispatch } from 'react-redux';
 import { addCVAction } from '../actions/jobsActions';
+import { useSelector } from 'react-redux';
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function SubmitCv() {
-	const [name, setName] = useState('');
+	const [firstName, setFirstName] = useState('');
+	const [lastName, setLastName] = useState('');
 	const [email, setEmail] = useState('');
 	const [phone, setPhone] = useState('');
-	const [pdfBase64, setPdfBase64] = useState('');
+	const [numPages, setNumPages] = useState(null);
 	const [error, setError] = useState('');
+	const [pdfText, setPdfText] = useState('');
+	const userInfo = useSelector((state) => state.user.userInfo);
 	const dispatch = useDispatch();
-	const fileInputRef = useRef(null);
 
-	const convertToBase64 = (file) => {
+	useEffect(() => {
+		if (userInfo) {
+			setLastName(userInfo.lastName || '');
+			setFirstName(userInfo.firstName || '');
+			setEmail(userInfo.email || '');
+			setPhone(userInfo.phone || '');
+		}
+	}, [userInfo]);
+
+	const handleFileChange = (event) => {
+		const file = event.target.files[0];
+		const reader = new FileReader();
+
+		reader.onload = function () {
+			const base64String = reader.result.split(',')[1];
+			getTextFromPDF(file);
+		};
+		reader.readAsDataURL(file);
+	};
+
+	const getTextFromPDF = async (file) => {
+		const text = await extractText(file);
+		setPdfText(text);
+	};
+
+	const extractText = (file) => {
 		return new Promise((resolve, reject) => {
 			const reader = new FileReader();
-
-			reader.onloadend = () => {
-				// Read the file and convert it to base64
-				const base64String = reader.result.split(',')[1];
-				resolve(base64String);
+			reader.onload = async function () {
+				const typedArray = new Uint8Array(this.result);
+				try {
+					const pdf = await pdfjs.getDocument({ data: typedArray }).promise;
+					let fullText = '';
+					for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+						const page = await pdf.getPage(pageNum);
+						const textContent = await page.getTextContent();
+						const pageText = textContent.items.map((item) => item.str).join('\n');
+						fullText += pageText + '\n';
+					}
+					resolve(fullText);
+				} catch (error) {
+					reject(error);
+				}
 			};
-
-			reader.onerror = () => {
-				reject(new Error('Failed to read the file.'));
-			};
-
-			reader.readAsDataURL(file);
+			reader.readAsArrayBuffer(file);
 		});
-	};
-
-	const handleFileChange = async (event) => {
-		const file = event.target.files[0];
-		try {
-			const base64String = await convertToBase64(file);
-			setPdfBase64(base64String);
-		} catch (error) {
-			console.error('Error converting file to base64:', error);
-		}
-	};
-
-	const handleUploadClick = () => {
-		// fileInputRef.current.click();
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		// Validate form inputs
-		if (!name || !email || !phone || !pdfBase64) {
+		if (!email || !phone) {
 			setError('Please fill in all fields.');
 			return;
 		}
 
 		// Dispatch an action to submit the form data along with the PDF base64 string
-		dispatch(addCVAction({ name, email, phone, pdfBase64 }));
+		dispatch(addCVAction({ firstName, lastName, email, phone, pdfText }));
 
 		// Clear form inputs and base64 string
-		setName('');
+		setFirstName('');
+		setLastName('');
 		setEmail('');
 		setPhone('');
-		setPdfBase64('');
 		setError('');
 	};
 
@@ -68,13 +90,25 @@ function SubmitCv() {
 			<form onSubmit={handleSubmit} className="max-w-lg mx-auto">
 				<div className="mb-4">
 					<label htmlFor="name" className="block mb-2 font-semibold">
-						Full Name
+						First Name
 					</label>
 					<input
 						type="text"
 						id="name"
-						value={name}
-						onChange={(e) => setName(e.target.value)}
+						value={firstName}
+						onChange={(e) => setFirstName(e.target.value)}
+						className="border p-2 rounded w-full"
+					/>
+				</div>
+				<div className="mb-4">
+					<label htmlFor="name" className="block mb-2 font-semibold">
+						Last Name
+					</label>
+					<input
+						type="text"
+						id="name"
+						value={lastName}
+						onChange={(e) => setLastName(e.target.value)}
 						className="border p-2 rounded w-full"
 					/>
 				</div>
@@ -106,20 +140,7 @@ function SubmitCv() {
 					<label htmlFor="cvFile" className="block mb-2 font-semibold">
 						Upload CV
 					</label>
-					<input
-						id="fileInput"
-						type="file"
-						accept="application/pdf"
-						style={{ display: 'none' }}
-						onChange={handleFileChange}
-					/>
-					<button
-						type="button"
-						onClick={handleUploadClick}
-						className="bg-blue-500 text-white px-4 py-2 rounded"
-					>
-						Choose File
-					</button>
+					<input type="file" accept="application/pdf" onChange={handleFileChange} />
 				</div>
 				<button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
 					Submit
@@ -127,6 +148,11 @@ function SubmitCv() {
 
 				{error && <p className="text-red-500 mt-2">{error}</p>}
 			</form>
+			{pdfText && (
+				<div className="mt-8">
+					<pre>{pdfText}</pre>
+				</div>
+			)}
 		</div>
 	);
 }
