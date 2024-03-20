@@ -144,6 +144,80 @@ export const changePasswordAction = (currentPassword, newPassword, token) => asy
 	}
 };
 
+export const getEnterprises = () => async (dispatch) => {
+	try {
+		dispatch(getAllEnterprises());
+
+		const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/getAllEnterprise`);
+
+		if (data) {
+			return data;
+		}
+
+		if (data.err) {
+			console.log(data.msg);
+			return data.msg;
+		} else {
+			dispatch(activateUserSuccess(data.token));
+		}
+	} catch (err) {
+		dispatch(getAllEnterprisesFail(err.response.data.msg));
+	}
+};
+
+export const getEnterprise = (id) => async (dispatch) => {
+	try {
+		dispatch(getEnterpriseById());
+
+		const { data } = await axios.get(
+			`${process.env.REACT_APP_BASE_URL}/enterprise/byId?entId=${id}`
+		);
+
+		if (data) {
+			return data;
+		}
+
+		if (data.err) {
+			console.log(data.msg);
+			return data.msg;
+		} else {
+			dispatch(activateUserSuccess(data.token));
+		}
+	} catch (err) {
+		dispatch(getEnterpriseByIdFail(err.response.data.msg));
+	}
+};
+
+export const getJobs = () => async (dispatch) => {
+	try {
+		// Need to change to the actual Jobs!
+		return [
+			{
+				title: 'Full-stack Developer',
+				enterprise: 'Intel',
+			},
+			{
+				title: 'Project Manager',
+				enterprise: 'Microsoft',
+			},
+		];
+		dispatch(getAllEnterprises());
+
+		const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/getAllEnterprise`);
+
+		if (data) {
+			return data;
+		}
+
+		if (data.err) {
+			console.log(data.msg);
+			return data.msg;
+		} else {
+			dispatch(activateUserSuccess(data.token));
+		}
+	} catch (err) {
+		dispatch(getAllEnterprisesFail(err.response.data.msg));
+
 // Frontend action creator
 export const updateUserDetails = () => async (dispatch, getState) => {
 	const userInfo = getState().user.userInfo;
@@ -213,6 +287,13 @@ const activateUserFail = createAction('user/activateUserFail');
 const userChangePasswordRequest = createAction('user/userChangePasswordRequest');
 const userChangePasswordSuccess = createAction('user/userChangePasswordSuccess');
 const userChangePasswordFail = createAction('user/userChangePasswordFail');
+
+
+const getAllEnterprises = createAction('admin/getAllEnterprises');
+const getAllEnterprisesFail = createAction('admin/getAllEnterprisesFail');
+
+const getEnterpriseById = createAction('admin/getEnterpriseById');
+const getEnterpriseByIdFail = createAction('admin/getEnterpriseByIdFail');
 
 const userUpdateRequest = createAction('user/userUpdateRequest');
 const userUpdateSuccess = createAction('user/userUpdateSuccess');
