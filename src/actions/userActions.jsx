@@ -218,6 +218,35 @@ export const getJobs = () => async (dispatch) => {
 		dispatch(getAllEnterprisesFail(err.response.data.msg));
 	}
 };
+// Eliran 20/03/2024 get all users for Users Table
+export const getUsers = (token) => async (dispatch) => {
+	try {
+		dispatch(getAllUsers());
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: token,
+			},
+		};
+
+		const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/user/userInfo`, config);
+
+		if (data) {
+			return data;
+		}
+
+		if (data.err) {
+			console.log(data.msg);
+			return data.msg;
+		} else {
+			dispatch(activateUserSuccess(data.token));
+		}
+	} catch (err) {
+		dispatch(getAllUsersFail(err.response.data.msg));
+	}
+};
+
+// Eliran- End
 
 // Frontend action creator
 export const updateUserDetails = (detailsToUpdate) => async (dispatch) => {
@@ -274,6 +303,10 @@ const getAllEnterprisesFail = createAction('admin/getAllEnterprisesFail');
 const getEnterpriseById = createAction('admin/getEnterpriseById');
 const getEnterpriseByIdFail = createAction('admin/getEnterpriseByIdFail');
 
+// Eliran 20/03/2024
+const getAllUsers = createAction('admin/getAllUsers');
+const getAllUsersFail = createAction('admin/getAllUsersFail');
+// End
 const userUpdateRequest = createAction('user/userUpdateRequest');
 const userUpdateSuccess = createAction('user/userUpdateSuccess');
 const userUpdateFail = createAction('user/userUpdateFail');
