@@ -1,48 +1,65 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import React, { useState, useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { addCVAction } from '../actions/jobsActions';
 
-const SubmitCv = () => {
-	const { jobid } = useParams(); // Get the jobid from URL params
-
-	// State for form inputs
+function SubmitCv() {
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [phone, setPhone] = useState('');
-	const [cvFile, setCvFile] = useState(null);
+	const [pdfBase64, setPdfBase64] = useState('');
 	const [error, setError] = useState('');
-
 	const dispatch = useDispatch();
-	const ReusmeArray = useSelector((state) => state.user.userInfo.Reusme);
-	const isSubmited = ReusmeArray.some((resume) => resume.jobid === jobid);
-	const userInfo = useSelector((state) => state.user.userInfo);
+	const fileInputRef = useRef(null);
 
-	useEffect(() => {
-		if (error) {
-			setTimeout(() => {
-				setError('');
-			}, 3000);
+	const convertToBase64 = (file) => {
+		return new Promise((resolve, reject) => {
+			const reader = new FileReader();
+
+			reader.onloadend = () => {
+				// Read the file and convert it to base64
+				const base64String = reader.result.split(',')[1];
+				resolve(base64String);
+			};
+
+			reader.onerror = () => {
+				reject(new Error('Failed to read the file.'));
+			};
+
+			reader.readAsDataURL(file);
+		});
+	};
+
+	const handleFileChange = async (event) => {
+		const file = event.target.files[0];
+		try {
+			const base64String = await convertToBase64(file);
+			setPdfBase64(base64String);
+		} catch (error) {
+			console.error('Error converting file to base64:', error);
 		}
-	}, [error]);
+	};
 
-	// Handle form submission
+	const handleUploadClick = () => {
+		// fileInputRef.current.click();
+	};
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		// Validate form inputs
-		if (!name || !email || !phone || !cvFile) {
+		if (!name || !email || !phone || !pdfBase64) {
 			setError('Please fill in all fields.');
 			return;
 		}
 
+		// Dispatch an action to submit the form data along with the PDF base64 string
+		dispatch(addCVAction({ name, email, phone, pdfBase64 }));
+
+		// Clear form inputs and base64 string
 		setName('');
 		setEmail('');
 		setPhone('');
-		setCvFile(null);
-	};
-
-	// Handle file input change
-	const handleFileChange = (e) => {
-		setCvFile(e.target.files[0]);
+		setPdfBase64('');
+		setError('');
 	};
 
 	return (
@@ -90,11 +107,19 @@ const SubmitCv = () => {
 						Upload CV
 					</label>
 					<input
+						id="fileInput"
 						type="file"
-						id="cvFile"
+						accept="application/pdf"
+						style={{ display: 'none' }}
 						onChange={handleFileChange}
-						className="border p-2 rounded w-full"
 					/>
+					<button
+						type="button"
+						onClick={handleUploadClick}
+						className="bg-blue-500 text-white px-4 py-2 rounded"
+					>
+						Choose File
+					</button>
 				</div>
 				<button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
 					Submit
@@ -102,21 +127,8 @@ const SubmitCv = () => {
 
 				{error && <p className="text-red-500 mt-2">{error}</p>}
 			</form>
-
-			{ReusmeArray.length > 0 && (
-				<div className="mt-8">
-					<h2 className="text-2xl font-semibold mb-4">Uploaded CVs</h2>
-					{ReusmeArray.map((cv, index) => (
-						<div key={index} className="bg-gray-100 p-4 mb-4 rounded-md">
-							<p>CV Name: {cv.name}</p>
-							<p>Email: {cv.email}</p>
-							<p>Phone: {cv.phone}</p>
-						</div>
-					))}
-				</div>
-			)}
 		</div>
 	);
-};
+}
 
 export default SubmitCv;

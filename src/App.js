@@ -18,6 +18,7 @@ import Home from './pages/home';
 import SearchResults from './pages/SearchResults';
 import SubmitCv from './pages/SubmitCv';
 import SavedJobsPage from './pages/SavedJobsPage';
+import UploadCVPage from './pages/UploadCVPage';
 
 const App = () => {
 	return (
