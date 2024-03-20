@@ -217,6 +217,8 @@ export const getJobs = () => async (dispatch) => {
 		}
 	} catch (err) {
 		dispatch(getAllEnterprisesFail(err.response.data.msg));
+	}
+};
 
 // Frontend action creator
 export const updateUserDetails = () => async (dispatch, getState) => {
@@ -287,7 +289,6 @@ const activateUserFail = createAction('user/activateUserFail');
 const userChangePasswordRequest = createAction('user/userChangePasswordRequest');
 const userChangePasswordSuccess = createAction('user/userChangePasswordSuccess');
 const userChangePasswordFail = createAction('user/userChangePasswordFail');
-
 
 const getAllEnterprises = createAction('admin/getAllEnterprises');
 const getAllEnterprisesFail = createAction('admin/getAllEnterprisesFail');
