@@ -47,13 +47,23 @@ const SearchJob = () => {
 	const handleLocationChange = (event) => {
 		setSelectedLocation(event.target.value);
 	};
-
 	const handleSearch = () => {
 		if (isFreeSearch) {
 			dispatch(fetchJobsByText({ title: searchText, from: 1, to: 20 }));
 		} else {
 			// dispatch(fetchJobsByText(searchData));
 		}
+
+		// Save search parameters to local storage
+		const searchParams = {
+			isFreeSearch,
+			searchText,
+			selectedCategory,
+			selectedRole,
+			selectedLocation,
+		};
+		localStorage.setItem('searchParams', JSON.stringify(searchParams));
+
 		if (!error) {
 			navigate('/search-results');
 		}

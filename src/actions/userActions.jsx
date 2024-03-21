@@ -223,6 +223,11 @@ export const getJobs = () => async (dispatch) => {
 // Frontend action creator
 export const updateUserDetails = () => async (dispatch, getState) => {
 	const userInfo = getState().user.userInfo;
+
+	const userInfoToSend = { ...userInfo };
+	delete userInfoToSend.email;
+	delete userInfoToSend.password;
+
 	try {
 		dispatch(userUpdateRequest());
 
@@ -237,7 +242,7 @@ export const updateUserDetails = () => async (dispatch, getState) => {
 
 		const { data } = await axios.patch(
 			`https://api-iwork.amio.co.il/user/updateUser`,
-			userInfo,
+			userInfoToSend,
 			config
 		);
 

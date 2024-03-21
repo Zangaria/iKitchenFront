@@ -43,7 +43,7 @@ export default function Register() {
 		const userData = {
 			email: user.email,
 			password: user.password,
-			userName: user.firstName,
+			firstName: user.firstName,
 			lastName: user.lastName,
 			type: user.role,
 			jobType: user.jobType,
@@ -72,7 +72,7 @@ export default function Register() {
 						required
 					/>
 
-					{/* Name input */}
+					{/* Last name input */}
 					<input
 						type="text"
 						placeholder="lastName"
@@ -80,6 +80,7 @@ export default function Register() {
 						value={user.lastName}
 						onChange={handleChange}
 						className="w-full py-2 px-4 mb-6 border-b border-gray-300 focus:outline-none focus:border-teal-500 dark:border-neutral-600 dark:focus:border-teal-300"
+						required
 					/>
 
 					{/* Email input */}
@@ -136,35 +137,6 @@ export default function Register() {
 							I am an employee
 						</button>
 					</div>
-
-					{/* Additional inputs for jobFinder */}
-					{user.role === 1 && (
-						<>
-							<div className="mb-6">
-								<label htmlFor="jobType">Select Job Type:</label>
-								<select
-									id="jobType"
-									name="jobType"
-									value={user.jobType}
-									onChange={handleChange}
-									className="w-full py-2 px-4 border-b border-gray-300 focus:outline-none focus:border-teal-500 dark:border-neutral-600 dark:focus:border-teal-300"
-								>
-									<option value="">Select Job Type</option>
-									<option value="computers">Computers</option>
-									<option value="teacher">Teacher</option>
-								</select>
-							</div>
-							<input
-								type="text"
-								placeholder="Location"
-								name="location"
-								value={user.location}
-								onChange={handleChange}
-								className="w-full py-2 px-4 mb-6 border-b border-gray-300 focus:outline-none focus:border-teal-500 dark:border-neutral-600 dark:focus:border-teal-300"
-								required
-							/>
-						</>
-					)}
 
 					{/* Error message for password mismatch */}
 					{passwordsMatchError && (

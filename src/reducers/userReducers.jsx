@@ -81,7 +81,7 @@ export const userSlice = createSlice({
 		toggleFavoriteJob: (state, action) => {
 			const jobId = action.payload;
 			// console.log(jobId);
-			const index = state.userInfo.favoritesJobs.indexOf(jobId);
+			const index = state.userInfo?.favoritesJobs.indexOf(jobId);
 			if (index !== -1) {
 				// Job is already in favorites, remove it
 				state.userInfo.favoritesJobs.splice(index, 1);

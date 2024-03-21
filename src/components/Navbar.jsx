@@ -21,7 +21,7 @@ const Navbar = () => {
 	useEffect(() => {
 		// Check if user authentication info exists in Redux state or local storage
 		if (userInfo || localStorage.getItem('userInfo')) {
-			console.log(userInfo.type);
+			// console.log(userInfo.type);
 			setIsAuthenticated(true);
 		} else {
 			setIsAuthenticated(false);
@@ -92,12 +92,6 @@ const Navbar = () => {
 									</button>
 									{isOpen && (
 										<div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg">
-											<a
-												href="createEnterprise"
-												className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-											>
-												Create enterprise
-											</a>
 											<a
 												href="createJob"
 												className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"

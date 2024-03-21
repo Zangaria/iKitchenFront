@@ -37,16 +37,11 @@ export const createJobAction = (jobData) => async (dispatch) => {
 };
 
 const test = {
-	jobid: '65fa1f31ecf91cc0c821845e',
-	email: 'yigal@gmail.com',
-	firstName: 'yigal',
-	lastName: 'lipsey',
-	pdfText: 'blah blah',
-	phone: '0533350910',
+	lkjnlj: 'ojnj',
 };
 
 export const addCVAction = (cvData) => async (dispatch) => {
-	console.log(cvData);
+	// console.log(cvData);
 	try {
 		dispatch(cvAddRequest());
 		const token = localStorage.getItem('token');
@@ -71,7 +66,8 @@ export const addCVAction = (cvData) => async (dispatch) => {
 			dispatch(cvAddSuccess(data));
 		}
 	} catch (error) {
-		console.log(error.response.data);
+		console.log('Failed to add CV');
+		console.log(error.response.data.error);
 		dispatch(
 			cvAddFail(
 				error.response && error.response.data.error ? error.response.data.error : error.message

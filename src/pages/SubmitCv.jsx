@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function SubmitCv() {
-	const { jobid } = useParams(); // Grabbing jobid from URL
+	const { jobid } = useParams();
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [email, setEmail] = useState('');
@@ -69,7 +69,7 @@ function SubmitCv() {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		// Validate form inputs
-		if (!email || !phone) {
+		if (!email || !phone || !lastName || !firstName) {
 			setError('Please fill in all fields.');
 			return;
 		}
@@ -82,7 +82,6 @@ function SubmitCv() {
 		setLastName('');
 		setEmail('');
 		setPhone('');
-		setPdfText('');
 		setError('');
 	};
 
@@ -150,11 +149,11 @@ function SubmitCv() {
 
 				{error && <p className="text-red-500 mt-2">{error}</p>}
 			</form>
-			{pdfText && (
+			{/* {pdfText && (
 				<div className="mt-8">
 					<pre>{pdfText}</pre>
 				</div>
-			)}
+			)} */}
 		</div>
 	);
 }

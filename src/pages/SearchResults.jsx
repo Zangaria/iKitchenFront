@@ -1,8 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import JobCard from '../components/cards/JobCard';
-import SearchJob from '../components/SearchJob';
-import { Link } from 'react-router-dom';
+
 const SearchResults = () => {
 	// Access the search results from the Redux state
 	const searchResults = useSelector((state) => state.search.searchResults);
@@ -20,6 +19,9 @@ const SearchResults = () => {
 								title={result.title}
 								requirements={result.requirements}
 								location={result.location}
+								contactCelphone={result.contactCelphone}
+								contactEmail={result.contactEmail}
+								contactName={result.contactName}
 								info={result.info}
 							/>
 						</div>
