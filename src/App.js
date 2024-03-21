@@ -18,7 +18,6 @@ import Home from './pages/home';
 import SearchResults from './pages/SearchResults';
 import SubmitCv from './pages/SubmitCv';
 import SavedJobsPage from './pages/SavedJobsPage';
-import UploadCVPage from './pages/UploadCVPage';
 
 const App = () => {
 	return (
@@ -40,6 +39,7 @@ const App = () => {
 						<Route path="search-results" element={<SearchResults />} />
 						<Route path="user-details" element={<UserDetailsPage />} />
 						<Route path="submit-cv/:jobid" element={<SubmitCv />} />
+						<Route path="saved-jobs" element={<SavedJobsPage />} />
 						<Route path="/*" element={<Page404 />} />
 					</Route>
 				</Routes>

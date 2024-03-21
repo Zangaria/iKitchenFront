@@ -74,7 +74,10 @@ const Navbar = () => {
 											User Details
 										</a>
 
-										<a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+										<a
+											href="saved-jobs"
+											className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+										>
 											Saved Jobs
 										</a>
 									</div>
@@ -103,6 +106,12 @@ const Navbar = () => {
 												className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
 											>
 												User Details
+											</a>
+											<a
+												href="saved-jobs"
+												className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+											>
+												Saved Jobs
 											</a>
 											<button onClick={handleLogout}>Logout</button>
 										</div>
