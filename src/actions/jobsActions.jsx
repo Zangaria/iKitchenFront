@@ -36,6 +36,15 @@ export const createJobAction = (jobData) => async (dispatch) => {
 	}
 };
 
+const test = {
+	jobid: '65fa1f31ecf91cc0c821845e',
+	email: 'yigal@gmail.com',
+	firstName: 'yigal',
+	lastName: 'lipsey',
+	pdfText: 'blah blah',
+	phone: '0533350910',
+};
+
 export const addCVAction = (cvData) => async (dispatch) => {
 	console.log(cvData);
 	try {
@@ -53,7 +62,7 @@ export const addCVAction = (cvData) => async (dispatch) => {
 			cvData,
 			config
 		);
-		console.log(data);
+		console.log('data of add cv', data);
 		if (data.error) {
 			console.log('Failed to add CV');
 			dispatch(cvAddFail(data.msg));
@@ -62,6 +71,7 @@ export const addCVAction = (cvData) => async (dispatch) => {
 			dispatch(cvAddSuccess(data));
 		}
 	} catch (error) {
+		console.log(error.response.data);
 		dispatch(
 			cvAddFail(
 				error.response && error.response.data.error ? error.response.data.error : error.message

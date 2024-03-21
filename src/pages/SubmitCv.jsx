@@ -3,15 +3,16 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import { useDispatch } from 'react-redux';
 import { addCVAction } from '../actions/jobsActions';
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function SubmitCv() {
+	const { jobid } = useParams(); // Grabbing jobid from URL
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [email, setEmail] = useState('');
 	const [phone, setPhone] = useState('');
-	const [numPages, setNumPages] = useState(null);
 	const [error, setError] = useState('');
 	const [pdfText, setPdfText] = useState('');
 	const userInfo = useSelector((state) => state.user.userInfo);
@@ -74,13 +75,14 @@ function SubmitCv() {
 		}
 
 		// Dispatch an action to submit the form data along with the PDF base64 string
-		dispatch(addCVAction({ firstName, lastName, email, phone, pdfText }));
+		dispatch(addCVAction({ firstName, lastName, email, phone, pdfText, jobid }));
 
 		// Clear form inputs and base64 string
 		setFirstName('');
 		setLastName('');
 		setEmail('');
 		setPhone('');
+		setPdfText('');
 		setError('');
 	};
 
@@ -89,24 +91,24 @@ function SubmitCv() {
 			<h2 className="text-2xl font-semibold mb-4">Submit Your CV</h2>
 			<form onSubmit={handleSubmit} className="max-w-lg mx-auto">
 				<div className="mb-4">
-					<label htmlFor="name" className="block mb-2 font-semibold">
+					<label htmlFor="firstName" className="block mb-2 font-semibold">
 						First Name
 					</label>
 					<input
 						type="text"
-						id="name"
+						id="firstName"
 						value={firstName}
 						onChange={(e) => setFirstName(e.target.value)}
 						className="border p-2 rounded w-full"
 					/>
 				</div>
 				<div className="mb-4">
-					<label htmlFor="name" className="block mb-2 font-semibold">
+					<label htmlFor="lastName" className="block mb-2 font-semibold">
 						Last Name
 					</label>
 					<input
 						type="text"
-						id="name"
+						id="lastName"
 						value={lastName}
 						onChange={(e) => setLastName(e.target.value)}
 						className="border p-2 rounded w-full"

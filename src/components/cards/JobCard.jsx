@@ -9,7 +9,7 @@ const JobCard = ({ jobid, title, location, info, requirements, mContact }) => {
 	const navigate = useNavigate();
 	const favoritesJobs = useSelector((state) => state.user.userInfo.favoritesJobs);
 	const isJobSaved = favoritesJobs?.includes(jobid);
-	const ReusmeArray = useSelector((state) => state.user.userInfo.Reusme);
+	const ReusmeArray = useSelector((state) => state.user.userInfo.Reusme || []);
 	const isSubmited = ReusmeArray.some((resume) => resume.jobid === jobid);
 	const userInfo = useSelector((state) => state.user.userInfo);
 

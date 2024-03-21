@@ -18,8 +18,9 @@ const SearchResults = () => {
 								key={index}
 								jobid={result._id}
 								title={result.title}
-								enterprise={result.enterprise}
+								requirements={result.requirements}
 								location={result.location}
+								info={result.info}
 							/>
 						</div>
 					))}
