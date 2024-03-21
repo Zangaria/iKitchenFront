@@ -29,10 +29,6 @@ const JobCard = ({
 		dispatch(updateUserDetails());
 	};
 
-	// useEffect(() => {
-	// 	console.log('favoritesJobs', favoritesJobs);
-	// }, [favoritesJobs, userInfo]);
-
 	const handleSubmitSv = () => {
 		navigate(`/submit-cv/${jobid}`);
 	};

@@ -90,6 +90,9 @@ export const userSlice = createSlice({
 				state.userInfo.favoritesJobs.push(jobId);
 			}
 		},
+		updateUserDetailsAtRedux: (state, action) => {
+			state.userInfo = { ...state.userInfo, ...action.payload };
+		},
 		userLogoutRequest: (state) => {
 			state.loading = true;
 		},
@@ -134,6 +137,7 @@ export const {
 	userUpdateSuccess,
 	userUpdateRequest,
 	userUpdateFail,
+	updateUserDetailsAtRedux,
 } = userSlice.actions;
 
 export default userSlice.reducer;

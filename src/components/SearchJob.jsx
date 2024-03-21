@@ -56,11 +56,7 @@ const SearchJob = () => {
 
 		// Save search parameters to local storage
 		const searchParams = {
-			isFreeSearch,
 			searchText,
-			selectedCategory,
-			selectedRole,
-			selectedLocation,
 		};
 		localStorage.setItem('searchParams', JSON.stringify(searchParams));
 

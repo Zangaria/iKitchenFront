@@ -255,6 +255,7 @@ export const updateUserDetails = () => async (dispatch, getState) => {
 		console.log('data', data);
 		dispatch(userUpdateSuccess(data));
 	} catch (err) {
+		console.log(err.response.data.msg);
 		dispatch(
 			userUpdateFail(err.response && err.response.data.msg ? err.response.data.msg : err.message)
 		);

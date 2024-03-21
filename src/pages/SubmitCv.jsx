@@ -23,7 +23,7 @@ function SubmitCv() {
 			setLastName(userInfo.lastName || '');
 			setFirstName(userInfo.firstName || '');
 			setEmail(userInfo.email || '');
-			setPhone(userInfo.phone || '');
+			setPhone(userInfo.contactCelphone || '');
 		}
 	}, [userInfo]);
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserDetails } from '../actions/userActions';
+import { updateUserDetailsAtRedux } from '../reducers/userReducers';
 
 const UserDetailsPage = () => {
 	const user = useSelector((state) => state.user.userInfo);
@@ -11,15 +12,13 @@ const UserDetailsPage = () => {
 		firstName: user ? user.firstName || '' : '',
 		lastName: user ? user.lastName || '' : '',
 		city: user ? user.city || '' : '',
-		contactName: user ? user.contactName || '' : '',
 		contactEmail: user ? user.contactEmail || '' : '',
 		contactPhone: user ? user.contactPhone || '' : '',
 		contactCelphone: user ? user.contactCelphone || '' : '',
 	});
 	const [error, setError] = useState('');
 
-	const { firstName, lastName, city, contactName, contactEmail, contactPhone, contactCelphone } =
-		formData;
+	const { firstName, lastName, city, contactEmail, contactPhone, contactCelphone } = formData;
 
 	const handleChange = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -32,21 +31,8 @@ const UserDetailsPage = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		// Simple validation
-		if (
-			!firstName ||
-			!lastName ||
-			!city ||
-			!contactName ||
-			!contactEmail ||
-			!contactPhone ||
-			!contactCelphone
-		) {
-			setError('All fields are required');
-			return;
-		}
-
 		// Dispatch the updateUserDetails action with the formData
+		dispatch(updateUserDetailsAtRedux(formData));
 		dispatch(updateUserDetails());
 	};
 
@@ -95,19 +81,6 @@ const UserDetailsPage = () => {
 						/>
 					</div>
 					<div className="mb-4">
-						<label htmlFor="contactName" className="block mb-2 font-semibold">
-							Contact Name
-						</label>
-						<input
-							type="text"
-							id="contactName"
-							name="contactName"
-							value={contactName}
-							onChange={handleChange}
-							className="border p-2 rounded w-full"
-						/>
-					</div>
-					<div className="mb-4">
 						<label htmlFor="contactEmail" className="block mb-2 font-semibold">
 							Contact Email
 						</label>
@@ -135,7 +108,7 @@ const UserDetailsPage = () => {
 					</div>
 					<div className="mb-4">
 						<label htmlFor="contactCelphone" className="block mb-2 font-semibold">
-							Contact Celphone
+							Contact Cellphone
 						</label>
 						<input
 							type="tel"
