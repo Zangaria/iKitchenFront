@@ -189,20 +189,7 @@ export const getEnterprise = (id) => async (dispatch) => {
 
 export const getJobs = () => async (dispatch) => {
 	try {
-		// Need to change to the actual Jobs!
-		return [
-			{
-				title: 'Full-stack Developer',
-				enterprise: 'Intel',
-			},
-			{
-				title: 'Project Manager',
-				enterprise: 'Microsoft',
-			},
-		];
-		dispatch(getAllEnterprises());
-
-		const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/getAllEnterprise`);
+		const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/job/all`);
 
 		if (data) {
 			return data;
@@ -212,7 +199,8 @@ export const getJobs = () => async (dispatch) => {
 			console.log(data.msg);
 			return data.msg;
 		} else {
-			dispatch(activateUserSuccess(data.token));
+			// DELETE
+			// dispatch(activateUserSuccess(data.token));
 		}
 	} catch (err) {
 		dispatch(getAllEnterprisesFail(err.response.data.msg));
@@ -260,6 +248,26 @@ export const userLogout = () => (dispatch, getState) => {
 	}
 };
 
+export const deleteJobAction = (jobId) => async (dispatch) => {
+	try {
+		dispatch(deleteJobRequest());
+
+		const config = {
+			headers: {
+				Authorization: localStorage.getItem('token'),
+			},
+		};
+
+		const { data } = await axios.delete(`${process.env.REACT_APP_BASE_URL}/jobs/${jobId}`, config);
+
+		dispatch(deleteJobSuccess(data.msg));
+	} catch (err) {
+		dispatch(
+			deleteJobFail(err.response && err.response.data.msg ? err.response.data.msg : err.message)
+		);
+	}
+};
+
 // Create action creators using createAction
 const userRegisterRequest = createAction('user/userRegisterRequest');
 const userRegisterSuccess = createAction('user/userRegisterSuccess');
@@ -281,7 +289,6 @@ const userChangePasswordRequest = createAction('user/userChangePasswordRequest')
 const userChangePasswordSuccess = createAction('user/userChangePasswordSuccess');
 const userChangePasswordFail = createAction('user/userChangePasswordFail');
 
-
 const getAllEnterprises = createAction('admin/getAllEnterprises');
 const getAllEnterprisesFail = createAction('admin/getAllEnterprisesFail');
 
@@ -295,3 +302,8 @@ const userUpdateFail = createAction('user/userUpdateFail');
 const userLogoutRequest = createAction('user/userLogoutRequest');
 const userLogoutSuccess = createAction('user/userLogoutSuccess');
 const userLogoutFail = createAction('user/userLogoutFail');
+
+// Create action creators using createAction
+const deleteJobRequest = createAction('jobs/deleteJobRequest');
+const deleteJobSuccess = createAction('jobs/deleteJobSuccess');
+const deleteJobFail = createAction('jobs/deleteJobFail');
