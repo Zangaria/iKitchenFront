@@ -290,6 +290,22 @@ export const getUsers = () => async (dispatch) => {
 	}
 };
 
+export const deleteUser= (_id) => async (dispatch)=>{
+	try {
+		dispatch(deleteUserById());
+		const config={
+			headers:{
+				Authorization: localStorage.getItem('token')
+			}
+		}
+
+		const {data} = await axios.delete(`${process.env.REACT_APP_BASE_URL}/`)
+		
+	} catch (error) {
+		
+	}
+}
+
 // Create action creators using createAction
 const userRegisterRequest = createAction('user/userRegisterRequest');
 const userRegisterSuccess = createAction('user/userRegisterSuccess');
