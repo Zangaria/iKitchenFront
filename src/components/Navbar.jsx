@@ -43,9 +43,8 @@ const Navbar = () => {
 							href="/"
 							className="px-2 py-1 bg-gradient-to-r from-teal-500 via-white to-pink-700 rounded-lg text-black"
 						>
-							i - work
+							iWork
 						</a>
-						Company
 					</div>
 					<div className="hidden md:flex space-x-4">
 						{!isAuthenticated ? (
