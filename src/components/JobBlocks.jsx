@@ -1,102 +1,72 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { getUserJobsAction } from '../actions/userActions'; // Import the getUserJobsAction action creator
 import JobBlock from './JobBlock';
 
 const JobBlocks = () => {
-    const jobData = [
-        {
-            id: 1,
-            title: 'Software Engineer',
-            info: 'We are looking for a talented software engineer to join our team.',
-            buttonText: 'View Details',
-        },
-        {
-            id: 2,
-            title: 'Data Analyst',
-            info: 'We are seeking a data analyst to analyze and interpret data.',
-            buttonText: 'View Details',
-        },
-        {
-            id: 3,
-            title: 'Product Manager',
-            info: 'We are hiring a product manager to oversee product development.',
-            buttonText: 'View Details',
-        },
-        // Additional job suggestions
-        {
-            id: 4,
-            title: 'Frontend Developer',
-            info: 'We are in need of a skilled frontend developer to work on our web applications.',
-            buttonText: 'View Details',
-        },
-        {
-            id: 5,
-            title: 'Marketing Specialist',
-            info: 'Looking for a marketing specialist to develop and implement marketing strategies.',
-            buttonText: 'View Details',
-        },
-        {
-            id: 6,
-            title: 'Graphic Designer',
-            info: 'We require a creative graphic designer to design various marketing materials.',
-            buttonText: 'View Details',
-        },
-        {
-            id: 7,
-            title: 'HR Manager',
-            info: 'Seeking an experienced HR manager to oversee human resources activities.',
-            buttonText: 'View Details',
-        },
-        {
-            id: 8,
-            title: 'Financial Analyst',
-            info: 'We are hiring a financial analyst to analyze financial data and make recommendations.',
-            buttonText: 'View Details',
-        },
-        {
-            id: 9,
-            title: 'Content Writer',
-            info: 'Looking for a talented content writer to create engaging content for our audience.',
-            buttonText: 'View Details',
-        },
-        {
-            id: 10,
-            title: 'UI/UX Designer',
-            info: 'We need a UI/UX designer to improve user experience and interface design.',
-            buttonText: 'View Details',
-        },
-        {
-            id: 11,
-            title: 'Sales Manager',
-            info: 'Hiring a sales manager to lead our sales team and drive revenue growth.',
-            buttonText: 'View Details',
-        },
-        {
-            id: 12,
-            title: 'Network Administrator',
-            info: 'We are looking for a network administrator to manage our network infrastructure.',
-            buttonText: 'View Details',
-        },
-    ];
+	const dispatch = useDispatch();
+	const [jobData, setJobData] = useState([]);
+	const [selectedJob, setSelectedJob] = useState(null); // State to track the selected job for the popup
 
-    return (
-        <div>
-            <div className="text-4xl font-bold leading-tight tracking-tight text-teal-500 md:text-3xl dark:text-white mb-8 text-center">My Jobs</div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {jobData.map((job) => (
-                    <JobBlock
-                        key={job.id}
-                        title={job.title}
-                        info={job.info}
-                        buttonText={job.buttonText}
-                        onClick={() => {
-                            // Handle button click event here
-                            console.log(`Button clicked for job: ${job.title}`);
-                        }}
-                    />
-                ))}
-            </div>
-        </div>
-    );
+	useEffect(() => {
+		const getAllJobs = async () => {
+			try {
+				const jobsData = await dispatch(getUserJobsAction());
+				setJobData(jobsData);
+			} catch (error) {
+				console.error('Error fetching job data:', error);
+			}
+		};
+		getAllJobs();
+	}, [dispatch]);
+
+	const handleJobClick = (job) => {
+		setSelectedJob(job); // Set the selected job when a job block is clicked
+	};
+
+	const handleClosePopup = () => {
+		setSelectedJob(null); // Reset selected job when closing the popup
+	};
+
+	return (
+		<div>
+			<div className="text-4xl font-bold leading-tight tracking-tight text-teal-500 md:text-3xl dark:text-white mb-8 text-center">
+				My Jobs
+			</div>
+			<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+				{jobData.map((job) => (
+					<JobBlock
+						key={job._id}
+						title={job.title}
+						info={job.info}
+						buttonText="View details"
+						onClick={() => handleJobClick(job)} // Pass handleJobClick as onClick prop
+					/>
+				))}
+			</div>
+			{selectedJob && (
+				<div className="fixed inset-0 flex items-center justify-center z-50">
+					<div className="absolute inset-0 bg-gray-800 opacity-50"></div>
+					<div className="bg-white p-8 rounded-lg z-10 overflow-y-auto max-h-full">
+						<h2 className="text-2xl font-bold mb-4">{selectedJob.title}</h2>
+						{/* Mapping over each property of selectedJob */}
+						{Object.entries(selectedJob).map(([key, value]) => (
+							<div key={key} className="mb-2">
+								<span className="font-semibold">{key}: </span>
+								<span>{typeof value === 'object' ? JSON.stringify(value) : value}</span>
+							</div>
+						))}
+						<button
+							className="mt-4 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+							onClick={handleClosePopup}
+						>
+							Close
+						</button>
+					</div>
+				</div>
+			)}
+		</div>
+	);
 };
 
 export default JobBlocks;
