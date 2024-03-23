@@ -268,6 +268,28 @@ export const deleteJobAction = (jobId) => async (dispatch) => {
 	}
 };
 
+//get users
+export const getUsers = () => async (dispatch) => {
+	try {
+		dispatch(getAllUsersRequest());
+		const config={
+			headers:{
+				Authorization: localStorage.getItem('token')
+			}
+		}
+
+		const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/user/userInfo`,config);
+
+		if(data?.err){
+			return data.err.msg.toString();
+		}else{
+			return data;
+		}
+	} catch (err) {
+		dispatch(getAllUsersFail(err));
+	}
+};
+
 // Create action creators using createAction
 const userRegisterRequest = createAction('user/userRegisterRequest');
 const userRegisterSuccess = createAction('user/userRegisterSuccess');
@@ -307,3 +329,10 @@ const userLogoutFail = createAction('user/userLogoutFail');
 const deleteJobRequest = createAction('jobs/deleteJobRequest');
 const deleteJobSuccess = createAction('jobs/deleteJobSuccess');
 const deleteJobFail = createAction('jobs/deleteJobFail');
+//Eliran get users, delete user, for admin page 22/03/24
+const getAllUsers = createAction('admin/getAllUsers');
+const getAllUsersFail = createAction('admin/getAllUsersFail');
+
+const deleteUserById = createAction('admin/deleteUserById');
+const deleteUserByIdFail = createAction('admin/deleteUserByIdFail');
+//end
