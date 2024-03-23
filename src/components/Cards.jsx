@@ -18,7 +18,7 @@ const Cards = () => {
 					imageWidth="87"
 					imageHeight="86"
 					content="Uploading a resume"
-					hoverClass="hover:scale-105 hover:shadow-lg"
+					hoverClass="hover:scale-105 hover:shadow-lg hover:text-teal-500"
 				/>
 			</div>
 
@@ -30,7 +30,7 @@ const Cards = () => {
 					imageWidth="85"
 					imageHeight="89"
 					content="How much are you worth?"
-					hoverClass="hover:scale-105 hover:shadow-lg"
+					hoverClass="hover:scale-105 hover:shadow-lg hover:text-teal-500"
 				/>
 			</div>
 
@@ -42,7 +42,7 @@ const Cards = () => {
 					imageWidth="85"
 					imageHeight="89"
 					content="Free tax refund eligibility check"
-					hoverClass="hover:scale-105 hover:shadow-lg"
+					hoverClass="hover:scale-105 hover:shadow-lg hover:text-teal-500"
 				/>
 			</div>
 
@@ -54,7 +54,7 @@ const Cards = () => {
 					imageWidth="85"
 					imageHeight="89"
 					content="Salary calculators"
-					hoverClass="hover:scale-105 hover:shadow-lg"
+					hoverClass="hover:scale-105 hover:shadow-lg hover:text-teal-500"
 				/>
 			</div>
 
@@ -66,7 +66,7 @@ const Cards = () => {
 					imageWidth="85"
 					imageHeight="89"
 					content="Preparation for a job interview"
-					hoverClass="hover:scale-105 hover:shadow-lg"
+					hoverClass="hover:scale-105 hover:shadow-lg hover:text-teal-500"
 				/>
 			</div>
 
@@ -78,7 +78,7 @@ const Cards = () => {
 					imageWidth="85"
 					imageHeight="89"
 					content="Personal support for finding a job"
-					hoverClass="hover:scale-105 hover:shadow-lg"
+					hoverClass="hover:scale-105 hover:shadow-lg hover:text-teal-500"
 				/>
 			</div>
 		</div>
