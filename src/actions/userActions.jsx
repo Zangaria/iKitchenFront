@@ -196,11 +196,7 @@ export const getJobs = () => async (dispatch) => {
 		}
 
 		if (data.err) {
-			console.log(data.msg);
 			return data.msg;
-		} else {
-			// DELETE
-			// dispatch(activateUserSuccess(data.token));
 		}
 	} catch (err) {
 		dispatch(getAllEnterprisesFail(err.response.data.msg));
@@ -258,12 +254,37 @@ export const deleteJobAction = (jobId) => async (dispatch) => {
 			},
 		};
 
-		const { data } = await axios.delete(`${process.env.REACT_APP_BASE_URL}/jobs/${jobId}`, config);
+		const { data } = await axios.delete(`${process.env.REACT_APP_BASE_URL}/job/delete?jobId=${jobId}`, config);
 
 		dispatch(deleteJobSuccess(data.msg));
 	} catch (err) {
 		dispatch(
 			deleteJobFail(err.response && err.response.data.msg ? err.response.data.msg : err.message)
+		);
+	}
+};
+
+export const updateJobAction = (updatedJobData) => async (dispatch) => {
+	try {
+		dispatch(updateJobRequest());
+
+		const config = {
+			headers: {
+				Authorization: localStorage.getItem('token'),
+				'Content-Type': 'application/json',
+			},
+		};
+
+		const { data } = await axios.patch(
+			`${process.env.REACT_APP_BASE_URL}/job/updateJob`,
+			updatedJobData,
+			config
+		);
+
+		dispatch(updateJobSuccess(data.msg));
+	} catch (err) {
+		dispatch(
+			updateJobFail(err.response && err.response.data.msg ? err.response.data.msg : err.message)
 		);
 	}
 };
@@ -303,7 +324,10 @@ const userLogoutRequest = createAction('user/userLogoutRequest');
 const userLogoutSuccess = createAction('user/userLogoutSuccess');
 const userLogoutFail = createAction('user/userLogoutFail');
 
-// Create action creators using createAction
 const deleteJobRequest = createAction('jobs/deleteJobRequest');
 const deleteJobSuccess = createAction('jobs/deleteJobSuccess');
 const deleteJobFail = createAction('jobs/deleteJobFail');
+
+const updateJobRequest = createAction('jobs/updateJobRequest');
+const updateJobSuccess = createAction('jobs/updateJobSuccess');
+const updateJobFail = createAction('jobs/updateJobFail');

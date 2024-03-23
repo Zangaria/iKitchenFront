@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { getJobs, deleteJobAction } from '../actions/userActions';
+import { getJobs, deleteJobAction, updateJobAction } from '../actions/userActions';
 import { MdEdit, MdDelete } from 'react-icons/md';
 
 const JobsTable = () => {
@@ -13,11 +13,13 @@ const JobsTable = () => {
 	const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(false);
 	const [jobToDelete, setJobToDelete] = useState(null);
 
+	const excludedKeys = ['_id', 'enterprise', 'entPublic', 'applicants', 'userId', 'cDate', '__v'];
+
 	const popupRef = useRef(null);
 	const deleteConfirmationRef = useRef(null);
 
-	const saveChanges = () => {
-		// Logic to save changes to the selected job
+	const saveChanges = async () => {
+		await dispatch(updateJobAction(selectedJob));
 		closePopup();
 	};
 
@@ -49,7 +51,6 @@ const JobsTable = () => {
 	useEffect(() => {
 		const getAllJobs = async () => {
 			const jobsData = await dispatch(getJobs());
-			console.log('jobsData', jobsData);
 			setJobs(jobsData);
 		};
 		getAllJobs();
@@ -89,10 +90,6 @@ const JobsTable = () => {
 			document.removeEventListener('keydown', handleEscapeKey);
 		};
 	}, []);
-
-	const handleEdit = (job) => {
-		console.log(`Editing job: ${job.title}`);
-	};
 
 	const handleDelete = (job) => {
 		openDeleteConfirmation(job);
@@ -198,28 +195,49 @@ border-gray-300 px-4 py-2 text-xs md:text-base"
 				</tbody>
 			</table>
 			{isPopupOpen && selectedJob && (
-				<div className="fixed px-4 top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex justify-center items-center transition-opacity duration-300">
+				<div className="fixed z-50 px-4 top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex justify-center items-center transition-opacity duration-300">
 					<div
 						ref={popupRef}
-						className="bg-white p-8 rounded shadow-md transition-transform duration-300 transform"
+						className="bg-white p-8 rounded shadow-md transition-transform duration-300 transform max-h-[80vh] overflow-y-auto"
 					>
 						<h2 className="text-xl font-semibold mb-4">{selectedJob.title}</h2>
-						<form style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem' }}>
-							{Object.entries(selectedJob).map(([key, value]) => (
-								<div key={key} className="mb-4">
-									<label htmlFor={key} className="block text-gray-700 font-bold mb-2">
-										{key}
-									</label>
-									<input
-										type="text"
-										id={key}
-										value={value}
-										onChange={(e) => handleInputChange(key, e.target.value)}
-										className="border border-gray-300 px-4 py-2 rounded-md w-full"
-									/>
-								</div>
-							))}
-						</form>
+						<div className="mb-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+							{Object.entries(selectedJob)
+								.filter(([key]) => !excludedKeys.includes(key))
+								.map(([key, value]) => (
+									<div key={key} className="mb-4">
+										<label htmlFor={key} className="block text-gray-700 font-bold mb-2">
+											{key}
+										</label>
+										{key === 'active' ? (
+											<select
+												id={key}
+												value={value ? 'true' : 'false'}
+												onChange={(e) => handleInputChange(key, e.target.value === 'true')}
+												className="border border-gray-300 px-4 py-2 rounded-md w-full"
+											>
+												<option value="true">True</option>
+												<option value="false">False</option>
+											</select>
+										) : key === 'info' || key === 'requirements' ? (
+											<textarea
+												id={key}
+												value={value}
+												onChange={(e) => handleInputChange(key, e.target.value)}
+												className="border border-gray-300 px-4 py-2 rounded-md w-full"
+											/>
+										) : (
+											<input
+												type="text"
+												id={key}
+												value={value}
+												onChange={(e) => handleInputChange(key, e.target.value)}
+												className="border border-gray-300 px-4 py-2 rounded-md w-full"
+											/>
+										)}
+									</div>
+								))}
+						</div>
 						<div className="mt-4 flex justify-center">
 							<button
 								className="bg-teal-500 text-white px-4 py-2 rounded mr-2 hover:bg-teal-600 transition-colors duration-300"
@@ -241,7 +259,7 @@ border-gray-300 px-4 py-2 text-xs md:text-base"
 			{isDeleteConfirmationOpen && (
 				<div
 					ref={deleteConfirmationRef}
-					className="fixed px-4 top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex justify-center items-center transition-opacity duration-300"
+					className="fixed z-50 px-4 top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex justify-center items-center transition-opacity duration-300"
 					onClick={closeDeleteConfirmation}
 				>
 					<div className="bg-white p-8 rounded shadow-md transition-transform duration-300 transform">
