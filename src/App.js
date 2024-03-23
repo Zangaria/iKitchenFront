@@ -19,6 +19,7 @@ import SearchResults from './pages/SearchResults';
 import SubmitCv from './pages/SubmitCv';
 import SavedJobsPage from './pages/SavedJobsPage';
 import MyJobs from './pages/MyJobs';
+import Footer from './components/Footer';
 
 const App = () => {
 	return (
@@ -45,6 +46,7 @@ const App = () => {
 					</Route>
 				</Routes>
 			</BrowserRouter>
+			<Footer></Footer>
 		</>
 	);
 };
