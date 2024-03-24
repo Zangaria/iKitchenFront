@@ -329,6 +329,33 @@ export const updateJobAction = (updatedJobData) => async (dispatch) => {
 	}
 };
 
+export const getUserJobsAction = () => async (dispatch) => {
+	try {
+		const config = {
+			headers: {
+				Authorization: localStorage.getItem('token'),
+			},
+		};
+
+		const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/job/byuser`, config);
+
+		// Dispatch action based on response data
+		if (data) {
+			return data;
+		} else {
+			// Dispatch failure action with error message
+			dispatch(getUserJobsFail(data.message));
+		}
+	} catch (err) {
+		// Dispatch failure action with error message
+		dispatch(
+			getUserJobsFail(
+				err.response && err.response.data.message ? err.response.data.message : err.message
+			)
+		);
+	}
+};
+
 // Create action creators using createAction
 const userRegisterRequest = createAction('user/userRegisterRequest');
 const userRegisterSuccess = createAction('user/userRegisterSuccess');
@@ -379,3 +406,7 @@ const deleteUserByIdFail = createAction('admin/deleteUserByIdFail');
 const updateJobRequest = createAction('jobs/updateJobRequest');
 const updateJobSuccess = createAction('jobs/updateJobSuccess');
 const updateJobFail = createAction('jobs/updateJobFail');
+
+// Define action creators using createAction if needed
+const getUserJobsSuccess = createAction('jobs/getUserJobsSuccess');
+const getUserJobsFail = createAction('jobs/getUserJobsFail');
