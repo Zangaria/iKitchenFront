@@ -20,6 +20,7 @@ const JobsTable = () => {
 
 	const saveChanges = async () => {
 		await dispatch(updateJobAction(selectedJob));
+		setJobs((prevJobs) => prevJobs.map((job) => (job._id === selectedJob._id ? selectedJob : job)));
 		closePopup();
 	};
 
