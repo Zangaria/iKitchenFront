@@ -200,7 +200,7 @@ border-gray-300 px-4 py-2 text-xs md:text-base"
 						ref={popupRef}
 						className="bg-white p-8 rounded shadow-md transition-transform duration-300 transform max-h-[80vh] overflow-y-auto"
 					>
-						<h2 className="text-xl font-semibold mb-4">{selectedJob.title}</h2>
+						<h2 className="text-xl font-semibold mb-4 text-center">{selectedJob.title}</h2>
 						<div className="mb-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 							{Object.entries(selectedJob)
 								.filter(([key]) => !excludedKeys.includes(key))
