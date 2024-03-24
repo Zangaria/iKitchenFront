@@ -269,13 +269,38 @@ export const deleteJobAction = (jobId) => async (dispatch) => {
 			},
 		};
 
-		const { data } = await axios.delete(`${process.env.REACT_APP_BASE_URL}/job/delete?jobId=${jobId}`, config);
+		const { data } = await axios.delete(
+			`${process.env.REACT_APP_BASE_URL}/job/delete?jobId=${jobId}`,
+			config
+		);
 
 		dispatch(deleteJobSuccess(data.msg));
 	} catch (err) {
 		dispatch(
 			deleteJobFail(err.response && err.response.data.msg ? err.response.data.msg : err.message)
 		);
+	}
+};
+
+//get users
+export const getUsers = () => async (dispatch) => {
+	try {
+		dispatch(getAllUsersRequest());
+		const config = {
+			headers: {
+				Authorization: localStorage.getItem('token'),
+			},
+		};
+
+		const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/user/userInfo`, config);
+
+		if (data?.err) {
+			return data.err.msg.toString();
+		} else {
+			return data;
+		}
+	} catch (err) {
+		dispatch(getAllUsersFail(err));
 	}
 };
 
@@ -342,6 +367,14 @@ const userLogoutFail = createAction('user/userLogoutFail');
 const deleteJobRequest = createAction('jobs/deleteJobRequest');
 const deleteJobSuccess = createAction('jobs/deleteJobSuccess');
 const deleteJobFail = createAction('jobs/deleteJobFail');
+
+//Eliran get users, delete user, for admin page 22/03/24
+const getAllUsers = createAction('admin/getAllUsers');
+const getAllUsersFail = createAction('admin/getAllUsersFail');
+
+const deleteUserById = createAction('admin/deleteUserById');
+const deleteUserByIdFail = createAction('admin/deleteUserByIdFail');
+//end
 
 const updateJobRequest = createAction('jobs/updateJobRequest');
 const updateJobSuccess = createAction('jobs/updateJobSuccess');
