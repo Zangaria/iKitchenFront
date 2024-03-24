@@ -11,8 +11,7 @@ import CreateEnterprise from './pages/CreateEnterprise';
 import CreateJob from './pages/CreateJob';
 import UserDetailsPage from './pages/UserDetailsPage';
 import Navbar from './components/Navbar';
-import Home from './pages/Home';
-import Page404 from './pages/Page404';
+import Page404 from './pages/page404';
 import EnterprisesTable from './pages/EnterprisesTable';
 import JobsTable from './pages/JobsTable';
 import SearchResults from './pages/SearchResults';
@@ -24,8 +23,8 @@ import Footer from './components/Footer';
 const App = () => {
 	return (
 		<>
-			<Navbar></Navbar>
 			<BrowserRouter>
+				<Navbar></Navbar>
 				<Routes>
 					<Route>
 						<Route index element={<Home />} />
@@ -40,7 +39,8 @@ const App = () => {
 						<Route path="JobsTable" element={<JobsTable />} />
 						<Route path="search-results" element={<SearchResults />} />
 						<Route path="user-details" element={<UserDetailsPage />} />
-						<Route path="submit-cv/:id" element={<SubmitCv />} />
+						<Route path="submit-cv/:jobid" element={<SubmitCv />} />
+						<Route path="saved-jobs" element={<SavedJobsPage />} />
 						<Route path="my-jobs" element={<MyJobs />} />
 						<Route path="/*" element={<Page404 />} />
 					</Route>

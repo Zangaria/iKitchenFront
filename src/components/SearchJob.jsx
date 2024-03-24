@@ -13,7 +13,7 @@ const SearchJob = () => {
 	const [selectedLocation, setSelectedLocation] = useState('All Locations');
 
 	const searchState = useSelector((state) => state.search);
-	const { suggestions } = searchState;
+	const { suggestions, error } = searchState;
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -47,14 +47,22 @@ const SearchJob = () => {
 	const handleLocationChange = (event) => {
 		setSelectedLocation(event.target.value);
 	};
-
 	const handleSearch = () => {
 		if (isFreeSearch) {
 			dispatch(fetchJobsByText({ title: searchText, from: 1, to: 20 }));
 		} else {
 			// dispatch(fetchJobsByText(searchData));
 		}
-		navigate('/search-results');
+
+		// Save search parameters to local storage
+		const searchParams = {
+			searchText,
+		};
+		localStorage.setItem('searchParams', JSON.stringify(searchParams));
+
+		if (!error) {
+			navigate('/search-results');
+		}
 	};
 
 	return (
@@ -146,6 +154,7 @@ const SearchJob = () => {
 					Go
 				</button>
 			</div>
+			{error && <p className="text-red-500">{error}</p>}
 		</div>
 	);
 };

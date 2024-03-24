@@ -106,9 +106,10 @@ export const activateUserAction = (userid) => async (dispatch) => {
 		if (data.err) {
 			dispatch(activateUserFail(data.msg));
 		} else {
-			console.log(data.token);
+			console.log(data);
 			localStorage.setItem('token', data.token);
-			dispatch(activateUserSuccess(data.token));
+			localStorage.setItem('userInfo', JSON.stringify(data.user));
+			dispatch(activateUserSuccess(data.user));
 		}
 	} catch (err) {
 		dispatch(activateUserFail(err.response.data.msg));
@@ -205,7 +206,12 @@ export const getJobs = () => async (dispatch) => {
 
 // Frontend action creator
 export const updateUserDetails = () => async (dispatch, getState) => {
-	const userInfo = getState().user.userInfo; // Access userInfo directly from Redux state
+	const userInfo = getState().user.userInfo;
+
+	const userInfoToSend = { ...userInfo };
+	delete userInfoToSend.email;
+	delete userInfoToSend.password;
+
 	try {
 		dispatch(userUpdateRequest());
 
@@ -217,14 +223,23 @@ export const updateUserDetails = () => async (dispatch, getState) => {
 		};
 
 		// Make a request to the server to update user details
-		const { data } = await axios.put(
-			`${process.env.REACT_APP_BASE_URL}/user/updateUser`,
-			userInfo,
+
+		const { data } = await axios.patch(
+			`https://api-iwork.amio.co.il/user/updateUser`,
+			userInfoToSend,
 			config
 		);
+
+		// Remove existing userInfo from local storage
+		localStorage.removeItem('userInfo');
+
+		// Insert new userInfo into local storage
+		localStorage.setItem('userInfo', JSON.stringify(data));
+
 		console.log('data', data);
-		dispatch(userUpdateSuccess(data.msg));
+		dispatch(userUpdateSuccess(data));
 	} catch (err) {
+		console.log(err.response.data.msg);
 		dispatch(
 			userUpdateFail(err.response && err.response.data.msg ? err.response.data.msg : err.message)
 		);

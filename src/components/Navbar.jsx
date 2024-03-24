@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 // import { MdPerson } from 'react-icons/md';
 import { userLogout } from '../actions/userActions';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
 	const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
+
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const toggleDropdown = () => {
 		setIsOpen(!isOpen);
@@ -16,14 +19,13 @@ const Navbar = () => {
 	const { userInfo } = useSelector((state) => state.user);
 
 	useEffect(() => {
-		// Check if user authentication info exists in local storage
-		if (localStorage.getItem('userInfo')) {
+		// Check if user authentication info exists in Redux state or local storage
+		if (userInfo || localStorage.getItem('userInfo')) {
+			// console.log(userInfo.type);
 			setIsAuthenticated(true);
 		} else {
 			setIsAuthenticated(false);
 		}
-
-		// console.log(isAuthenticated);
 	}, [userInfo]);
 
 	const toggleMobileMenu = () => {
@@ -32,6 +34,7 @@ const Navbar = () => {
 
 	const handleLogout = () => {
 		dispatch(userLogout());
+		navigate('/');
 	};
 
 	return (
@@ -62,7 +65,7 @@ const Navbar = () => {
 									onClick={toggleDropdown}
 									className="text-gray-800 hover:text-teal-500 focus:outline-none"
 								>
-									{/* <MdPerson /> */}
+									<MdPerson className=" text-white" />
 								</button>
 								{isOpen && (
 									<div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg">
@@ -70,7 +73,10 @@ const Navbar = () => {
 											User Details
 										</a>
 
-										<a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+										<a
+											href="saved-jobs"
+											className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+										>
 											Saved Jobs
 										</a>
 									</div>
@@ -89,12 +95,6 @@ const Navbar = () => {
 									{isOpen && (
 										<div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg">
 											<a
-												href="createEnterprise"
-												className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-											>
-												Create enterprise
-											</a>
-											<a
 												href="createJob"
 												className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
 											>
@@ -105,6 +105,12 @@ const Navbar = () => {
 												className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
 											>
 												User Details
+											</a>
+											<a
+												href="saved-jobs"
+												className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+											>
+												Saved Jobs
 											</a>
 											<button onClick={handleLogout}>Logout</button>
 										</div>

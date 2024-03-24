@@ -3,8 +3,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateUserDetails } from '../../actions/userActions';
 import { toggleFavoriteJob } from '../../reducers/userReducers';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
-const JobCard = ({ jobid, title, location, info, requirements, mContact }) => {
+const JobCard = ({
+	jobid,
+	title,
+	location,
+	info,
+	requirements,
+	contactCelphone,
+	contactEmail,
+	contactName,
+}) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const favoritesJobs = useSelector((state) => state.user.userInfo.favoritesJobs);
@@ -18,10 +28,6 @@ const JobCard = ({ jobid, title, location, info, requirements, mContact }) => {
 		dispatch(toggleFavoriteJob(jobid));
 		dispatch(updateUserDetails());
 	};
-
-	useEffect(() => {
-		console.log('favoritesJobs', favoritesJobs);
-	}, [favoritesJobs, userInfo]);
 
 	const handleSubmitSv = () => {
 		navigate(`/submit-cv/${jobid}`);
@@ -42,6 +48,15 @@ const JobCard = ({ jobid, title, location, info, requirements, mContact }) => {
 					<p className="mb-2">
 						<strong>Requirements:</strong> {requirements}
 					</p>
+					<p className="mb-2">
+						<strong>Contact cellPhone:</strong> {contactCelphone}
+					</p>
+					<p className="mb-2">
+						<strong>Contact email:</strong> {contactEmail}
+					</p>
+					<p className="mb-2">
+						<strong>Contact name:</strong> {contactName}
+					</p>
 					{/* Buttons */}
 					<button
 						onClick={handleSaveJob}
@@ -52,6 +67,7 @@ const JobCard = ({ jobid, title, location, info, requirements, mContact }) => {
 					<button
 						onClick={handleSubmitSv}
 						className="mt-4 ml-2 bg-blue-500 text-white px-4 py-2 rounded-md"
+						disabled={isSubmited}
 					>
 						{isSubmited ? 'You sbmited' : 'Submit '}
 					</button>

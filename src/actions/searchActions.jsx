@@ -24,6 +24,7 @@ export const fetchJobsByText =
 				dispatch(searchFail('There are no result to this job'));
 			}
 			if (data.total > 0) {
+				// console.log('data.jobs', data.jobs);
 				dispatch(searchSuccess(data.jobs));
 			}
 		} catch (err) {

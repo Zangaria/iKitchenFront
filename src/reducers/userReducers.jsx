@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
 	loading: false,
 	userInfo: null,
+	resumeArray: [],
 	isAuthenticated: false,
 	error: null,
 	msg: null,
@@ -67,9 +68,10 @@ export const userSlice = createSlice({
 			state.loading = true;
 		},
 
-		activateUserSuccess: (state) => {
+		activateUserSuccess: (state, action) => {
 			state.loading = false;
 			state.isActive = true;
+			state.userInfo = action.payload;
 		},
 
 		activateUserFail: (state, action) => {
@@ -79,7 +81,7 @@ export const userSlice = createSlice({
 		toggleFavoriteJob: (state, action) => {
 			const jobId = action.payload;
 			// console.log(jobId);
-			const index = state.userInfo.favoritesJobs.indexOf(jobId);
+			const index = state.userInfo?.favoritesJobs.indexOf(jobId);
 			if (index !== -1) {
 				// Job is already in favorites, remove it
 				state.userInfo.favoritesJobs.splice(index, 1);
@@ -87,6 +89,9 @@ export const userSlice = createSlice({
 				// Job is not in favorites, add it
 				state.userInfo.favoritesJobs.push(jobId);
 			}
+		},
+		updateUserDetailsAtRedux: (state, action) => {
+			state.userInfo = { ...state.userInfo, ...action.payload };
 		},
 		userLogoutRequest: (state) => {
 			state.loading = true;
@@ -98,6 +103,18 @@ export const userSlice = createSlice({
 		userLogoutFail: (state) => {
 			state.loading = false;
 			state.error = 'Logout failed';
+		},
+		userUpdateSuccess: (state, action) => {
+			console.log('kara');
+			state.loading = false;
+			state.userInfo = action.payload;
+		},
+		userUpdateFail: (state) => {
+			state.loading = false;
+			state.error = 'Logout failed';
+		},
+		userUpdateRequest: (state) => {
+			state.loading = true;
 		},
 	},
 });
@@ -117,6 +134,10 @@ export const {
 	userChangePasswordSuccess,
 	userChangePasswordFail,
 	toggleFavoriteJob,
+	userUpdateSuccess,
+	userUpdateRequest,
+	userUpdateFail,
+	updateUserDetailsAtRedux,
 } = userSlice.actions;
 
 export default userSlice.reducer;

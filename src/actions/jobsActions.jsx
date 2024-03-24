@@ -36,7 +36,12 @@ export const createJobAction = (jobData) => async (dispatch) => {
 	}
 };
 
+const test = {
+	lkjnlj: 'ojnj',
+};
+
 export const addCVAction = (cvData) => async (dispatch) => {
+	// console.log(cvData);
 	try {
 		dispatch(cvAddRequest());
 		const token = localStorage.getItem('token');
@@ -47,7 +52,12 @@ export const addCVAction = (cvData) => async (dispatch) => {
 			},
 		};
 
-		const { data } = await axios.post(`${process.env.REACT_APP_BASE_URL}/cv/add`, cvData, config);
+		const { data } = await axios.post(
+			`${process.env.REACT_APP_BASE_URL}/user/addResume`,
+			cvData,
+			config
+		);
+		console.log('data of add cv', data);
 		if (data.error) {
 			console.log('Failed to add CV');
 			dispatch(cvAddFail(data.msg));
@@ -56,6 +66,8 @@ export const addCVAction = (cvData) => async (dispatch) => {
 			dispatch(cvAddSuccess(data));
 		}
 	} catch (error) {
+		console.log('Failed to add CV');
+		console.log(error.response.data.error);
 		dispatch(
 			cvAddFail(
 				error.response && error.response.data.error ? error.response.data.error : error.message

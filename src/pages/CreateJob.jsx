@@ -14,7 +14,6 @@ const CreateJob = () => {
 		contactEmail: '',
 		contactPhone: '',
 		contactCelphone: '',
-		applicants: '',
 	});
 
 	const dispatch = useDispatch();
@@ -80,7 +79,7 @@ const CreateJob = () => {
 					</label>
 
 					<label className="block">
-						<span className="text-gray-700">Additional Information:</span>
+						<span className="text-gray-700"> Information about the job:</span>
 						<textarea
 							name="info"
 							value={formData.info}
@@ -101,7 +100,7 @@ const CreateJob = () => {
 					</label>
 
 					<label className="block">
-						<span className="text-gray-700">Main Contact:</span>
+						<span className="text-gray-700">Contact name:</span>
 						<input
 							type="text"
 							name="contactName"
@@ -119,6 +118,7 @@ const CreateJob = () => {
 							value={formData.contactEmail}
 							onChange={handleChange}
 							className="w-full py-2 px-4 mb-6 border-b border-gray-300 focus:outline-none focus:border-teal-500 dark:border-neutral-600 dark:focus:border-teal-300"
+							required={true}
 						/>
 					</label>
 
@@ -134,22 +134,11 @@ const CreateJob = () => {
 					</label>
 
 					<label className="block">
-						<span className="text-gray-700">Contact Celphone:</span>
+						<span className="text-gray-700">Contact Cellphone:</span>
 						<input
 							type="text"
 							name="contactCelphone"
 							value={formData.contactCelphone}
-							onChange={handleChange}
-							className="w-full py-2 px-4 mb-6 border-b border-gray-300 focus:outline-none focus:border-teal-500 dark:border-neutral-600 dark:focus:border-teal-300"
-						/>
-					</label>
-
-					<label className="block">
-						<span className="text-gray-700">Applicants (comma-separated emails):</span>
-						<input
-							type="text"
-							name="applicants"
-							value={formData.applicants}
 							onChange={handleChange}
 							className="w-full py-2 px-4 mb-6 border-b border-gray-300 focus:outline-none focus:border-teal-500 dark:border-neutral-600 dark:focus:border-teal-300"
 						/>
