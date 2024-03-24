@@ -4,7 +4,7 @@ import CardsHeader from './CardsHeader';
 
 const CardsContainer = () => {
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between flex-col md:flex-row">
       <CardsHeader />
       <Cards />
     </div>

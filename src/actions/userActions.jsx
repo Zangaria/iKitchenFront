@@ -190,30 +190,14 @@ export const getEnterprise = (id) => async (dispatch) => {
 
 export const getJobs = () => async (dispatch) => {
 	try {
-		// Need to change to the actual Jobs!
-		return [
-			{
-				title: 'Full-stack Developer',
-				enterprise: 'Intel',
-			},
-			{
-				title: 'Project Manager',
-				enterprise: 'Microsoft',
-			},
-		];
-		dispatch(getAllEnterprises());
-
-		const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/getAllEnterprise`);
+		const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/job/all`);
 
 		if (data) {
 			return data;
 		}
 
 		if (data.err) {
-			console.log(data.msg);
 			return data.msg;
-		} else {
-			dispatch(activateUserSuccess(data.token));
 		}
 	} catch (err) {
 		dispatch(getAllEnterprisesFail(err.response.data.msg));
@@ -275,6 +259,51 @@ export const userLogout = () => (dispatch, getState) => {
 	}
 };
 
+export const deleteJobAction = (jobId) => async (dispatch) => {
+	try {
+		dispatch(deleteJobRequest());
+
+		const config = {
+			headers: {
+				Authorization: localStorage.getItem('token'),
+			},
+		};
+
+		const { data } = await axios.delete(`${process.env.REACT_APP_BASE_URL}/job/delete?jobId=${jobId}`, config);
+
+		dispatch(deleteJobSuccess(data.msg));
+	} catch (err) {
+		dispatch(
+			deleteJobFail(err.response && err.response.data.msg ? err.response.data.msg : err.message)
+		);
+	}
+};
+
+export const updateJobAction = (updatedJobData) => async (dispatch) => {
+	try {
+		dispatch(updateJobRequest());
+
+		const config = {
+			headers: {
+				Authorization: localStorage.getItem('token'),
+				'Content-Type': 'application/json',
+			},
+		};
+
+		const { data } = await axios.patch(
+			`${process.env.REACT_APP_BASE_URL}/job/updateJob`,
+			updatedJobData,
+			config
+		);
+
+		dispatch(updateJobSuccess(data.msg));
+	} catch (err) {
+		dispatch(
+			updateJobFail(err.response && err.response.data.msg ? err.response.data.msg : err.message)
+		);
+	}
+};
+
 // Create action creators using createAction
 const userRegisterRequest = createAction('user/userRegisterRequest');
 const userRegisterSuccess = createAction('user/userRegisterSuccess');
@@ -309,3 +338,11 @@ const userUpdateFail = createAction('user/userUpdateFail');
 const userLogoutRequest = createAction('user/userLogoutRequest');
 const userLogoutSuccess = createAction('user/userLogoutSuccess');
 const userLogoutFail = createAction('user/userLogoutFail');
+
+const deleteJobRequest = createAction('jobs/deleteJobRequest');
+const deleteJobSuccess = createAction('jobs/deleteJobSuccess');
+const deleteJobFail = createAction('jobs/deleteJobFail');
+
+const updateJobRequest = createAction('jobs/updateJobRequest');
+const updateJobSuccess = createAction('jobs/updateJobSuccess');
+const updateJobFail = createAction('jobs/updateJobFail');

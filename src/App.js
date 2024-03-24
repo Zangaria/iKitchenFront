@@ -14,10 +14,11 @@ import Navbar from './components/Navbar';
 import Page404 from './pages/page404';
 import EnterprisesTable from './pages/EnterprisesTable';
 import JobsTable from './pages/JobsTable';
-import Home from './pages/home';
 import SearchResults from './pages/SearchResults';
 import SubmitCv from './pages/SubmitCv';
 import SavedJobsPage from './pages/SavedJobsPage';
+import MyJobs from './pages/MyJobs';
+import Footer from './components/Footer';
 
 const App = () => {
 	return (
@@ -40,10 +41,12 @@ const App = () => {
 						<Route path="user-details" element={<UserDetailsPage />} />
 						<Route path="submit-cv/:jobid" element={<SubmitCv />} />
 						<Route path="saved-jobs" element={<SavedJobsPage />} />
+						<Route path="my-jobs" element={<MyJobs />} />
 						<Route path="/*" element={<Page404 />} />
 					</Route>
 				</Routes>
 			</BrowserRouter>
+			<Footer></Footer>
 		</>
 	);
 };

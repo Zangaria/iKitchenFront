@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { MdPerson } from 'react-icons/md';
+// import { MdPerson } from 'react-icons/md';
 import { userLogout } from '../actions/userActions';
 import { useNavigate } from 'react-router-dom';
 
@@ -38,7 +38,7 @@ const Navbar = () => {
 	};
 
 	return (
-		<nav className="bg-white sticky top-0">
+		<nav className="bg-white sticky top-0 z-20">
 			<div className="max-w-7xl mx-auto px-4">
 				<div className="flex justify-between items-center py-1">
 					<div className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white">
@@ -46,9 +46,8 @@ const Navbar = () => {
 							href="/"
 							className="px-2 py-1 bg-gradient-to-r from-teal-500 via-white to-pink-700 rounded-lg text-black"
 						>
-							i - work
+							iWork
 						</a>
-						Company
 					</div>
 					<div className="hidden md:flex space-x-4">
 						{!isAuthenticated ? (
@@ -91,7 +90,7 @@ const Navbar = () => {
 										onClick={toggleDropdown}
 										className="text-gray-800 hover:text-teal-500 focus:outline-none"
 									>
-										<MdPerson className=" text-white" />
+										{/* <MdPerson className=" text-white" /> */}
 									</button>
 									{isOpen && (
 										<div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg">
