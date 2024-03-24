@@ -397,6 +397,7 @@ const deleteJobFail = createAction('jobs/deleteJobFail');
 
 //Eliran get users, delete user, for admin page 22/03/24
 const getAllUsers = createAction('admin/getAllUsers');
+const getAllUsersRequest = createAction('admin/getAllUsersRequest');
 const getAllUsersFail = createAction('admin/getAllUsersFail');
 
 const deleteUserById = createAction('admin/deleteUserById');
