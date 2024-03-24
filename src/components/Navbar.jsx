@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-// import { MdPerson } from 'react-icons/md';
+import { MdPerson } from 'react-icons/md';
 import { userLogout } from '../actions/userActions';
 import { useNavigate } from 'react-router-dom';
 
