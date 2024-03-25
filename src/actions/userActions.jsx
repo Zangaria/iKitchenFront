@@ -274,6 +274,7 @@ export const getUsers = () => async (dispatch) => {
 		const config = {
 			headers: {
 				Authorization: localStorage.getItem('token'),
+				'Content-Type': 'application/json',
 			},
 		};
 
@@ -289,22 +290,25 @@ export const getUsers = () => async (dispatch) => {
 	}
 };
 
-
-export const deleteUser= (_id) => async (dispatch)=>{
+export const toggleUserLock = (userId) => async (dispatch) => {
 	try {
-		dispatch(deleteUserById());
-		const config={
-			headers:{
-				Authorization: localStorage.getItem('token')
-			}
-		}
+		const config = {
+			headers: {
+				Authorization: localStorage.getItem('token'),
+				'Content-Type': 'application/json',
+			},
+		};
 
-		const {data} = await axios.delete(`${process.env.REACT_APP_BASE_URL}/`)
-		
-	} catch (error) {
-		
-	}
-}
+		const res = await axios.patch(
+			`${process.env.REACT_APP_BASE_URL}/user/toggleLock?id=${userId}`,
+			config
+		);
+
+		if (res?.err) {
+			console.log(res.msg);
+		}
+	} catch (error) {}
+};
 
 export const updateJobAction = (updatedJobData) => async (dispatch) => {
 	try {
@@ -371,11 +375,13 @@ const deleteJobSuccess = createAction('jobs/deleteJobSuccess');
 const deleteJobFail = createAction('jobs/deleteJobFail');
 
 //Eliran get users, delete user, for admin page 22/03/24
-const getAllUsers = createAction('admin/getAllUsers');
+const getAllUsersRequest = createAction('admin/getAllUsersRequest');
+const getAllUsersSuccess = createAction('admin/getAllUsersSuccess');
 const getAllUsersFail = createAction('admin/getAllUsersFail');
 
-const deleteUserById = createAction('admin/deleteUserById');
-const deleteUserByIdFail = createAction('admin/deleteUserByIdFail');
+const toggleUserLockRequest = createAction('admin/toggleUserLock');
+const toggleUserLockFail = createAction('admin/toggleUserLockFail');
+const toggleUserLockSuccess = createAction('admin/toggleUserLockSuccess');
 //end
 
 const updateJobRequest = createAction('jobs/updateJobRequest');

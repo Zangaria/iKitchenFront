@@ -3,6 +3,7 @@ import userReducer from './reducers/userReducers';
 import enterpriseReducer from './reducers/enterpriseReducers';
 import jobReducer from './reducers/jobReducers';
 import searchReducer from './reducers/searchReducers';
+import adminReducer from './reducers/adminReducers';
 
 // Fetch user info from localStorage if available
 const userInfoFromStorage = localStorage.getItem('userInfo')
@@ -15,6 +16,7 @@ const store = configureStore({
 		enterprise: enterpriseReducer,
 		job: jobReducer,
 		search: searchReducer,
+		admin: adminReducer,
 	},
 	preloadedState: {
 		user: {
