@@ -65,7 +65,7 @@ const Navbar = () => {
 									onClick={toggleDropdown}
 									className="text-gray-800 hover:text-teal-500 focus:outline-none"
 								>
-									<MdPerson className=" text-white" />
+									<MdPerson className="text-black" />
 								</button>
 								{isOpen && (
 									<div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg">
@@ -90,7 +90,7 @@ const Navbar = () => {
 										onClick={toggleDropdown}
 										className="text-gray-800 hover:text-teal-500 focus:outline-none"
 									>
-										<MdPerson className=" text-white" />
+										<MdPerson className="text-black" />
 									</button>
 									{isOpen && (
 										<div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg">
