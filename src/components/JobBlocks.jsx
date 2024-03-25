@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { getUserJobsAction, updateJobAction } from '../actions/userActions'; // Import the getUserJobsAction and updateJobAction action creators
+import { getUserJobsAction, updateJobAction, getResumeById } from '../actions/userActions';
 import JobBlock from './JobBlock';
 
 const JobBlocks = () => {
@@ -8,6 +8,7 @@ const JobBlocks = () => {
 	const [jobData, setJobData] = useState([]);
 	const [selectedJob, setSelectedJob] = useState(null); // State to track the selected job for the popup
 	const [editedJob, setEditedJob] = useState(null); // State to store edited job data
+	const [resumeData, setResumeData] = useState(null); // State to store resume data
 	const popupRef = useRef(null); // Ref to the popup container
 
 	const excludedKeys = ['_id', 'userId', 'cDate', '__v'];
@@ -37,7 +38,7 @@ const JobBlocks = () => {
 	}, []);
 
 	const handleClickOutside = (e) => {
-		if (popupRef.current && !popupRef.current.contains(e.target)) {
+		if (popupRef.current && popupRef.current.contains(e.target)) {
 			handleClosePopup();
 		}
 	};
@@ -48,14 +49,19 @@ const JobBlocks = () => {
 		}
 	};
 
-	const handleJobClick = (job) => {
+	const handleJobClick = async (job) => {
 		setSelectedJob(job); // Set the selected job when a job block is clicked
 		setEditedJob({ ...job }); // Set the edited job data to the selected job
+
+		// Fetch resume data for the selected job and user
+		const resume = await dispatch(getResumeById(job.applicants[0], job._id)); // Assuming the userId is the first element in the applicants array
+		setResumeData(resume);
 	};
 
 	const handleClosePopup = () => {
 		setSelectedJob(null); // Reset selected job when closing the popup
 		setEditedJob(null); // Reset edited job data when closing the popup
+		setResumeData(null); // Reset resume data when closing the popup
 	};
 
 	const handleChange = (e) => {
@@ -71,8 +77,7 @@ const JobBlocks = () => {
 			await dispatch(updateJobAction(editedJob)); // Dispatch updateJobAction with the edited job data
 			const updatedJobs = await dispatch(getUserJobsAction()); // Fetch updated job data
 			setJobData(updatedJobs); // Update job data in the component state
-			setSelectedJob(null); // Reset selected job
-			setEditedJob(null); // Reset edited job data
+			handleClosePopup(); // Close the popup after saving
 		} catch (error) {
 			console.error('Error updating job:', error);
 		}
@@ -99,6 +104,14 @@ const JobBlocks = () => {
 					<div ref={popupRef} className="bg-gray-800 bg-opacity-50 absolute inset-0" />
 					<div className="bg-white p-8 rounded-lg z-10 overflow-y-auto max-h-full">
 						<h2 className="text-xl font-semibold mb-4">{selectedJob.title}</h2>
+						{resumeData && (
+							<div>
+								{/* Render resume data here */}
+								{/* Example: */}
+								<p>Resume: {resumeData.resume}</p>
+							</div>
+						)}
+						{/* Rest of the popup content */}
 						<div className="mb-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 							{editedJob &&
 								Object.entries(editedJob)
@@ -134,7 +147,8 @@ const JobBlocks = () => {
 								Save
 							</button>
 							<button
-								className="bg-red-500 hover:bg-red-600 text-white font-bold px-4 py-2 rounded focus:outline-none focus:shadow-outline"
+								className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded focus
+								:outline-none focus:shadow-outline transition-colors duration-300"
 								onClick={handleClosePopup}
 							>
 								Close
