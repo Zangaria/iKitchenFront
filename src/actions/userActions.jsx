@@ -230,6 +230,8 @@ export const updateUserDetails = () => async (dispatch, getState) => {
 			config
 		);
 
+		console.log('data', data);
+
 		// Remove existing userInfo from local storage
 		localStorage.removeItem('userInfo');
 

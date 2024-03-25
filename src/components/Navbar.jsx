@@ -21,7 +21,7 @@ const Navbar = () => {
 	useEffect(() => {
 		// Check if user authentication info exists in Redux state or local storage
 		if (userInfo || localStorage.getItem('userInfo')) {
-			// console.log(userInfo.type);
+			console.log(userInfo.type);
 			setIsAuthenticated(true);
 		} else {
 			setIsAuthenticated(false);
@@ -90,7 +90,7 @@ const Navbar = () => {
 										onClick={toggleDropdown}
 										className="text-gray-800 hover:text-teal-500 focus:outline-none"
 									>
-										{/* <MdPerson className=" text-white" /> */}
+										<MdPerson className=" text-white" />
 									</button>
 									{isOpen && (
 										<div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg">

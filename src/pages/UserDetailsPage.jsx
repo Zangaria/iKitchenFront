@@ -7,12 +7,14 @@ const UserDetailsPage = () => {
 	const user = useSelector((state) => state.user.userInfo);
 	const dispatch = useDispatch();
 
+	const userLoginState = useSelector((state) => state.user);
+	const { msg } = userLoginState;
+
 	// State for form inputs
 	const [formData, setFormData] = useState({
 		firstName: user ? user.firstName || '' : '',
 		lastName: user ? user.lastName || '' : '',
 		city: user ? user.city || '' : '',
-		contactEmail: user ? user.contactEmail || '' : '',
 		contactPhone: user ? user.contactPhone || '' : '',
 		contactCelphone: user ? user.contactCelphone || '' : '',
 	});
@@ -81,19 +83,6 @@ const UserDetailsPage = () => {
 						/>
 					</div>
 					<div className="mb-4">
-						<label htmlFor="contactEmail" className="block mb-2 font-semibold">
-							Contact Email
-						</label>
-						<input
-							type="email"
-							id="contactEmail"
-							name="contactEmail"
-							value={contactEmail}
-							onChange={handleChange}
-							className="border p-2 rounded w-full"
-						/>
-					</div>
-					<div className="mb-4">
 						<label htmlFor="contactPhone" className="block mb-2 font-semibold">
 							Contact Phone
 						</label>
@@ -122,6 +111,7 @@ const UserDetailsPage = () => {
 					<button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
 						Save Changes
 					</button>
+					{msg && <div className="success-message">{msg}</div>}
 				</form>
 			</div>
 		</div>

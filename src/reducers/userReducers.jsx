@@ -105,9 +105,9 @@ export const userSlice = createSlice({
 			state.error = 'Logout failed';
 		},
 		userUpdateSuccess: (state, action) => {
-			console.log('kara');
 			state.loading = false;
 			state.userInfo = action.payload;
+			state.msg = 'Profile updated successfully';
 		},
 		userUpdateFail: (state) => {
 			state.loading = false;
