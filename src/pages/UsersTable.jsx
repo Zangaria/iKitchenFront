@@ -3,9 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { MdEdit, MdLock, MdLockOpen } from 'react-icons/md';
 import { getUsers, toggleUserLock, updateUserDetails } from '../actions/userActions';
 
-const JobsTable = () => {
+const UsersTable = () => {
 	const dispatch = useDispatch();
-	const [users, setUsers] = useState([]);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [searchBy, setSearchBy] = useState('email');
 	const [selectedUser, setSelectedUser] = useState(null);
@@ -13,7 +12,7 @@ const JobsTable = () => {
 	const [toggleText, setToggleText] = useState(null);
 	const [isToggleConfirmationOpen, setIsToggleConfirmationOpen] = useState(false);
 	const [userToToggle, setUserToToggle] = useState(null);
-	const { loading, searchUsers } = useSelector((state) => state.admin);
+	const searchUsers = useSelector((state) => state.admin.searchUsers);
 
 	const excludedKeys = [
 		'_id',
@@ -67,8 +66,8 @@ const JobsTable = () => {
 
 	useEffect(() => {
 		dispatch(getUsers());
-		setUsers(searchUsers);
-	}, [dispatch, searchUsers]);
+		console.log(searchUsers);
+	}, []);
 
 	const handleSearchChange = (event) => {
 		setSearchTerm(event.target.value);
@@ -118,7 +117,7 @@ const JobsTable = () => {
 		closeToggleConfirmation();
 	};
 
-	const filteredUsers = users.filter((user) => {
+	const filteredUsers = searchUsers.filter((user) => {
 		if (searchBy === 'email') {
 			return user.email.toLowerCase().includes(searchTerm.toLowerCase());
 		} else if (searchBy === 'name') {
@@ -318,4 +317,4 @@ border-gray-300 px-4 py-2 text-xs md:text-base"
 	);
 };
 
-export default JobsTable;
+export default UsersTable;

@@ -279,11 +279,12 @@ export const getUsers = () => async (dispatch) => {
 		};
 
 		const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/user/userInfo`, config);
+		console.log(data);
 
 		if (data?.err) {
 			dispatch(getAllUsersFail(data.err.msg));
 		} else {
-			dispatch(getAllUsersSuccess(data));
+			dispatch(getAllUsersSuccess(data.userinfo));
 		}
 	} catch (err) {
 		dispatch(getAllUsersFail(err.response.data.msg));
