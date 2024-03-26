@@ -11,7 +11,7 @@ import CreateEnterprise from './pages/CreateEnterprise';
 import CreateJob from './pages/CreateJob';
 import UserDetailsPage from './pages/UserDetailsPage';
 import Navbar from './components/Navbar';
-import Page404 from './pages/Page404';
+import Page404 from './pages/page404';
 import EnterprisesTable from './pages/EnterprisesTable';
 import JobsTable from './pages/JobsTable';
 import SearchResults from './pages/SearchResults';
@@ -20,7 +20,7 @@ import SavedJobsPage from './pages/SavedJobsPage';
 import SubmittedJobsPage from './pages/SubmittedJobsPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import MyJobs from './pages/MyJobs';
-import Home from './pages/Home';
+import Home from './pages/home';
 import Footer from './components/Footer';
 
 const App = () => {

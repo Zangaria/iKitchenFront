@@ -39,6 +39,14 @@ export const jobSlice = createSlice({
 			state.error = action.payload;
 			state.job = null;
 		},
+		addJobToFavoriteRequest: (state) => {},
+		addJobToFavoriteSuccess: (state, action) => {},
+		addJobToFavoriteFail: (state, action) => {},
+	},
+	removeJobFromFavoritesRequest: (state) => {},
+	removeJobFromFavoritesSuccess: (state, action) => {},
+	removeJobFromFavoritesFail: (state, action) => {
+		state.error = action.payload;
 	},
 });
 
@@ -49,6 +57,12 @@ export const {
 	cvAddRequest,
 	cvAddSuccess,
 	cvAddFail,
+	addJobToFavoriteRequest,
+	addJobToFavoriteSuccess,
+	addJobToFavoriteFail,
+	removeJobFromFavoritesRequest,
+	removeJobFromFavoritesFail,
+	removeJobFromFavoritesSuccess,
 } = jobSlice.actions;
 
 export default jobSlice.reducer;

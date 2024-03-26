@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateUserDetails } from '../../actions/userActions';
-import { toggleFavoriteJob } from '../../reducers/userReducers';
+import { addJobToFavorites, removeJobFromFavoritesAction } from '../../actions/jobsActions';
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
 
 const JobCard = ({
 	jobid,
@@ -17,16 +15,24 @@ const JobCard = ({
 }) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const favoritesJobs = useSelector((state) => state.user.userInfo.favoritesJobs);
-	const isJobSaved = favoritesJobs?.includes(jobid);
-	const ReusmeArray = useSelector((state) => state.user.userInfo.Reusme);
-	const isSubmited = ReusmeArray.some((resume) => resume.jobid === jobid);
 	const userInfo = useSelector((state) => state.user.userInfo);
+	const favoritesJobs = userInfo ? userInfo.favoritesJobs : [];
+	const ReusmeArray = userInfo ? userInfo.Reusme : [];
+
+	const isSubmited = ReusmeArray?.some((resume) => resume.jobid === jobid);
+	const isJobSaved = favoritesJobs?.some((job) => job._id === jobid);
+
+	useEffect(() => {
+		// console.log(userInfo.favoritesJobs);
+	});
 
 	// Func to toggle save/unsave job
 	const handleSaveJob = () => {
-		dispatch(toggleFavoriteJob(jobid));
-		dispatch(updateUserDetails());
+		if (isJobSaved) {
+			dispatch(removeJobFromFavoritesAction(jobid));
+		} else {
+			dispatch(addJobToFavorites(jobid));
+		}
 	};
 
 	const handleSubmitSv = () => {

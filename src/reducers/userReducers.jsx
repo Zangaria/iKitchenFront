@@ -3,8 +3,6 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
 	loading: false,
 	userInfo: null,
-	resumeArray: [],
-	favoritesJobs: [],
 	isAuthenticated: false,
 	error: null,
 	msg: null,
@@ -14,6 +12,23 @@ export const userSlice = createSlice({
 	name: 'user',
 	initialState,
 	reducers: {
+		addJobToFavoriteJobs: (state, action) => {
+			const jobId = action.payload;
+			if (state.userInfo) {
+				const updatedFavoritesJobs = [...state.userInfo.favoritesJobs, { _id: jobId }];
+				state.userInfo.favoritesJobs = updatedFavoritesJobs;
+			}
+		},
+
+		removeJobFromFavoritesJobs: (state, action) => {
+			const jobId = action.payload;
+			if (state.userInfo) {
+				const updatedFavoritesJobs = state.userInfo.favoritesJobs.filter(
+					(job) => job._id !== jobId
+				);
+				state.userInfo.favoritesJobs = updatedFavoritesJobs;
+			}
+		},
 		userRegisterRequest: (state) => {
 			state.loading = true;
 		},
@@ -32,6 +47,7 @@ export const userSlice = createSlice({
 		userLoginSuccess: (state, action) => {
 			state.loading = false;
 			state.userInfo = action.payload.user;
+
 			state.isAuthenticated = true;
 			state.error = null;
 		},
@@ -79,18 +95,7 @@ export const userSlice = createSlice({
 			state.loading = false;
 			state.error = action.payload;
 		},
-		toggleFavoriteJob: (state, action) => {
-			const jobId = action.payload;
-			// console.log(jobId);
-			const index = state.userInfo?.favoritesJobs.indexOf(jobId);
-			if (index !== -1) {
-				// Job is already in favorites, remove it
-				state.userInfo.favoritesJobs.splice(index, 1);
-			} else {
-				// Job is not in favorites, add it
-				state.userInfo.favoritesJobs.push(jobId);
-			}
-		},
+
 		updateUserDetailsAtRedux: (state, action) => {
 			state.userInfo = { ...state.userInfo, ...action.payload };
 		},
@@ -117,6 +122,17 @@ export const userSlice = createSlice({
 		userUpdateRequest: (state) => {
 			state.loading = true;
 		},
+		getUserInfoRequest: (state) => {
+			state.loading = true;
+		},
+		getUserInfoSuccess: (state, action) => {
+			state.loading = false;
+			state.userInfo = action.payload;
+		},
+		getUserInfoFail: (state) => {
+			state.loading = false;
+			state.error = 'Logout failed';
+		},
 	},
 });
 
@@ -139,6 +155,11 @@ export const {
 	userUpdateRequest,
 	userUpdateFail,
 	updateUserDetailsAtRedux,
+	addJobToFavoriteJobs,
+	removeJobFromFavoritesJobs,
+	getUserInfoRequest,
+	getUserInfoSuccess,
+	getUserInfoFail,
 } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -206,15 +206,12 @@ export const getJobs = () => async (dispatch) => {
 
 // Frontend action creator
 export const updateUserDetails = () => async (dispatch, getState) => {
-	const userInfo = getState().user.userInfo;
-
-	const userInfoToSend = { ...userInfo };
-	delete userInfoToSend.email;
-	delete userInfoToSend.password;
-
+	// const userInfo = getState().user.userInfo;
+	// const userInfoToSend = { ...userInfo };
+	// delete userInfoToSend.email;
+	// delete userInfoToSend.password;
 	try {
 		dispatch(userUpdateRequest());
-
 		const config = {
 			headers: {
 				'Content-Type': 'application/json',
@@ -222,22 +219,13 @@ export const updateUserDetails = () => async (dispatch, getState) => {
 			},
 		};
 
-		// Make a request to the server to update user details
-
-		const { data } = await axios.patch(
-			`https://api-iwork.amio.co.il/user/updateUser`,
-			userInfoToSend,
-			config
-		);
+		const { data } = await axios.patch(`https://api-iwork.amio.co.il/user/updateUser`, config);
 
 		console.log('data', data);
-
 		// Remove existing userInfo from local storage
 		localStorage.removeItem('userInfo');
-
 		// Insert new userInfo into local storage
 		localStorage.setItem('userInfo', JSON.stringify(data));
-
 		console.log('data', data);
 		dispatch(userUpdateSuccess(data));
 	} catch (err) {
@@ -360,7 +348,7 @@ export const getUserJobsAction = () => async (dispatch) => {
 
 export const getResumeById = (userId, jobId) => async (dispatch) => {
 	try {
-		debugger
+		debugger;
 		// Dispatch action to indicate the start of the request
 		dispatch(getResumeRequest());
 
@@ -383,6 +371,38 @@ export const getResumeById = (userId, jobId) => async (dispatch) => {
 		// Dispatch failure action with error message
 		dispatch(
 			getResumeFail(
+				error.response && error.response.data.msg ? error.response.data.msg : error.message
+			)
+		);
+	}
+};
+
+export const getUserInfo = () => async (dispatch) => {
+	console.log('done');
+	try {
+		// Dispatch action to indicate the start of the request
+		dispatch(getUserInfoRequest());
+
+		// Define the request configuration
+		const config = {
+			headers: {
+				Authorization: localStorage.getItem('token'),
+			},
+		};
+
+		// Make the request to fetch the user info
+		const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/user/userinfo`, config);
+
+		if (data.code === 200) {
+			// Dispatch action based on the response data
+			dispatch(getUserInfoSuccess(data.userinfo));
+			localStorage.removeItem('userInfo');
+			localStorage.setItem('userInfo', JSON.stringify(data.userinfo));
+		}
+	} catch (error) {
+		// Dispatch failure action with error message
+		dispatch(
+			getUserInfoFail(
 				error.response && error.response.data.msg ? error.response.data.msg : error.message
 			)
 		);
@@ -449,3 +469,7 @@ const getUserJobsFail = createAction('jobs/getUserJobsFail');
 const getResumeRequest = createAction('resume/getResumeRequest');
 const getResumeSuccess = createAction('resume/getResumeSuccess');
 const getResumeFail = createAction('resume/getResumeFail');
+
+const getUserInfoSuccess = createAction('user/getUserInfoSuccess');
+const getUserInfoFail = createAction('user/getUserInfoFail');
+const getUserInfoRequest = createAction('user/getUserInfoRequest');
