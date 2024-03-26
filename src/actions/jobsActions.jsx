@@ -14,6 +14,7 @@ import {
 	removeJobFromFavoritesSuccess,
 } from '../reducers/jobReducers';
 import { getUserInfo } from './userActions';
+import { invalidToken } from '../reducers/userReducers';
 
 export const createJobAction = (jobData) => async (dispatch) => {
 	try {
@@ -35,16 +36,17 @@ export const createJobAction = (jobData) => async (dispatch) => {
 			dispatch(jobCreateSuccess(data));
 		}
 	} catch (error) {
+		console.log(error.response.data);
+		if (error.response.data.error === 'Unauthorized: Invalid token') {
+			dispatch(invalidToken(true));
+			return;
+		}
 		dispatch(
 			jobCreateFail(
 				error.response && error.response.data.error ? error.response.data.error : error.message
 			)
 		);
 	}
-};
-
-const test = {
-	lkjnlj: 'ojnj',
 };
 
 export const addCVAction = (cvData) => async (dispatch) => {

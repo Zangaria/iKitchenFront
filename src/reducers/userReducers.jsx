@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
 	loading: false,
 	userInfo: null,
+	invalidToken: false,
 	isAuthenticated: false,
 	error: null,
 	msg: null,
@@ -133,6 +134,9 @@ export const userSlice = createSlice({
 			state.loading = false;
 			state.error = 'Logout failed';
 		},
+		invalidToken: (state, action) => {
+			state.invalidToken = action.payload;
+		},
 	},
 });
 
@@ -160,6 +164,7 @@ export const {
 	getUserInfoRequest,
 	getUserInfoSuccess,
 	getUserInfoFail,
+	invalidToken,
 } = userSlice.actions;
 
 export default userSlice.reducer;

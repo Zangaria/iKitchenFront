@@ -42,10 +42,10 @@ const JobCard = ({
 	};
 
 	return (
-		<section className="h-screen flex items-center justify-center">
+		<section className="flex items-center justify-center mt-5">
 			<div className="w-full flex flex-col items-center justify-center">
-				<div className="border p-4 rounded-md w-full">
-					<h2 className="text-xl font-semibold mb-2">{title}</h2>
+				<div className="border rounded-md w-full">
+					<h2 className="text-xl font-semibold ">{title}</h2>
 
 					<p className="mb-2">
 						<strong>Location:</strong> {location}
