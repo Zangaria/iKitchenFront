@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 import ForgotPassword from './pages/ForgotPassword';
 import Register from './pages/Register';
 import Login from './pages/Login';
@@ -24,6 +26,16 @@ import Home from './pages/home';
 import Footer from './components/Footer';
 
 const App = () => {
+	const invalidToken = useSelector((state) => state.user.invalidToken);
+
+	useEffect(() => {
+		console.log('user', invalidToken);
+		if (invalidToken) {
+			alert('Invalid token, please login again.');
+			window.location.href = '/login';
+		}
+	}, [invalidToken]);
+
 	return (
 		<>
 			<BrowserRouter>

@@ -1,4 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
+import { invalidToken } from '../reducers/userReducers';
 import axios from 'axios';
 
 // Action creator for user registration
@@ -206,22 +207,23 @@ export const getJobs = () => async (dispatch) => {
 
 // Frontend action creator
 export const updateUserDetails = () => async (dispatch, getState) => {
-	// const userInfo = getState().user.userInfo;
-	// const userInfoToSend = { ...userInfo };
-	// delete userInfoToSend.email;
-	// delete userInfoToSend.password;
+	const userInfo = getState().user.userInfo;
+	const userInfoToSend = { ...userInfo };
+	delete userInfoToSend.email;
+	delete userInfoToSend.password;
+
 	try {
 		dispatch(userUpdateRequest());
 		const config = {
 			headers: {
-				'Content-Type': 'application/json',
 				Authorization: localStorage.getItem('token'),
 			},
 		};
 
 		const { data } = await axios.patch(`https://api-iwork.amio.co.il/user/updateUser`, config);
 
-		console.log('data', data);
+		console.log('data update', data);
+
 		// Remove existing userInfo from local storage
 		localStorage.removeItem('userInfo');
 		// Insert new userInfo into local storage
@@ -229,7 +231,7 @@ export const updateUserDetails = () => async (dispatch, getState) => {
 		console.log('data', data);
 		dispatch(userUpdateSuccess(data));
 	} catch (err) {
-		console.log(err.response.data.msg);
+		console.log(err.response.data);
 		dispatch(
 			userUpdateFail(err.response && err.response.data.msg ? err.response.data.msg : err.message)
 		);
@@ -320,6 +322,7 @@ export const updateJobAction = (updatedJobData) => async (dispatch) => {
 };
 
 export const getUserJobsAction = () => async (dispatch) => {
+	console.log('do');
 	try {
 		const config = {
 			headers: {
@@ -328,7 +331,7 @@ export const getUserJobsAction = () => async (dispatch) => {
 		};
 
 		const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/job/byuser`, config);
-
+		console.log('dta', data);
 		// Dispatch action based on response data
 		if (data) {
 			return data;
@@ -337,6 +340,10 @@ export const getUserJobsAction = () => async (dispatch) => {
 			dispatch(getUserJobsFail(data.message));
 		}
 	} catch (err) {
+		if (err.response.data.error === 'Unauthorized: Invalid token') {
+			dispatch(invalidToken(true));
+			return;
+		}
 		// Dispatch failure action with error message
 		dispatch(
 			getUserJobsFail(

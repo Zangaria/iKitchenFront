@@ -11,7 +11,9 @@ const SubmittedJobsPage = () => {
 	});
 
 	if (submittedJobs.length === 0) {
-		return <h1>No submitted jobs yet.</h1>;
+		<h1 className=" mt-40 h-[250px] w-4/5 mx-auto bg-green-700 rounded-lg flex justify-center items-center text-white">
+			No saved jobs yet
+		</h1>;
 	}
 
 	// Render the submitted jobs if they exist
@@ -19,7 +21,7 @@ const SubmittedJobsPage = () => {
 		<div className="text-black py-20 bg-white flex flex-col items-center justify-center">
 			<div className="w-4/5 max-w-xl">
 				<h1 className="text-2xl font-semibold mb-4">Submitted Jobs</h1>
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+				<div className="grid grid-cols-1 gap-4">
 					{/* Map over the submitted jobs and render JobCard for each job */}
 					{submittedJobs.map((job, index) => (
 						<JobCard

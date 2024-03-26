@@ -10,7 +10,11 @@ const SavedJobsPage = () => {
 	});
 
 	if (savedJobs.length === 0) {
-		return <h1 className=" bg-red-700">No saved jobs yet</h1>;
+		return (
+			<h1 className=" mt-40 h-[250px] w-4/5 mx-auto bg-green-700 rounded-lg flex justify-center items-center text-white">
+				No saved jobs yet
+			</h1>
+		);
 	}
 
 	if (savedJobs != undefined)

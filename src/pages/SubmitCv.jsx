@@ -171,7 +171,12 @@ function SubmitCv() {
 
 				{error && <p className="text-red-500 mt-2">{error}</p>}
 				{errorRedux && <p className="text-red-500 mt-2">{errorRedux}</p>}
-				{job && <p className="text-green-500 mt-2">Submission successful!</p>}
+
+				{job && (
+					<div className="bg-green-500 text-white text-center rounded-md p-2 mb-4 mt-4">
+						{`Submission successful!`}
+					</div>
+				)}
 			</form>
 		</div>
 	);

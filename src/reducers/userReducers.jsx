@@ -48,7 +48,7 @@ export const userSlice = createSlice({
 		userLoginSuccess: (state, action) => {
 			state.loading = false;
 			state.userInfo = action.payload.user;
-
+			state.invalidToken = false;
 			state.isAuthenticated = true;
 			state.error = null;
 		},
@@ -129,9 +129,11 @@ export const userSlice = createSlice({
 		getUserInfoSuccess: (state, action) => {
 			state.loading = false;
 			state.userInfo = action.payload;
+			state.invalidToken = false;
 		},
 		getUserInfoFail: (state) => {
 			state.loading = false;
+
 			state.error = 'Logout failed';
 		},
 		invalidToken: (state, action) => {

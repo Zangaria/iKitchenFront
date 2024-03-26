@@ -99,7 +99,11 @@ const JobCard = ({
 					<strong>Requirements:</strong> {requirements}
 				</p>
 
-				{showLoginMessage && !userInfo && <p>You need to be logged in to perform this action.</p>}
+				{showLoginMessage && !userInfo && (
+					<div className=" bg-red-700 rounded-md text-white mt-2">
+						<h1 className=" ml-2"> You need to be logged in to perform this action.</h1>
+					</div>
+				)}
 
 				<div className=" flex">
 					<button
@@ -148,7 +152,7 @@ const JobCard = ({
 				{showLoginMessage && !userInfo && (
 					<button
 						onClick={() => navigate('/login')}
-						className="mt-2 bg-blue-500 text-white px-4 py-2 rounded-md"
+						className="mt-2 bg-red-700 hover:bg-green-800 text-white px-4 py-2 rounded-md"
 					>
 						Login
 					</button>
