@@ -1,17 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { getJobs, deleteJobAction, updateJobAction } from '../actions/userActions';
-import { MdEdit, MdDelete } from 'react-icons/md';
+import { useDispatch, useSelector } from 'react-redux';
+import { MdEdit, MdLock, MdLockOpen } from 'react-icons/md';
+import { getUsers, toggleUserLock, updateUserDetails } from '../actions/userActions';
 
 const JobsTable = () => {
 	const dispatch = useDispatch();
-	const [jobs, setJobs] = useState([]);
+	const [users, setUsers] = useState([]);
 	const [searchTerm, setSearchTerm] = useState('');
-	const [searchBy, setSearchBy] = useState('title');
-	const [selectedJob, setSelectedJob] = useState(null);
+	const [searchBy, setSearchBy] = useState('email');
+	const [selectedUser, setSelectedUser] = useState(null);
 	const [isPopupOpen, setIsPopupOpen] = useState(false);
-	const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(false);
-	const [jobToDelete, setJobToDelete] = useState(null);
+	const [isToggleConfirmationOpen, setIsToggleConfirmationOpen] = useState(false);
+	const [userToToggle, setUserToToggle] = useState(null);
+	const { loading, searchUsers } = useSelector((state) => state.admin);
 
 	const excludedKeys = ['_id', 'enterprise', 'entPublic', 'applicants', 'userId', 'cDate', '__v'];
 
@@ -19,12 +20,12 @@ const JobsTable = () => {
 	const deleteConfirmationRef = useRef(null);
 
 	const saveChanges = async () => {
-		await dispatch(updateJobAction(selectedJob));
+		await dispatch(updateUserDetails(selectedUser));
 		closePopup();
 	};
 
-	const openPopup = (job) => {
-		setSelectedJob(job);
+	const openPopup = (user) => {
+		setSelectedUser(user);
 		setIsPopupOpen(true);
 	};
 
@@ -33,28 +34,25 @@ const JobsTable = () => {
 	};
 
 	const handleInputChange = (key, value) => {
-		setSelectedJob((prevState) => ({
+		setSelectedUser((prevState) => ({
 			...prevState,
 			[key]: value,
 		}));
 	};
 
-	const openDeleteConfirmation = (job) => {
-		setJobToDelete(job);
-		setIsDeleteConfirmationOpen(true);
+	const openToggleConfirmation = (user) => {
+		setUserToToggle(user);
+		setIsToggleConfirmationOpen(true);
 	};
 
-	const closeDeleteConfirmation = () => {
-		setIsDeleteConfirmationOpen(false);
+	const closeToggleConfirmation = () => {
+		setIsToggleConfirmationOpen(false);
 	};
 
 	useEffect(() => {
-		const getAllJobs = async () => {
-			const jobsData = await dispatch(getJobs());
-			setJobs(jobsData);
-		};
-		getAllJobs();
-	}, [dispatch]);
+		dispatch(getUsers());
+		setUsers(searchUsers);
+	}, [dispatch, searchUsers]);
 
 	const handleSearchChange = (event) => {
 		setSearchTerm(event.target.value);
@@ -71,14 +69,14 @@ const JobsTable = () => {
 				(!deleteConfirmationRef.current || !deleteConfirmationRef.current.contains(event.target))
 			) {
 				setIsPopupOpen(false);
-				setIsDeleteConfirmationOpen(false);
+				setIsToggleConfirmationOpen(false);
 			}
 		};
 
 		const handleEscapeKey = (event) => {
 			if (event.key === 'Escape') {
 				setIsPopupOpen(false);
-				setIsDeleteConfirmationOpen(false);
+				setIsToggleConfirmationOpen(false);
 			}
 		};
 
@@ -91,26 +89,27 @@ const JobsTable = () => {
 		};
 	}, []);
 
-	const handleDelete = (job) => {
-		openDeleteConfirmation(job);
+	const handleToggle = (user, goal) => {
+		openToggleConfirmation(user, goal);
 	};
 
-	const confirmDelete = async () => {
-		await dispatch(deleteJobAction(jobToDelete._id));
-		const updatedJobs = await dispatch(getJobs());
-		setJobs(updatedJobs);
-		closeDeleteConfirmation();
+	const confirmToggle = async () => {
+		await dispatch(toggleUserLock(userToToggle._id));
+		closeToggleConfirmation();
 	};
 
-	const cancelDelete = () => {
-		closeDeleteConfirmation();
+	const cancelToggle = () => {
+		closeToggleConfirmation();
 	};
 
-	const filteredJobs = jobs.filter((job) => {
-		if (searchBy === 'title') {
-			return job.title.toLowerCase().includes(searchTerm.toLowerCase());
-		} else if (searchBy === 'contact email') {
-			return job.contactEmail.toLowerCase().includes(searchTerm.toLowerCase());
+	const filteredUsers = users.filter((user) => {
+		if (searchBy === 'email') {
+			return user.email.toLowerCase().includes(searchTerm.toLowerCase());
+		} else if (searchBy === 'name') {
+			return (
+				user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) &&
+				user.lastName.toLowerCase().includes(searchTerm.toLocaleLowerCase())
+			);
 		}
 		return true;
 	});
@@ -118,7 +117,7 @@ const JobsTable = () => {
 	return (
 		<div className="container mx-auto mt-8">
 			<div className="text-xl md:text-3xl font-bold leading-tight tracking-tight text-teal-500 dark:text-white mb-4 text-center">
-				Jobs Table
+				Users Table
 			</div>
 			<div className="mb-4 flex flex-col md:flex-row justify-between">
 				<div className="order-2 md:order-1">
@@ -137,8 +136,8 @@ const JobsTable = () => {
 						onChange={handleSearchByChange}
 						className="text-xs md:text-base border border-gray-300 px-4 py-2 my-2 rounded-md"
 					>
-						<option value="title">Title</option>
-						<option value="contact email">Contact email</option>
+						<option value="email">Email</option>
+						<option value="name">Name</option>
 					</select>
 				</div>
 			</div>
@@ -150,13 +149,13 @@ const JobsTable = () => {
 							className="border border-gray-300 px-4 py-2 text-xs md:text-base"
 							style={{ width: '50%' }}
 						>
-							Job Title
+							Email
 						</th>
 						<th
 							className="border border-gray-300 px-4 py-2 text-xs md:text-base"
 							style={{ width: '50%' }}
 						>
-							Contact email
+							Full Name
 						</th>
 						<th
 							className="border border-gray-300 px-4 py-2 text-xs md:text-base"
@@ -167,42 +166,51 @@ const JobsTable = () => {
 					</tr>
 				</thead>
 				<tbody>
-					{filteredJobs.map((job, index) => (
+					{filteredUsers.map((user, index) => (
 						<tr key={index} className={index % 2 === 0 ? 'bg-gray-100' : ''}>
 							<td className="border border-gray-300 px-4 py-2 text-xs md:text-base">
-								<span>{job?.title}</span>
+								<span>{user?.email}</span>
 							</td>
 							<td
 								className="border
 border-gray-300 px-4 py-2 text-xs md:text-base"
 							>
-								{job?.contactEmail}
+								{user?.firstName} {user?.lastName}
 							</td>
 							<td className="border border-gray-300 px-4 py-2 text-xs md:text-base">
 								<div className="flex justify-center">
 									<MdEdit
 										className="cursor-pointer text-blue-500 mr-2 md:text-lg"
-										onClick={() => openPopup(job)}
+										onClick={() => openPopup(user)}
 									/>
-									<MdDelete
-										className="cursor-pointer text-red-500 md:text-lg"
-										onClick={() => handleDelete(job)}
-									/>
+									{user?.locked ? (
+										<MdLockOpen
+											className="cursor-pointer text-green-500 md:text-lg"
+											onClick={() => handleToggle(user, 'unlocked')}
+										/>
+									) : (
+										<MdLock
+											className="cursor-pointer text-red-500 md:text-lg"
+											onClick={() => handleToggle(user, 'locked')}
+										/>
+									)}
 								</div>
 							</td>
 						</tr>
 					))}
 				</tbody>
 			</table>
-			{isPopupOpen && selectedJob && (
+			{isPopupOpen && selectedUser && (
 				<div className="fixed z-50 px-4 top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex justify-center items-center transition-opacity duration-300">
 					<div
 						ref={popupRef}
 						className="bg-white p-8 rounded shadow-md transition-transform duration-300 transform max-h-[80vh] overflow-y-auto"
 					>
-						<h2 className="text-xl font-semibold mb-4">{selectedJob.title}</h2>
+						<h2 className="text-xl font-semibold mb-4">
+							{selectedUser.firtName} {selectedUser.lastName}
+						</h2>
 						<div className="mb-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-							{Object.entries(selectedJob)
+							{Object.entries(selectedUser)
 								.filter(([key]) => !excludedKeys.includes(key))
 								.map(([key, value]) => (
 									<div key={key} className="mb-4">
@@ -219,7 +227,7 @@ border-gray-300 px-4 py-2 text-xs md:text-base"
 												<option value="true">True</option>
 												<option value="false">False</option>
 											</select>
-										) : key === 'info' || key === 'requirements' ? (
+										) : key === 'firstName' || key === 'lastName' ? (
 											<textarea
 												id={key}
 												value={value}

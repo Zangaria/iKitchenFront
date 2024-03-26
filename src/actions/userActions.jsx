@@ -281,33 +281,40 @@ export const getUsers = () => async (dispatch) => {
 		const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/user/userInfo`, config);
 
 		if (data?.err) {
-			return data.err.msg.toString();
+			dispatch(getAllUsersFail(data.err.msg));
 		} else {
-			return data;
+			dispatch(getAllUsersSuccess(data));
 		}
 	} catch (err) {
-		dispatch(getAllUsersFail(err));
+		dispatch(getAllUsersFail(err.response.data.msg));
 	}
 };
 
 export const toggleUserLock = (userId) => async (dispatch) => {
 	try {
+		dispatch(toggleUserLockRequest());
 		const config = {
 			headers: {
 				Authorization: localStorage.getItem('token'),
 				'Content-Type': 'application/json',
 			},
 		};
-
 		const res = await axios.patch(
 			`${process.env.REACT_APP_BASE_URL}/user/toggleLock?id=${userId}`,
 			config
 		);
 
 		if (res?.err) {
-			console.log(res.msg);
+			dispatch(toggleUserLockFail(res.data.err.msg));
+			return false;
+		} else {
+			dispatch(toggleUserLockSuccess());
+			return true;
 		}
-	} catch (error) {}
+	} catch (error) {
+		dispatch(toggleUserLockFail(error.data.err.msg));
+		return false;
+	}
 };
 
 export const updateJobAction = (updatedJobData) => async (dispatch) => {
