@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Document, Page, pdfjs } from 'react-pdf';
+import { pdfjs } from 'react-pdf';
 import { useDispatch } from 'react-redux';
 import { addCVAction } from '../actions/jobsActions';
 import { useSelector } from 'react-redux';
@@ -15,7 +15,10 @@ function SubmitCv() {
 	const [phone, setPhone] = useState('');
 	const [error, setError] = useState('');
 	const [pdfText, setPdfText] = useState('');
+
 	const userInfo = useSelector((state) => state.user.userInfo);
+	const errorRedux = useSelector((state) => state.job.error);
+	const job = useSelector((state) => state.job.job);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -148,12 +151,8 @@ function SubmitCv() {
 				</button>
 
 				{error && <p className="text-red-500 mt-2">{error}</p>}
+				{errorRedux && <p className="text-red-500 mt-2">{errorRedux}</p>}
 			</form>
-			{/* {pdfText && (
-				<div className="mt-8">
-					<pre>{pdfText}</pre>
-				</div>
-			)} */}
 		</div>
 	);
 }

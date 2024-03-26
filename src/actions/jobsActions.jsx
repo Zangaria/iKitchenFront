@@ -64,13 +64,14 @@ export const addCVAction = (cvData) => async (dispatch) => {
 			cvData,
 			config
 		);
-		console.log('data of add cv', data);
-		if (data.error) {
+
+		if (data.code === 400) {
 			console.log('Failed to add CV');
 			dispatch(cvAddFail(data.msg));
 		} else {
 			console.log('CV added successfully');
 			dispatch(cvAddSuccess(data));
+			dispatch(getUserInfo());
 		}
 	} catch (error) {
 		console.log('Failed to add CV');
@@ -83,7 +84,7 @@ export const addCVAction = (cvData) => async (dispatch) => {
 	}
 };
 
-export const addJobToFavorites = (jobId) => async (dispatch, getState) => {
+export const addJobOrRemoveFavorites = (jobId) => async (dispatch, getState) => {
 	try {
 		// Dispatch action to indicate the start of the request
 		dispatch(addJobToFavoriteRequest());
@@ -91,11 +92,23 @@ export const addJobToFavorites = (jobId) => async (dispatch, getState) => {
 		// Get the favoritesJobs array from the Redux state
 		const { favoritesJobs } = getState().user.userInfo;
 
-		// Map over the favoritesJobs array to extract only the IDs
-		const favoritesJobsIds = favoritesJobs.map((job) => job._id);
+		// Check if the job ID is already in favorites
+		const isJobInFavorites = favoritesJobs.some((job) => job._id === jobId);
 
-		// Add the new job ID to the favoritesJobsIds array
-		const updatedFavoritesJobsIds = [...favoritesJobsIds, jobId];
+		let updatedFavoritesJobsIds;
+
+		// If job ID is already in favorites, remove it
+		if (isJobInFavorites) {
+			updatedFavoritesJobsIds = favoritesJobs
+				.filter((job) => job._id !== jobId)
+				.map((job) => job._id);
+		} else {
+			// Map over the favoritesJobs array to extract only the IDs
+			const favoritesJobsIds = favoritesJobs.map((job) => job._id);
+
+			// Add the new job ID to the favoritesJobsIds array
+			updatedFavoritesJobsIds = [...favoritesJobsIds, jobId];
+		}
 
 		// Define the request body with the updated favoritesJobsIds array
 		const requestBody = {
@@ -127,55 +140,5 @@ export const addJobToFavorites = (jobId) => async (dispatch, getState) => {
 				error.response && error.response.data.msg ? error.response.data.msg : error.message
 			)
 		);
-	}
-};
-
-export const removeJobFromFavoritesAction = (jobId) => async (dispatch, getState) => {
-	try {
-		// Dispatch action to indicate the start of the request
-		dispatch(removeJobFromFavoritesRequest());
-
-		// Get the favoritesJobs array from the Redux state
-		const { favoritesJobs } = getState().user.userInfo;
-
-		// Filter out the job with the given jobId
-		const updatedFavoritesJobs = favoritesJobs.filter((job) => job._id !== jobId);
-
-		// Extract IDs from the updated favoritesJobs array
-		const updatedFavoritesJobsIds = updatedFavoritesJobs.map((job) => job._id);
-
-		// Define the request body with the updated favoritesJobsIds array
-		const requestBody = {
-			favoritesJobs: updatedFavoritesJobsIds,
-		};
-
-		// Define the request configuration
-		const config = {
-			headers: {
-				Authorization: localStorage.getItem('token'),
-			},
-		};
-
-		// Make the request to update user favorites jobs with the new IDs
-		const { data } = await axios.patch(
-			`${process.env.REACT_APP_BASE_URL}/user/updateUser`,
-			requestBody,
-			config
-		);
-		console.log(data);
-		if (data.code === 200) {
-			console.log('Job removed from favorites successfully');
-			dispatch(getUserInfo());
-		} else {
-			console.log('error');
-		}
-	} catch (error) {
-		// Dispatch failure action with error message
-		// dispatch(
-		// 	removeJobFromFavoritesFail(
-		// 		error.response && error.response.data.msg ? error.response.data.msg : error.message
-		// 	)
-		// );
-		console.log(error.response);
 	}
 };

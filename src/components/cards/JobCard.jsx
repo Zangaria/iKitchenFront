@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addJobToFavorites, removeJobFromFavoritesAction } from '../../actions/jobsActions';
+import { addJobOrRemoveFavorites } from '../../actions/jobsActions';
 import { useNavigate } from 'react-router-dom';
 
 const JobCard = ({
@@ -22,21 +22,23 @@ const JobCard = ({
 	const isSubmited = ReusmeArray?.some((resume) => resume.jobid === jobid);
 	const isJobSaved = favoritesJobs?.some((job) => job._id === jobid);
 
-	useEffect(() => {
-		// console.log(userInfo.favoritesJobs);
-	});
+	// State to track if the user is trying to save or submit without being logged in
+	const [showLoginMessage, setShowLoginMessage] = useState(false);
 
-	// Func to toggle save/unsave job
 	const handleSaveJob = () => {
-		if (isJobSaved) {
-			dispatch(removeJobFromFavoritesAction(jobid));
+		if (!userInfo) {
+			setShowLoginMessage(true);
 		} else {
-			dispatch(addJobToFavorites(jobid));
+			dispatch(addJobOrRemoveFavorites(jobid));
 		}
 	};
 
 	const handleSubmitSv = () => {
-		navigate(`/submit-cv/${jobid}`);
+		if (!userInfo) {
+			setShowLoginMessage(true);
+		} else {
+			navigate(`/submit-cv/${jobid}`);
+		}
 	};
 
 	return (
@@ -63,7 +65,10 @@ const JobCard = ({
 					<p className="mb-2">
 						<strong>Contact name:</strong> {contactName}
 					</p>
-					{/* Buttons */}
+
+					{showLoginMessage && !userInfo && <p>You need to be logged in to perform this action.</p>}
+
+					{/* Buttons always visible */}
 					<button
 						onClick={handleSaveJob}
 						className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md"
@@ -77,6 +82,16 @@ const JobCard = ({
 					>
 						{isSubmited ? 'You submitted' : 'Submit '}
 					</button>
+
+					{/* Login button if not logged in */}
+					{showLoginMessage && !userInfo && (
+						<button
+							onClick={() => navigate('/login')}
+							className="mt-2 bg-blue-500 text-white px-4 py-2 rounded-md"
+						>
+							Login
+						</button>
+					)}
 				</div>
 			</div>
 		</section>

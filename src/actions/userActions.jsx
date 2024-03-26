@@ -378,7 +378,7 @@ export const getResumeById = (userId, jobId) => async (dispatch) => {
 };
 
 export const getUserInfo = () => async (dispatch) => {
-	console.log('done');
+	console.log('getUserInfo action ');
 	try {
 		// Dispatch action to indicate the start of the request
 		dispatch(getUserInfoRequest());
