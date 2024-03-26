@@ -4,6 +4,7 @@ const initialState = {
 	loading: false,
 	userInfo: null,
 	resumeArray: [],
+	favoritesJobs: [],
 	isAuthenticated: false,
 	error: null,
 	msg: null,
