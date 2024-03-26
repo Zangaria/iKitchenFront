@@ -24,6 +24,7 @@ import ResetPasswordPage from './pages/ResetPasswordPage';
 import MyJobs from './pages/MyJobs';
 import Home from './pages/Home';
 import Footer from './components/Footer';
+import UploadTest from './pages/uploadtest';
 
 const App = () => {
 	const invalidToken = useSelector((state) => state.user.invalidToken);
@@ -59,6 +60,8 @@ const App = () => {
 						<Route path="submitted-jobs" element={<SubmittedJobsPage />} />
 						<Route path="resetpass" element={<ResetPasswordPage />} />
 						<Route path="my-jobs" element={<MyJobs />} />
+						<Route path="/test" element={<UploadTest />} />
+
 						<Route path="/*" element={<Page404 />} />
 					</Route>
 				</Routes>
