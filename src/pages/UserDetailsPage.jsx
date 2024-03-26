@@ -7,9 +7,6 @@ const UserDetailsPage = () => {
 	const user = useSelector((state) => state.user.userInfo);
 	const dispatch = useDispatch();
 
-	const userLoginState = useSelector((state) => state.user);
-	const { msg } = userLoginState;
-
 	// State for form inputs
 	const [formData, setFormData] = useState({
 		firstName: user ? user.firstName || '' : '',
@@ -20,22 +17,17 @@ const UserDetailsPage = () => {
 	});
 	const [error, setError] = useState('');
 
-	const { firstName, lastName, city, contactEmail, contactPhone, contactCelphone } = formData;
+	const { firstName, lastName, city, contactPhone, contactCelphone } = formData;
 
 	const handleChange = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
 
-	useEffect(() => {
-		console.log(user);
-	}, []);
-
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		// Dispatch the updateUserDetails action with the formData
-		dispatch(updateUserDetailsAtRedux(formData));
-		dispatch(updateUserDetails());
+		// Dispatch the updateUserDetails action with the updated data
+		dispatch(updateUserDetails(formData));
 	};
 
 	return (
@@ -84,7 +76,7 @@ const UserDetailsPage = () => {
 					</div>
 					<div className="mb-4">
 						<label htmlFor="contactPhone" className="block mb-2 font-semibold">
-							Contact Phone
+							Contact Telephone
 						</label>
 						<input
 							type="tel"
@@ -111,7 +103,6 @@ const UserDetailsPage = () => {
 					<button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
 						Save Changes
 					</button>
-					{msg && <div className="success-message">{msg}</div>}
 				</form>
 			</div>
 		</div>

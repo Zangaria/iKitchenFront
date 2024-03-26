@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createJobAction } from '../actions/jobsActions';
 
@@ -17,7 +17,8 @@ const CreateJob = () => {
 	});
 
 	const dispatch = useDispatch();
-	const { loading, error, job } = useSelector((state) => state.job);
+	const { error, job } = useSelector((state) => state.job);
+	const invalidToken = useSelector((state) => state.user.invalidToken);
 
 	const handleChange = (e) => {
 		const { name, value, type, checked } = e.target;
@@ -35,6 +36,14 @@ const CreateJob = () => {
 		e.preventDefault();
 		dispatch(createJobAction(formData));
 	};
+
+	useEffect(() => {
+		console.log('user', invalidToken);
+		if (invalidToken) {
+			alert('Invalid token, please login again.');
+			window.location.href = '/login';
+		}
+	}, [invalidToken]);
 
 	return (
 		<section className="flex items-center justify-center container mx-auto py-12">
@@ -75,6 +84,7 @@ const CreateJob = () => {
 							value={formData.location}
 							onChange={handleChange}
 							className="w-full py-2 px-4 mb-6 border-b border-gray-300 focus:outline-none focus:border-teal-500 dark:border-neutral-600 dark:focus:border-teal-300"
+							required
 						/>
 					</label>
 

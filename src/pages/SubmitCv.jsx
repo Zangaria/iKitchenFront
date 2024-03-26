@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Document, Page, pdfjs } from 'react-pdf';
+import { pdfjs } from 'react-pdf';
 import { useDispatch } from 'react-redux';
 import { addCVAction } from '../actions/jobsActions';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -15,8 +16,14 @@ function SubmitCv() {
 	const [phone, setPhone] = useState('');
 	const [error, setError] = useState('');
 	const [pdfText, setPdfText] = useState('');
+	const [prevUrl, setPrevUrl] = useState('');
+
 	const userInfo = useSelector((state) => state.user.userInfo);
+	const errorRedux = useSelector((state) => state.job.error);
+	const job = useSelector((state) => state.job.job);
+
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (userInfo) {
@@ -85,6 +92,16 @@ function SubmitCv() {
 		setError('');
 	};
 
+	useEffect(() => {
+		if (job) {
+			toast.success('Submission successful!');
+		}
+	}, [job, navigate, prevUrl]);
+
+	useEffect(() => {
+		setPrevUrl(window.location.href);
+	}, []);
+
 	return (
 		<div className="container mx-auto mt-8">
 			<h2 className="text-2xl font-semibold mb-4">Submit Your CV</h2>
@@ -148,12 +165,14 @@ function SubmitCv() {
 				</button>
 
 				{error && <p className="text-red-500 mt-2">{error}</p>}
+				{errorRedux && <p className="text-red-500 mt-2">{errorRedux}</p>}
+
+				{job && (
+					<div className="bg-green-500 text-white text-center rounded-md p-2 mb-4 mt-4">
+						{`Submission successful!`}
+					</div>
+				)}
 			</form>
-			{/* {pdfText && (
-				<div className="mt-8">
-					<pre>{pdfText}</pre>
-				</div>
-			)} */}
 		</div>
 	);
 }
