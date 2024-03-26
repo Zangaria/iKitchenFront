@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { MdPerson } from 'react-icons/md';
 import { userLogout } from '../actions/userActions';
@@ -7,7 +7,9 @@ import { useNavigate } from 'react-router-dom';
 const Navbar = () => {
 	const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
-	const [isAuthenticated, setIsAuthenticated] = useState(false);
+	const [isAuthenticated, setIsAuthenticated] = useState(true);
+
+	const dropdownRef = useRef(null); // Ref for the dropdown element
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -19,14 +21,32 @@ const Navbar = () => {
 	const { userInfo } = useSelector((state) => state.user);
 
 	useEffect(() => {
-		// Check if user authentication info exists in Redux state or local storage
-		if (userInfo || localStorage.getItem('userInfo')) {
-			console.log(userInfo.type);
-			setIsAuthenticated(true);
-		} else {
-			setIsAuthenticated(false);
-		}
+		// Check initial authentication status
+		const checkAuthentication = () => {
+			if (userInfo || localStorage.getItem('userInfo')) {
+				setIsAuthenticated(true);
+			} else {
+				setIsAuthenticated(false);
+			}
+		};
+
+		checkAuthentication();
 	}, [userInfo]);
+
+	useEffect(() => {
+		// Add event listener to close dropdown when clicking outside
+		const handleClickOutside = (event) => {
+			if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+				setIsOpen(false);
+			}
+		};
+
+		document.addEventListener('click', handleClickOutside);
+
+		return () => {
+			document.removeEventListener('click', handleClickOutside);
+		};
+	}, []);
 
 	const toggleMobileMenu = () => {
 		setMobileMenuOpen(!isMobileMenuOpen);
@@ -38,7 +58,7 @@ const Navbar = () => {
 	};
 
 	return (
-		<nav className="bg-white sticky top-0 z-20">
+		<nav className="bg-white sticky top-0 z-20 py-1 shadow-md">
 			<div className="max-w-7xl mx-auto px-4">
 				<div className="flex justify-between items-center py-1">
 					<div className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white">
@@ -52,48 +72,64 @@ const Navbar = () => {
 					<div className="hidden md:flex space-x-4">
 						{!isAuthenticated ? (
 							<>
-								<a href="register" className="text-gray-800 hover:text-teal-500">
+								<a
+									href="register"
+									className="text-gray-800 hover:text-teal-500 font-semibold hover:text-teal-600 transition-colors duration-300"
+								>
 									Register
 								</a>
-								<a href="login" className="text-gray-800 hover:text-teal-500">
+								<a
+									href="login"
+									className="text-gray-800 hover:text-teal-500 font-semibold hover:text-teal-600 transition-colors duration-300"
+								>
 									Login
 								</a>
 							</>
 						) : userInfo?.type === 1 ? (
-							<div className="relative bg-green-500 flex justify-center  rounded-lg w-8 h-8">
+							<div
+								ref={dropdownRef}
+								className="relative bg-teal-500 flex justify-center rounded-lg w-8 h-8"
+							>
 								<button
 									onClick={toggleDropdown}
 									className="text-gray-800 hover:text-teal-500 focus:outline-none"
 								>
-									<MdPerson className=" text-white" />
+									<MdPerson className="text-white hover:text-black transition-colors duration-300" />
 								</button>
 								{isOpen && (
-									<div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg">
+									<div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg top-8">
 										<a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
 											User Details
 										</a>
-
 										<a
 											href="saved-jobs"
 											className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
 										>
 											Saved Jobs
 										</a>
+										<button
+											className="w-full text-left block px-4 py-2 text-sm text-gray-800 font-bold hover:text-teal-600 transition-colors duration-300"
+											onClick={handleLogout}
+										>
+											Logout
+										</button>
 									</div>
 								)}
-								<button onClick={handleLogout}>Logout</button>
 							</div>
 						) : (
 							userInfo?.type === 2 && (
-								<div className="relative bg-green-500 flex justify-center  rounded-lg w-8 h-8">
+								<div
+									ref={dropdownRef}
+									className="relative bg-teal-500 flex justify-center rounded-lg w-8 h-8"
+								>
 									<button
 										onClick={toggleDropdown}
 										className="text-gray-800 hover:text-teal-500 focus:outline-none"
 									>
-										<MdPerson className=" text-white" />
+										<MdPerson className="text-white hover:text-black transition-colors duration-300" />
 									</button>
 									{isOpen && (
-										<div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg">
+										<div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg top-8">
 											<a
 												href="createJob"
 												className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -112,7 +148,12 @@ const Navbar = () => {
 											>
 												Saved Jobs
 											</a>
-											<button onClick={handleLogout}>Logout</button>
+											<button
+												className="w-full text-left block px-4 py-2 text-sm text-gray-800 font-bold hover:text-teal-600 transition-colors duration-300"
+												onClick={handleLogout}
+											>
+												Logout
+											</button>
 										</div>
 									)}
 								</div>

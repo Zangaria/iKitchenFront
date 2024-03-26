@@ -69,7 +69,7 @@ const JobCard = ({
 						className="mt-4 ml-2 bg-blue-500 text-white px-4 py-2 rounded-md"
 						disabled={isSubmited}
 					>
-						{isSubmited ? 'You sbmited' : 'Submit '}
+						{isSubmited ? 'You submitted' : 'Submit '}
 					</button>
 				</div>
 			</div>

@@ -358,6 +358,37 @@ export const getUserJobsAction = () => async (dispatch) => {
 	}
 };
 
+export const getResumeById = (userId, jobId) => async (dispatch) => {
+	try {
+		debugger
+		// Dispatch action to indicate the start of the request
+		dispatch(getResumeRequest());
+
+		// Define the request configuration
+		const config = {
+			headers: {
+				Authorization: localStorage.getItem('token'),
+			},
+		};
+
+		// Make the request to fetch the resume data
+		const { data } = await axios.get(
+			`${process.env.REACT_APP_BASE_URL}/user/GetResume?id=${userId}&jobid=${jobId}`,
+			config
+		);
+
+		// Dispatch action based on the response data
+		dispatch(getResumeSuccess(data));
+	} catch (error) {
+		// Dispatch failure action with error message
+		dispatch(
+			getResumeFail(
+				error.response && error.response.data.msg ? error.response.data.msg : error.message
+			)
+		);
+	}
+};
+
 // Create action creators using createAction
 const userRegisterRequest = createAction('user/userRegisterRequest');
 const userRegisterSuccess = createAction('user/userRegisterSuccess');
@@ -413,3 +444,8 @@ const updateJobFail = createAction('jobs/updateJobFail');
 // Define action creators using createAction if needed
 const getUserJobsSuccess = createAction('jobs/getUserJobsSuccess');
 const getUserJobsFail = createAction('jobs/getUserJobsFail');
+
+// Define action creators using createAction if needed
+const getResumeRequest = createAction('resume/getResumeRequest');
+const getResumeSuccess = createAction('resume/getResumeSuccess');
+const getResumeFail = createAction('resume/getResumeFail');
