@@ -17,7 +17,7 @@ import EnterprisesTable from './pages/EnterprisesTable';
 import JobsTable from './pages/JobsTable';
 import SearchResults from './pages/SearchResults';
 import SubmitCv from './pages/SubmitCv';
-import SavedJobsPage from './pages/SavedJobsPage';
+import UsersTable from './pages/UsersTable';
 import MyJobs from './pages/MyJobs';
 
 const App = () => {
@@ -37,6 +37,7 @@ const App = () => {
 						<Route path="createJob" element={<CreateJob />} />
 						<Route path="EnterprisesTable" element={<EnterprisesTable />} />
 						<Route path="JobsTable" element={<JobsTable />} />
+						<Route path="UsersTable" element={<UsersTable />} />
 						<Route path="search-results" element={<SearchResults />} />
 						<Route path="user-details" element={<UserDetailsPage />} />
 						<Route path="submit-cv/:id" element={<SubmitCv />} />
