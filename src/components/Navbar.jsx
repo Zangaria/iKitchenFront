@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { MdPerson } from 'react-icons/md';
 import { userLogout } from '../actions/userActions';
 import { useNavigate } from 'react-router-dom';
-import WebsiteLogo from '../images/iworklogo.png';
+import WebsiteLogo from '../images/iwork-logo.png';
 
 const Navbar = () => {
 	const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -66,7 +66,7 @@ const Navbar = () => {
 							href="/"
 							className=" bg-gradient-to-r from-teal-500 via-white to-pink-700 rounded-lg text-black"
 						>
-							<img src={WebsiteLogo} className=" w-24 h-24" alt="Website Logo" />
+							<img src={WebsiteLogo} className="w-12 h-12" alt="Website Logo" />
 						</a>
 					</div>
 					<div className="hidden md:flex space-x-4">
@@ -197,18 +197,18 @@ const Navbar = () => {
 				</div>
 			</div>
 			{isMobileMenuOpen && (
-				<div className="md:hidden bg-gray-100 absolute w-full">
+				<div className="flex flex-col md:hidden bg-gray-100 absolute w-full">
 					{!isAuthenticated ? (
 						<>
 							<a
 								href="register"
-								className="text-gray-800 font-semibold hover:text-teal-600 transition-colors duration-300"
+								className="text-gray-800 text-sm font-semibold hover:text-teal-600 transition-colors duration-300 px-4 py-2"
 							>
 								Register
 							</a>
 							<a
 								href="login"
-								className="text-gray-800 font-semibold hover:text-teal-600 transition-colors duration-300"
+								className="text-gray-800 text-sm font-semibold hover:text-teal-600 transition-colors duration-300 px-4 py-2"
 							>
 								Login
 							</a>
