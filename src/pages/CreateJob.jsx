@@ -84,6 +84,7 @@ const CreateJob = () => {
 							value={formData.location}
 							onChange={handleChange}
 							className="w-full py-2 px-4 mb-6 border-b border-gray-300 focus:outline-none focus:border-teal-500 dark:border-neutral-600 dark:focus:border-teal-300"
+							required
 						/>
 					</label>
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-const Lordicon = ({ src, trigger, style, color }) => {
+const Lordicon = ({ src, trigger, style, colors }) => {
 	const lordiconRef = useRef(null);
 
 	useEffect(() => {
@@ -19,9 +19,9 @@ const Lordicon = ({ src, trigger, style, color }) => {
 	useEffect(() => {
 		// Set color attribute of lord-icon element
 		if (lordiconRef.current) {
-			lordiconRef.current.color = color;
+			lordiconRef.current.color = colors;
 		}
-	}, [color]);
+	}, [colors]);
 
 	return <lord-icon ref={lordiconRef} src={src} trigger={trigger} style={style}></lord-icon>;
 };
