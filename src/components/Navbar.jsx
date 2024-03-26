@@ -74,13 +74,13 @@ const Navbar = () => {
 							<>
 								<a
 									href="register"
-									className="text-gray-800 hover:text-teal-500 font-semibold hover:text-teal-600 transition-colors duration-300"
+									className="text-gray-800  font-semibold hover:text-teal-600 transition-colors duration-300"
 								>
 									Register
 								</a>
 								<a
 									href="login"
-									className="text-gray-800 hover:text-teal-500 font-semibold hover:text-teal-600 transition-colors duration-300"
+									className="text-gray-800  font-semibold hover:text-teal-600 transition-colors duration-300"
 								>
 									Login
 								</a>
@@ -106,6 +106,12 @@ const Navbar = () => {
 											className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
 										>
 											Saved Jobs
+										</a>
+										<a
+											href="submitted-jobs"
+											className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+										>
+											Jobs Applied
 										</a>
 										<button
 											className="w-full text-left block px-4 py-2 text-sm text-gray-800 font-bold hover:text-teal-600 transition-colors duration-300"
@@ -143,10 +149,10 @@ const Navbar = () => {
 												User Details
 											</a>
 											<a
-												href="saved-jobs"
+												href="my-jobs"
 												className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
 											>
-												Saved Jobs
+												My posted Jobs
 											</a>
 											<button
 												className="w-full text-left block px-4 py-2 text-sm text-gray-800 font-bold hover:text-teal-600 transition-colors duration-300"
