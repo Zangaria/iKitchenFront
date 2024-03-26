@@ -10,14 +10,27 @@ const JobsTable = () => {
 	const [searchBy, setSearchBy] = useState('email');
 	const [selectedUser, setSelectedUser] = useState(null);
 	const [isPopupOpen, setIsPopupOpen] = useState(false);
+	const [toggleText, setToggleText] = useState(null);
 	const [isToggleConfirmationOpen, setIsToggleConfirmationOpen] = useState(false);
 	const [userToToggle, setUserToToggle] = useState(null);
 	const { loading, searchUsers } = useSelector((state) => state.admin);
 
-	const excludedKeys = ['_id', 'enterprise', 'entPublic', 'applicants', 'userId', 'cDate', '__v'];
+	const excludedKeys = [
+		'_id',
+		'password',
+		'contactName',
+		'favoriteJobs',
+		'profileImg',
+		'userImgs',
+		'logins',
+		'InvalidPassword',
+		'Resume',
+		'cDate',
+		'__v',
+	];
 
 	const popupRef = useRef(null);
-	const deleteConfirmationRef = useRef(null);
+	const toggleConfirmationRef = useRef(null);
 
 	const saveChanges = async () => {
 		await dispatch(updateUserDetails(selectedUser));
@@ -40,8 +53,11 @@ const JobsTable = () => {
 		}));
 	};
 
-	const openToggleConfirmation = (user) => {
+	const openToggleConfirmation = (user, type) => {
 		setUserToToggle(user);
+		type === 1
+			? setToggleText('Are you sure you want to lock this user out of the system?')
+			: setToggleText('Are you sure you wish to unlock this user?');
 		setIsToggleConfirmationOpen(true);
 	};
 
@@ -66,7 +82,7 @@ const JobsTable = () => {
 		const handleOutsideClick = (event) => {
 			if (
 				(!popupRef.current || !popupRef.current.contains(event.target)) &&
-				(!deleteConfirmationRef.current || !deleteConfirmationRef.current.contains(event.target))
+				(!toggleConfirmationRef.current || !toggleConfirmationRef.current.contains(event.target))
 			) {
 				setIsPopupOpen(false);
 				setIsToggleConfirmationOpen(false);
@@ -89,8 +105,8 @@ const JobsTable = () => {
 		};
 	}, []);
 
-	const handleToggle = (user, goal) => {
-		openToggleConfirmation(user, goal);
+	const handleToggle = (user, type) => {
+		openToggleConfirmation(user, type);
 	};
 
 	const confirmToggle = async () => {
@@ -186,12 +202,12 @@ border-gray-300 px-4 py-2 text-xs md:text-base"
 									{user?.locked ? (
 										<MdLockOpen
 											className="cursor-pointer text-green-500 md:text-lg"
-											onClick={() => handleToggle(user, 'unlocked')}
+											onClick={() => handleToggle(user, 2)}
 										/>
 									) : (
 										<MdLock
 											className="cursor-pointer text-red-500 md:text-lg"
-											onClick={() => handleToggle(user, 'locked')}
+											onClick={() => handleToggle(user, 1)}
 										/>
 									)}
 								</div>
@@ -206,9 +222,7 @@ border-gray-300 px-4 py-2 text-xs md:text-base"
 						ref={popupRef}
 						className="bg-white p-8 rounded shadow-md transition-transform duration-300 transform max-h-[80vh] overflow-y-auto"
 					>
-						<h2 className="text-xl font-semibold mb-4">
-							{selectedUser.firtName} {selectedUser.lastName}
-						</h2>
+						<h2 className="text-xl font-semibold mb-4">{selectedUser.email}</h2>
 						<div className="mb-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 							{Object.entries(selectedUser)
 								.filter(([key]) => !excludedKeys.includes(key))
@@ -217,7 +231,7 @@ border-gray-300 px-4 py-2 text-xs md:text-base"
 										<label htmlFor={key} className="block text-gray-700 font-bold mb-2">
 											{key}
 										</label>
-										{key === 'active' ? (
+										{key === ('marketing' || 'locked') ? (
 											<select
 												id={key}
 												value={value ? 'true' : 'false'}
@@ -227,13 +241,24 @@ border-gray-300 px-4 py-2 text-xs md:text-base"
 												<option value="true">True</option>
 												<option value="false">False</option>
 											</select>
-										) : key === 'firstName' || key === 'lastName' ? (
+										) : key === 'tags' ? (
 											<textarea
 												id={key}
 												value={value}
 												onChange={(e) => handleInputChange(key, e.target.value)}
 												className="border border-gray-300 px-4 py-2 rounded-md w-full"
 											/>
+										) : key === 'type' ? (
+											<select
+												id={key}
+												value={key.valueOf()}
+												onChange={(e) => handleInputChange(key, e.target.value)}
+												className="border border-gray-300 px-4 py-2 rounded-md w-full"
+											>
+												<option value="1">Applicant</option>
+												<option value="2">Employer</option>
+												<option value="3">Admin</option>
+											</select>
 										) : (
 											<input
 												type="text"
@@ -264,26 +289,24 @@ border-gray-300 px-4 py-2 text-xs md:text-base"
 				</div>
 			)}
 
-			{isDeleteConfirmationOpen && (
+			{isToggleConfirmationOpen && (
 				<div
-					ref={deleteConfirmationRef}
+					ref={toggleConfirmationRef}
 					className="fixed z-50 px-4 top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex justify-center items-center transition-opacity duration-300"
-					onClick={closeDeleteConfirmation}
+					onClick={closeToggleConfirmation}
 				>
 					<div className="bg-white p-8 rounded shadow-md transition-transform duration-300 transform">
-						<p className="text-center text-xl font-semibold mb-4">
-							Are you sure you want to delete this job?
-						</p>
+						<p className="text-center text-xl font-semibold mb-4">{toggleText}</p>
 						<div className="mt-4 flex justify-center">
 							<button
 								className="bg-teal-500 text-white px-4 py-2 rounded mr-2 hover:bg-teal-600 transition-colors duration-300"
-								onClick={confirmDelete}
+								onClick={confirmToggle}
 							>
 								Yes
 							</button>
 							<button
 								className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors duration-300"
-								onClick={cancelDelete}
+								onClick={cancelToggle}
 							>
 								No
 							</button>
