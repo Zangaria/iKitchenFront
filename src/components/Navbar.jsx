@@ -195,23 +195,52 @@ const Navbar = () => {
 			</div>
 			{isMobileMenuOpen && (
 				<div className="md:hidden bg-gray-100 absolute w-full">
-					<div className="px-4 py-2 space-y-4">
-						<a href="/" className="block text-gray-800 hover:text-teal-500">
-							Home
-						</a>
-						<a href="/" className="block text-gray-800 hover:text-teal-500">
-							About
-						</a>
-						<a href="/" className="block text-gray-800 hover:text-teal-500">
-							Services
-						</a>
-						<a href="/" className="block text-gray-800 hover:text-teal-500">
-							Pricing
-						</a>
-						<a href="/" className="block text-gray-800 hover:text-teal-500">
-							Contact
-						</a>
-					</div>
+					{!isAuthenticated ? (
+						<>
+							<a
+								href="register"
+								className="text-gray-800 font-semibold hover:text-teal-600 transition-colors duration-300"
+							>
+								Register
+							</a>
+							<a
+								href="login"
+								className="text-gray-800 font-semibold hover:text-teal-600 transition-colors duration-300"
+							>
+								Login
+							</a>
+						</>
+					) : userInfo?.type === 1 ? (
+						<>
+							<a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+								User Details
+							</a>
+							<a
+								href="saved-jobs"
+								className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+							>
+								Saved Jobs
+							</a>
+							<a
+								href="submitted-jobs"
+								className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+							>
+								Jobs Applied
+							</a>
+							<button
+								className="w-full text-left block px-4 py-2 text-sm text-gray-800 font-bold hover:text-teal-600 transition-colors duration-300"
+								onClick={handleLogout}
+							>
+								Logout
+							</button>
+						</>
+					) : (
+						userInfo?.type === 2 && (
+							<a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+								Create job
+							</a>
+						)
+					)}
 				</div>
 			)}
 		</nav>
