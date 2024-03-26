@@ -206,32 +206,39 @@ export const getJobs = () => async (dispatch) => {
 };
 
 // Frontend action creator
-export const updateUserDetails = () => async (dispatch, getState) => {
-	const userInfo = getState().user.userInfo;
-	const userInfoToSend = { ...userInfo };
-	delete userInfoToSend.email;
-	delete userInfoToSend.password;
-
+export const updateUserDetails = (formData) => async (dispatch, getState) => {
+	console.log(formData);
 	try {
 		dispatch(userUpdateRequest());
+		const userInfo = getState().user.userInfo;
+		const userInfoToSend = {
+			firstName: formData.firstName,
+			lastName: formData.lastName,
+			city: formData.city,
+			contactPhone: formData.contactPhone,
+			contactCelphone: formData.contactCelphone,
+		};
+
+		console.log('userInfoToSend', userInfoToSend);
 		const config = {
 			headers: {
 				Authorization: localStorage.getItem('token'),
 			},
 		};
 
-		const { data } = await axios.patch(`https://api-iwork.amio.co.il/user/updateUser`, config);
+		const { data } = await axios.patch(
+			`${process.env.REACT_APP_BASE_URL}/user/updateUser`,
+			userInfoToSend,
+			config
+		);
 
 		console.log('data update', data);
-
-		// Remove existing userInfo from local storage
-		localStorage.removeItem('userInfo');
-		// Insert new userInfo into local storage
-		localStorage.setItem('userInfo', JSON.stringify(data));
-		console.log('data', data);
-		dispatch(userUpdateSuccess(data));
+		if (data.code === 200) {
+			dispatch(userUpdateSuccess(data));
+			dispatch(getUserInfo());
+		}
 	} catch (err) {
-		console.log(err.response.data);
+		console.log(err);
 		dispatch(
 			userUpdateFail(err.response && err.response.data.msg ? err.response.data.msg : err.message)
 		);

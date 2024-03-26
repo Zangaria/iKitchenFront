@@ -95,11 +95,6 @@ function SubmitCv() {
 	useEffect(() => {
 		if (job) {
 			toast.success('Submission successful!');
-			// if (prevUrl) {
-			// 	navigate(prevUrl);
-			// } else {
-			// 	navigate('/');
-			// }
 		}
 	}, [job, navigate, prevUrl]);
 
